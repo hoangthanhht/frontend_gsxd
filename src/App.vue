@@ -25,30 +25,57 @@
 
 <script>
 import { OVERRIDE_LAYOUT_CONFIG } from "@/core/services/store/store_metronic/config.module";
-import { mapActions } from 'vuex';
+import { mapActions } from "vuex";
 export default {
-  name: "MetronicVue",  
-   created() {
-		this['storeqlda/checkLogin']().then((res) => {
-			if (res.ok === false)
-          this.$router.push("/login");
-        });
-	},
-  	methods: {
-		...mapActions([ 'storeqlda/checkLogin' ]),
-
-	},
+  name: "MetronicVue",
+  created() {
+    this["storeqlda/checkLogin"]().then((res) => {
+      if (res.ok === false) this.$router.push("/login");
+    });
+  },
+  methods: {
+    ...mapActions(["storeqlda/checkLogin"]),
+  },
   mounted() {
     /**
      * this is to override the layout config using saved data from localStorage
      * remove this to use config only from static json (@/core/config/layout.config.json)
      */
     this.$store.dispatch(OVERRIDE_LAYOUT_CONFIG);
-  }
+  },
 };
 </script>
 <style >
 .nav-tabs {
   display: none;
+}
+@media (min-width: 992px) {
+  .header-fixed.subheader-fixed.subheader-enabled .wrapper {
+    padding-top: 143px;
+  }
+}
+
+@media (min-width: 992px) {
+  .aside-fixed .wrapper {
+    padding-left: 0;
+  }
+}
+
+@media (min-width: 992px) {
+  .aside-enabled .header.header-fixed {
+    left: 0px;
+  }
+}
+
+@media (min-width: 992px) {
+  .aside-enabled.subheader-fixed .subheader {
+    left: 0px;
+  }
+}
+@media (min-width: 1200px)
+{
+  .container-xl, .container-lg, .container-md, .container-sm, .container {
+      max-width: 1330px;
+  }
 }
 </style>
