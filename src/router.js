@@ -15,16 +15,11 @@ export default new Router({
 					name: "dashboard",
 					component: () => import("@/view/pages/Dashboard.vue"),			
 				},
+
 				{
-					path: "/post/:id?",
-					name: "post",
-					component: () => import("@/view/pages/Post.vue"),
-								
-				},
-				{
-					path: "/bangdinhmuc",
-					name: "bangdinhmuc",
-					component: () => import("@/view/pages/Bangdinhmuc.vue"),
+					path: "/congviecgiao",
+					name: "congviecgiao",
+					component: () => import("@/view/pages/Congviecgiao.vue"),
 					beforeEnter: (to, from, next) =>  {
 						let userSlug = (store.getters.currentUserPersonalInfo.slug)
 						if(userSlug) {
@@ -76,9 +71,9 @@ export default new Router({
 					}
 				},
 				{
-					path: "/giavattu",
-					name: "giavattu",
-					component: () => import("@/view/pages/Giavattu.vue"),
+					path: "/baocaohoatdongcongtruong",
+					name: "baocaohoatdongcongtruong",
+					component: () => import("@/view/pages/baocao/baochoatdongctrg/bc_tonghop.vue"),
 					beforeEnter: (to, from, next) =>  {
 						let userSlug = (store.getters.currentUserPersonalInfo.slug)
 						if(userSlug) {
@@ -130,9 +125,9 @@ export default new Router({
 					}
 				},
 				{
-					path: "/materialcostforguest",
-					name: "materialcostforguest",
-					component: () => import("@/view/pages/MaterialCostForGuest.vue"),
+					path: "/nhattrinh",
+					name: "nhattrinh",
+					component: () => import("@/view/pages/baocao/nhat_trinh/nhat_trinh.vue"),
 					beforeEnter: (to, from, next) =>  {
 						let userSlug = (store.getters.currentUserPersonalInfo.slug)
 						if(!userSlug) {
@@ -143,9 +138,87 @@ export default new Router({
 					}
 				},
 				{
-					path: "/approvematerialcost",
-					name: "approvematerialcost",
-					component: () => import("@/view/pages/ApproveMaterialCost.vue"),
+					path: "/theodoithicong",
+					name: "theodoithicong",
+					component: () => import("@/view/pages/baocao/baochoatdongctrg/theodoithicong.vue"),
+					beforeEnter: (to, from, next) =>  {
+						let userSlug = (store.getters.currentUserPersonalInfo.slug)
+						if(!userSlug) {
+							store.dispatch('storeqlda/checkLogin',null,{ root: true }).then(()=>next())
+						}else{
+							next();
+						}
+					}
+				},
+				{
+					path: "/nghiemthucongviec",
+					name: "nghiemthucongviec",
+					component: () => import("@/view/pages/baocao/baochoatdongctrg/nghiemthucongviec.vue"),
+					beforeEnter: (to, from, next) =>  {
+						let userSlug = (store.getters.currentUserPersonalInfo.slug)
+						if(!userSlug) {
+							store.dispatch('storeqlda/checkLogin',null,{ root: true }).then(()=>next())
+						}else{
+							next();
+						}
+					}
+				},
+				{
+					path: "/nghiemthuvatlieu",
+					name: "nghiemthuvatlieu",
+					component: () => import("@/view/pages/baocao/baochoatdongctrg/nghiemthuvatlieu.vue"),
+					beforeEnter: (to, from, next) =>  {
+						let userSlug = (store.getters.currentUserPersonalInfo.slug)
+						if(!userSlug) {
+							store.dispatch('storeqlda/checkLogin',null,{ root: true }).then(()=>next())
+						}else{
+							next();
+						}
+					}
+				},
+				{
+					path: "/giamsatnhanluc",
+					name: "giamsatnhanluc",
+					component: () => import("@/view/pages/baocao/baochoatdongctrg/gsatnhanluc.vue"),
+					beforeEnter: (to, from, next) =>  {
+						let userSlug = (store.getters.currentUserPersonalInfo.slug)
+						if(!userSlug) {
+							store.dispatch('storeqlda/checkLogin',null,{ root: true }).then(()=>next())
+						}else{
+							next();
+						}
+					}
+				},
+				{
+					path: "/giamsatthietbi",
+					name: "giamsatthietbi",
+					component: () => import("@/view/pages/baocao/baochoatdongctrg/gsatthietbi.vue"),
+					beforeEnter: (to, from, next) =>  {
+						let userSlug = (store.getters.currentUserPersonalInfo.slug)
+						if(!userSlug) {
+							store.dispatch('storeqlda/checkLogin',null,{ root: true }).then(()=>next())
+						}else{
+							next();
+						}
+					}
+				},
+				{
+					path: "/giamsatthinghiem",
+					name: "giamsatthinghiem",
+					component: () => import("@/view/pages/baocao/baochoatdongctrg/gsatthinghiem.vue"),
+					beforeEnter: (to, from, next) =>  {
+						let userSlug = (store.getters.currentUserPersonalInfo.slug)
+						if(!userSlug) {
+							store.dispatch('storeqlda/checkLogin',null,{ root: true }).then(()=>next())
+						}else{
+							next();
+						}
+					}
+				},
+				{
+					path: "/baocaothang",
+					name: "baocaothang",
+					component: () => import("@/view/pages/baocao/bao_cao_thang/bao_cao_thang.vue"),
 					beforeEnter: (to, from, next) =>  {
 						let userSlug = (store.getters.currentUserPersonalInfo.slug)
 						if(userSlug) {
@@ -197,9 +270,9 @@ export default new Router({
 					}
 				},
 				{
-					path: "/guestviewmaterialcost",
-					name: "guestviewmaterialcost",
-					component: () => import("@/view/pages/GuestViewMaterialCost.vue"),
+					path: "/baocaokhoiquanly",
+					name: "baocaokhoiquanly",
+					component: () => import("@/view/pages/baocao/bao_cao_qly/bao_cao_quan_ly.vue"),
 					beforeEnter: (to, from, next) =>  {
 						let userSlug = (store.getters.currentUserPersonalInfo.slug)
 						if(!userSlug) {
@@ -210,9 +283,9 @@ export default new Router({
 					}
 				},
 				{
-					path: "/approvenotenorm",
-					name: "approvenotenorm",
-					component: () => import("@/view/pages/ApproveNoteNorm.vue"),
+					path: "/themcongviec",
+					name: "themcongviec",
+					component: () => import("@/view/pages/Themcongviec.vue"),
 					beforeEnter: (to, from, next) =>  {
 						let userSlug = (store.getters.currentUserPersonalInfo.slug)
 						if(userSlug) {
@@ -263,60 +336,60 @@ export default new Router({
 						requiredRoles: ['SuperAdmin','Manage','Admin','UserApprv']
 					}
 				},
-				{
-					path: "/createarticle",
-					name: "createarticle",
-					component: () => import("@/view/pages/CreateArticle.vue"),
-					beforeEnter: (to, from, next) =>  {
-						let userSlug = (store.getters.currentUserPersonalInfo.slug)
-						if(userSlug) {
-							let check = false;
-							for(var i in userSlug)
-							{
-								//slugUser.push(userSlug[i]);
-								if(to.meta.requiredRoles.includes(userSlug[i])){
-									check = true;
-									break;
-								}
-							}
+				//{
+					// path: "/createarticle",
+					// name: "createarticle",
+					// component: () => import("@/view/pages/CreateArticle.vue"),
+					// beforeEnter: (to, from, next) =>  {
+					// 	let userSlug = (store.getters.currentUserPersonalInfo.slug)
+					// 	if(userSlug) {
+					// 		let check = false;
+					// 		for(var i in userSlug)
+					// 		{
+					// 			//slugUser.push(userSlug[i]);
+					// 			if(to.meta.requiredRoles.includes(userSlug[i])){
+					// 				check = true;
+					// 				break;
+					// 			}
+					// 		}
 	
-							if (check === true) {
-								next()
-							} else {
+					// 		if (check === true) {
+					// 			next()
+					// 		} else {
 								
-								next({
-									path: "/custom-error/page_error"
-								})
-							}
-						}else {
-							store.dispatch('storeqlda/checkLogin',null,{ root: true }).then(()=>{// cái này để dispatch 1 action có mudul dặt name space true
-								// sử lý khi reload lại trang tại đúng route này
-								let check = false;
-								let userSlug = (store.getters.currentUserPersonalInfo.slug)
-								for(var i in userSlug)
-								{
-									//slugUser.push(userSlug[i]);
-									if(to.meta.requiredRoles.includes(userSlug[i])){
-										check = true;
-										break;
-									}
-								}
+					// 			next({
+					// 				path: "/custom-error/page_error"
+					// 			})
+					// 		}
+					// 	}else {
+					// 		store.dispatch('storeqlda/checkLogin',null,{ root: true }).then(()=>{// cái này để dispatch 1 action có mudul dặt name space true
+					// 			// sử lý khi reload lại trang tại đúng route này
+					// 			let check = false;
+					// 			let userSlug = (store.getters.currentUserPersonalInfo.slug)
+					// 			for(var i in userSlug)
+					// 			{
+					// 				//slugUser.push(userSlug[i]);
+					// 				if(to.meta.requiredRoles.includes(userSlug[i])){
+					// 					check = true;
+					// 					break;
+					// 				}
+					// 			}
 		
-								if (check === true) {
-									next()
-								} else {
+					// 			if (check === true) {
+					// 				next()
+					// 			} else {
 									
-									next({
-										path: "/custom-error/page_error"
-									})
-								}
-							});
-						}
-					},
-					meta: {
-						requiredRoles: ['SuperAdmin','Manage','Admin','UserApprv','User']
-					}
-				},
+					// 				next({
+					// 					path: "/custom-error/page_error"
+					// 				})
+					// 			}
+					// 		});
+					// 	}
+					// },
+					// meta: {
+					// 	requiredRoles: ['SuperAdmin','Manage','Admin','UserApprv','User']
+					// }
+				//},
 				{
 					path: "/dsnhanvien",
 					name: "dsnhanvien",

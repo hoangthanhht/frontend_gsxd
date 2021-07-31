@@ -14,7 +14,7 @@
         ]"
       >
         <a :href="href" class="menu-link" @click="navigate">
-          <!-- <i class="menu-icon flaticon2-architecture-and-city"></i> -->
+          <i class="menu-icon flaticon2-architecture-and-city"></i>
           <span class="menu-text">Trang Chủ</span>
         </a>
       </li>
@@ -29,15 +29,15 @@
       v-bind:class="{ 'menu-item-open': hasActiveChildren('/vue-bootstrap') }"
     >
       <a href="#" class="menu-link menu-toggle">
-        <!-- <i class="menu-icon flaticon2-digital-marketing"></i> -->
-        <span class="menu-text">Định mức</span>
+        <i class="menu-icon flaticon2-list-1"></i>
+        <span class="menu-text">Công việc</span>
         <i class="menu-arrow"></i>
       </a>
       <div class="menu-submenu">
         <span class="menu-arrow"></span>
         <ul class="menu-subnav">
           <router-link
-            to="/bangdinhmuc"
+            to="/congviecgiao"
             v-slot="{ href, navigate, isActive, isExactActive }"
           >
             <li
@@ -54,13 +54,13 @@
                  <i class="menu-bullet menu-bullet-dot">
                   <span></span>
                 </i>
-                <span class="menu-text">Bảng định mức</span>
+                <span class="menu-text">Công việc được giao</span>
               </a>
             </li>
           </router-link>
 
           <router-link
-            to="/approvenotenorm"
+            to="/themcongviec"
             v-slot="{ href, navigate, isActive, isExactActive }"
           >
             <li
@@ -76,7 +76,7 @@
                  <i class="menu-bullet menu-bullet-dot">
                   <span></span>
                 </i>
-                <span class="menu-text">Phê duyệt định mức</span>
+                <span class="menu-text">Thêm côn việc mới</span>
               </a>
             </li>
           </router-link>
@@ -92,16 +92,16 @@
       v-bind:class="{ 'menu-item-open': hasActiveChildren('/vue-bootstrap') }"
     >
       <a href="#" class="menu-link menu-toggle">
-        <!-- <i class="menu-icon flaticon2-digital-marketing"></i> -->
+        <i class="menu-icon flaticon2-graph-2"></i>
        
-        <span class="menu-text">Giá vật tư</span>
+        <span class="menu-text">Báo cáo</span>
         <i class="menu-arrow"></i>
       </a>
       <div class="menu-submenu">
         <span class="menu-arrow"></span>
         <ul class="menu-subnav">
           <router-link
-            to="/giavattu"
+            to="/baocaohoatdongcongtruong"
             v-slot="{ href, navigate, isActive, isExactActive }"
           >
             <li
@@ -118,13 +118,13 @@
                 <i class="menu-bullet menu-bullet-dot">
                   <span></span>
                 </i>
-                <span class="menu-text">Bảng giá vật tư</span>
+                <span class="menu-text">Báo cáo hoạt động công trường</span>
               </a>
             </li>
           </router-link>
 
           <router-link
-            to="/materialcostforguest"
+            to="/"
             v-slot="{ href, navigate, isActive, isExactActive }"
           >
             <li
@@ -140,13 +140,13 @@
                 <i class="menu-bullet menu-bullet-dot">
                   <span></span>
                 </i>
-                <span class="menu-text">Up giá vật tư</span>
+                <span class="menu-text">Báo cáo quản lý hồ sơ</span>
               </a>
             </li>
           </router-link>
 
           <router-link
-            to="/approvematerialcost"
+            to="/nhattrinh"
             v-slot="{ href, navigate, isActive, isExactActive }"
           >
             <li
@@ -162,7 +162,51 @@
                 <i class="menu-bullet menu-bullet-dot">
                   <span></span>
                 </i>
-                <span class="menu-text">Phê duyệt giá vật tư</span>
+                <span class="menu-text">Nhật trình</span>
+              </a>
+            </li>
+          </router-link>
+
+           <router-link
+            to="/baocaothang"
+            v-slot="{ href, navigate, isActive, isExactActive }"
+          >
+            <li
+              aria-haspopup="true"
+              data-menu-toggle="hover"
+              class="menu-item"
+              :class="[
+                isActive && 'menu-item-active',
+                isExactActive && 'menu-item-active',
+              ]"
+            >
+              <a :href="href" class="menu-link" @click="navigate">
+                <i class="menu-bullet menu-bullet-dot">
+                  <span></span>
+                </i>
+                <span class="menu-text">Báo cáo tháng</span>
+              </a>
+            </li>
+          </router-link>
+
+           <router-link
+            to="/baocaokhoiquanly"
+            v-slot="{ href, navigate, isActive, isExactActive }"
+          >
+            <li
+              aria-haspopup="true"
+              data-menu-toggle="hover"
+              class="menu-item"
+              :class="[
+                isActive && 'menu-item-active',
+                isExactActive && 'menu-item-active',
+              ]"
+            >
+              <a :href="href" class="menu-link" @click="navigate">
+                <i class="menu-bullet menu-bullet-dot">
+                  <span></span>
+                </i>
+                <span class="menu-text">Báo cáo khối quản lý</span>
               </a>
             </li>
           </router-link>
@@ -170,6 +214,37 @@
       </div>
     </li>
 
+  <li
+      aria-haspopup="true"
+      data-menu-toggle="hover"
+      class="menu-item menu-item-submenu"
+      v-bind:class="{ 'menu-item-open': hasActiveChildren('/vue-bootstrap') }"
+    >
+      <a href="#" class="menu-link menu-toggle">
+      <i class="menu-icon flaticon2-open-text-book"></i>
+        <span class="menu-text">Văn bản & tài liệu</span>
+        <i class="menu-arrow"></i>
+      </a>
+      <div class="menu-submenu">
+        <span class="menu-arrow"></span>
+        <ul class="menu-subnav">
+
+            <li
+              aria-haspopup="true"
+              data-menu-toggle="hover"
+              class="menu-item"
+       
+            >
+              <a href="https://qlda.gxd.vn" class="menu-link" >
+                <i class="menu-bullet menu-bullet-dot">
+                  <span></span>
+                </i>
+                <span class="menu-text">Trang tài liệu</span>
+              </a>
+            </li>
+        </ul>
+      </div>
+    </li>
     <!-- li cua quan ly nhan vien -->
 
     <li

@@ -2,7 +2,7 @@ const path = require("path");
 
 module.exports = {
   devServer: {
-    proxy: 'http://vue.gxd.vn/'
+    proxy: 'http://pippip.gxd.vn/'
   },
   publicPath:
     process.env.NODE_ENV === "production" ? "/dist/" : "/",
