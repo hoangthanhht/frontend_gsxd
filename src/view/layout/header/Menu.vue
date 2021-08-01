@@ -20,7 +20,7 @@
       </li>
     </router-link>
 
-    <!-- li cua dinh muc -->
+    <!-- li cua cong viec -->
 
     <li
       aria-haspopup="true"
@@ -76,7 +76,7 @@
                  <i class="menu-bullet menu-bullet-dot">
                   <span></span>
                 </i>
-                <span class="menu-text">Thêm côn việc mới</span>
+                <span class="menu-text">Thêm công việc mới</span>
               </a>
             </li>
           </router-link>
@@ -84,7 +84,7 @@
       </div>
     </li>
 
-    <!-- li cua gia vat tu -->
+    <!-- li cua bao cao -->
     <li
       aria-haspopup="true"
       data-menu-toggle="hover"
@@ -245,6 +245,137 @@
         </ul>
       </div>
     </li>
+
+   <!-- li cua ho so -->
+
+    <li
+      aria-haspopup="true"
+      data-menu-toggle="hover"
+      class="menu-item menu-item-submenu"
+      v-bind:class="{ 'menu-item-open': hasActiveChildren('/vue-bootstrap') }"
+    >
+      <a href="#" class="menu-link menu-toggle">
+        <i class="menu-icon flaticon2-files-and-folders"></i>
+        <span class="menu-text">Hồ sơ</span>
+        <i class="menu-arrow"></i>
+      </a>
+      <div class="menu-submenu">
+        <span class="menu-arrow"></span>
+        <ul class="menu-subnav">
+          <router-link
+            to="/danhsachhoso"
+            v-slot="{ href, navigate, isActive, isExactActive }"
+          >
+            <li
+              aria-haspopup="true"
+              data-menu-toggle="hover"
+              class="menu-item"
+              :class="[
+                isActive && 'menu-item-active',
+                isExactActive && 'menu-item-active',
+              ]"
+            >
+              <a :href="href" class="menu-link" @click="navigate">
+                <!-- <i class="menu-icon flaticon2-expand"></i> -->
+                 <i class="menu-bullet menu-bullet-dot">
+                  <span></span>
+                </i>
+                <span class="menu-text">Danh sách hồ sơ</span>
+              </a>
+            </li>
+          </router-link>
+
+          <router-link
+            to="/themhoso"
+            v-slot="{ href, navigate, isActive, isExactActive }"
+          >
+            <li
+              aria-haspopup="true"
+              data-menu-toggle="hover"
+              class="menu-item"
+              :class="[
+                isActive && 'menu-item-active',
+                isExactActive && 'menu-item-active',
+              ]"
+            >
+              <a :href="href" class="menu-link" @click="navigate">
+                 <i class="menu-bullet menu-bullet-dot">
+                  <span></span>
+                </i>
+                <span class="menu-text">Thêm hồ sơ</span>
+              </a>
+            </li>
+          </router-link>
+        </ul>
+      </div>
+    </li>
+
+ <!-- li cua hop dong -->
+
+    <li
+      aria-haspopup="true"
+      data-menu-toggle="hover"
+      class="menu-item menu-item-submenu"
+      v-bind:class="{ 'menu-item-open': hasActiveChildren('/vue-bootstrap') }"
+    >
+      <a href="#" class="menu-link menu-toggle">
+        <i class="menu-icon flaticon2-sheet"></i>
+        <span class="menu-text">Hợp đồng</span>
+        <i class="menu-arrow"></i>
+      </a>
+      <div class="menu-submenu">
+        <span class="menu-arrow"></span>
+        <ul class="menu-subnav">
+          <router-link
+            to="/danhsachhopdong"
+            v-slot="{ href, navigate, isActive, isExactActive }"
+          >
+            <li
+              aria-haspopup="true"
+              data-menu-toggle="hover"
+              class="menu-item"
+              :class="[
+                isActive && 'menu-item-active',
+                isExactActive && 'menu-item-active',
+              ]"
+            >
+              <a :href="href" class="menu-link" @click="navigate">
+                <!-- <i class="menu-icon flaticon2-expand"></i> -->
+                 <i class="menu-bullet menu-bullet-dot">
+                  <span></span>
+                </i>
+                <span class="menu-text">Danh sách hợp đồng</span>
+              </a>
+            </li>
+          </router-link>
+
+        <router-link
+            to="/themhopdong"
+            v-slot="{ href, navigate, isActive, isExactActive }"
+          >
+            <li
+              aria-haspopup="true"
+              data-menu-toggle="hover"
+              class="menu-item"
+              :class="[
+                isActive && 'menu-item-active',
+                isExactActive && 'menu-item-active',
+              ]"
+            >
+              <a :href="href" class="menu-link" @click="navigate">
+                <!-- <i class="menu-icon flaticon2-expand"></i> -->
+                 <i class="menu-bullet menu-bullet-dot">
+                  <span></span>
+                </i>
+                <span class="menu-text">Thêm hợp đồng mới</span>
+              </a>
+            </li>
+          </router-link>
+        </ul>
+      </div>
+    </li>
+
+
     <!-- li cua quan ly nhan vien -->
 
     <li
@@ -254,7 +385,7 @@
       v-bind:class="{ 'menu-item-open': hasActiveChildren('/vue-bootstrap') }"
     >
       <a href="#" class="menu-link menu-toggle">
-        <!-- <i class="menu-icon flaticon2-digital-marketing"></i> -->
+        <i class="menu-icon flaticon2-user-1"></i>
 
         <span class="menu-text">Quản lý user</span>
         <i class="menu-arrow"></i>
@@ -280,7 +411,7 @@
                 <i class="menu-bullet menu-bullet-dot">
                   <span></span>
                 </i>
-                <span class="menu-text">Danh sách nhân viên</span>
+                <span class="menu-text">Quản lý phân quyền</span>
               </a>
             </li>
           </router-link>
@@ -307,10 +438,142 @@
               </a>
             </li>
           </router-link>
+          <router-link
+            to=""
+            v-slot="{ href, navigate, isActive, isExactActive }"
+          >
+            <li
+              aria-haspopup="true"
+              data-menu-toggle="hover"
+              class="menu-item"
+              :class="[
+                isActive && 'menu-item-active',
+                isExactActive && 'menu-item-active',
+              ]"
+            >
+              <a :href="href" class="menu-link" @click="navigate">
+                <!-- <i class="menu-icon flaticon2-expand"></i> -->
+                <i class="menu-bullet menu-bullet-dot">
+                  <span></span>
+                </i>
+                <span class="menu-text">Danh sách phòng ban</span>
+              </a>
+            </li>
+          </router-link>
+          <router-link
+            to="/danhsachnhanvien"
+            v-slot="{ href, navigate, isActive, isExactActive }"
+          >
+            <li
+              aria-haspopup="true"
+              data-menu-toggle="hover"
+              class="menu-item"
+              :class="[
+                isActive && 'menu-item-active',
+                isExactActive && 'menu-item-active',
+              ]"
+            >
+              <a :href="href" class="menu-link" @click="navigate">
+                <!-- <i class="menu-icon flaticon2-expand"></i> -->
+                <i class="menu-bullet menu-bullet-dot">
+                  <span></span>
+                </i>
+                <span class="menu-text">Danh sách nhân viên</span>
+              </a>
+            </li>
+          </router-link>
+          <router-link
+            to="/danhsachchucdanh"
+            v-slot="{ href, navigate, isActive, isExactActive }"
+          >
+            <li
+              aria-haspopup="true"
+              data-menu-toggle="hover"
+              class="menu-item"
+              :class="[
+                isActive && 'menu-item-active',
+                isExactActive && 'menu-item-active',
+              ]"
+            >
+              <a :href="href" class="menu-link" @click="navigate">
+                <!-- <i class="menu-icon flaticon2-expand"></i> -->
+                <i class="menu-bullet menu-bullet-dot">
+                  <span></span>
+                </i>
+                <span class="menu-text">Danh sách chức danh</span>
+              </a>
+            </li>
+          </router-link>
+          <router-link
+            to="/thongtinnhansu"
+            v-slot="{ href, navigate, isActive, isExactActive }"
+          >
+            <li
+              aria-haspopup="true"
+              data-menu-toggle="hover"
+              class="menu-item"
+              :class="[
+                isActive && 'menu-item-active',
+                isExactActive && 'menu-item-active',
+              ]"
+            >
+              <a :href="href" class="menu-link" @click="navigate">
+                <!-- <i class="menu-icon flaticon2-expand"></i> -->
+                <i class="menu-bullet menu-bullet-dot">
+                  <span></span>
+                </i>
+                <span class="menu-text">Thông tin của tôi</span>
+              </a>
+            </li>
+          </router-link>
+          <router-link
+            to="/chamcongcanhan"
+            v-slot="{ href, navigate, isActive, isExactActive }"
+          >
+            <li
+              aria-haspopup="true"
+              data-menu-toggle="hover"
+              class="menu-item"
+              :class="[
+                isActive && 'menu-item-active',
+                isExactActive && 'menu-item-active',
+              ]"
+            >
+              <a :href="href" class="menu-link" @click="navigate">
+                <!-- <i class="menu-icon flaticon2-expand"></i> -->
+                <i class="menu-bullet menu-bullet-dot">
+                  <span></span>
+                </i>
+                <span class="menu-text">Chấm công của tôi</span>
+              </a>
+            </li>
+          </router-link>
+          <router-link
+            to="/chamcongnhanvien"
+            v-slot="{ href, navigate, isActive, isExactActive }"
+          >
+            <li
+              aria-haspopup="true"
+              data-menu-toggle="hover"
+              class="menu-item"
+              :class="[
+                isActive && 'menu-item-active',
+                isExactActive && 'menu-item-active',
+              ]"
+            >
+              <a :href="href" class="menu-link" @click="navigate">
+                <!-- <i class="menu-icon flaticon2-expand"></i> -->
+                <i class="menu-bullet menu-bullet-dot">
+                  <span></span>
+                </i>
+                <span class="menu-text">Chấm công</span>
+              </a>
+            </li>
+          </router-link>
         </ul>
       </div>
     </li>
-
+<!-- phần cho hệ thông -->
     <li
       aria-haspopup="true"
       data-menu-toggle="hover"
@@ -318,7 +581,7 @@
       v-bind:class="{ 'menu-item-open': hasActiveChildren('/vue-bootstrap') }"
     >
       <a href="#" class="menu-link menu-toggle">
-        <!-- <i class="menu-icon flaticon2-digital-marketing"></i> -->
+        <i class="menu-icon flaticon2-gear"></i>
         <span class="menu-text">Hệ Thống</span>
         <i class="menu-arrow"></i>
       </a>
@@ -450,7 +713,8 @@
       v-bind:class="{ 'menu-item-open': hasActiveChildren('/vue-bootstrap') }"
     >
       <a href="#" class="menu-link menu-toggle">
-        <span class="menu-text"> Custom </span>
+         <i class="menu-icon flaticon2-protected"></i>
+        <span class="menu-text">Dự án</span>
       </a>
       <div class="menu-submenu menu-submenu-classic">
         <ul class="menu-subnav">
@@ -468,7 +732,7 @@
               <i class="menu-arrow"></i>
             </a> -->
 
-          <router-link
+          <!-- <router-link
             to="/profile/profile-2"
             v-slot="{ href, navigate, isActive, isExactActive }"
           >
@@ -486,7 +750,7 @@
                 <span class="menu-text">Cấu hình Profile</span>
               </a>
             </li>
-          </router-link>
+          </router-link> -->
 
           <!-- </li> -->
         </ul>
@@ -505,3 +769,12 @@ export default {
   },
 };
 </script>
+<style lang="scss" scoped>
+.menu-item {
+    display: inline-block;
+    border-bottom-width: 4px;
+    --tw-border-opacity: 1;
+    border-color: rgba(0, 0, 0, var(--tw-border-opacity));
+    /* padding: 1.25rem; */
+}
+</style>

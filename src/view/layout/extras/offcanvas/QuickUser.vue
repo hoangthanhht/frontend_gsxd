@@ -89,7 +89,17 @@
             <button class="btn btn-light-primary btn-bold" @click="onLogout">
               Sign out
             </button>
+            
           </div>
+        </div>
+        <div class="pt-5">
+          <router-link
+            to="/profile/profile-2"
+            tag="button"
+            class="btn btn-light-primary btn-bold"
+          >
+           Cấu hình Profile
+          </router-link>
         </div>
         <!--end::Header-->
         <div class="separator separator-dashed mt-8 mb-5"></div>
