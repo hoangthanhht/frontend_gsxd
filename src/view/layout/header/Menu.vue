@@ -51,7 +51,7 @@
             >
               <a :href="href" class="menu-link" @click="navigate">
                 <!-- <i class="menu-icon flaticon2-expand"></i> -->
-                 <i class="menu-bullet menu-bullet-dot">
+                <i class="menu-bullet menu-bullet-dot">
                   <span></span>
                 </i>
                 <span class="menu-text">Công việc được giao</span>
@@ -73,7 +73,7 @@
               ]"
             >
               <a :href="href" class="menu-link" @click="navigate">
-                 <i class="menu-bullet menu-bullet-dot">
+                <i class="menu-bullet menu-bullet-dot">
                   <span></span>
                 </i>
                 <span class="menu-text">Thêm công việc mới</span>
@@ -93,7 +93,7 @@
     >
       <a href="#" class="menu-link menu-toggle">
         <i class="menu-icon flaticon2-graph-2"></i>
-       
+
         <span class="menu-text">Báo cáo</span>
         <i class="menu-arrow"></i>
       </a>
@@ -167,7 +167,7 @@
             </li>
           </router-link>
 
-           <router-link
+          <router-link
             to="/baocaothang"
             v-slot="{ href, navigate, isActive, isExactActive }"
           >
@@ -189,7 +189,7 @@
             </li>
           </router-link>
 
-           <router-link
+          <router-link
             to="/baocaokhoiquanly"
             v-slot="{ href, navigate, isActive, isExactActive }"
           >
@@ -214,39 +214,33 @@
       </div>
     </li>
 
-  <li
+    <li
       aria-haspopup="true"
       data-menu-toggle="hover"
       class="menu-item menu-item-submenu"
       v-bind:class="{ 'menu-item-open': hasActiveChildren('/vue-bootstrap') }"
     >
       <a href="#" class="menu-link menu-toggle">
-      <i class="menu-icon flaticon2-open-text-book"></i>
+        <i class="menu-icon flaticon2-open-text-book"></i>
         <span class="menu-text">Văn bản & tài liệu</span>
         <i class="menu-arrow"></i>
       </a>
       <div class="menu-submenu">
         <span class="menu-arrow"></span>
         <ul class="menu-subnav">
-
-            <li
-              aria-haspopup="true"
-              data-menu-toggle="hover"
-              class="menu-item"
-       
-            >
-              <a href="https://qlda.gxd.vn" class="menu-link" >
-                <i class="menu-bullet menu-bullet-dot">
-                  <span></span>
-                </i>
-                <span class="menu-text">Trang tài liệu</span>
-              </a>
-            </li>
+          <li aria-haspopup="true" data-menu-toggle="hover" class="menu-item">
+            <a href="https://qlda.gxd.vn" class="menu-link">
+              <i class="menu-bullet menu-bullet-dot">
+                <span></span>
+              </i>
+              <span class="menu-text">Trang tài liệu</span>
+            </a>
+          </li>
         </ul>
       </div>
     </li>
 
-   <!-- li cua ho so -->
+    <!-- li cua ho so -->
 
     <li
       aria-haspopup="true"
@@ -277,7 +271,7 @@
             >
               <a :href="href" class="menu-link" @click="navigate">
                 <!-- <i class="menu-icon flaticon2-expand"></i> -->
-                 <i class="menu-bullet menu-bullet-dot">
+                <i class="menu-bullet menu-bullet-dot">
                   <span></span>
                 </i>
                 <span class="menu-text">Danh sách hồ sơ</span>
@@ -299,7 +293,7 @@
               ]"
             >
               <a :href="href" class="menu-link" @click="navigate">
-                 <i class="menu-bullet menu-bullet-dot">
+                <i class="menu-bullet menu-bullet-dot">
                   <span></span>
                 </i>
                 <span class="menu-text">Thêm hồ sơ</span>
@@ -310,7 +304,7 @@
       </div>
     </li>
 
- <!-- li cua hop dong -->
+    <!-- li cua hop dong -->
 
     <li
       aria-haspopup="true"
@@ -341,7 +335,7 @@
             >
               <a :href="href" class="menu-link" @click="navigate">
                 <!-- <i class="menu-icon flaticon2-expand"></i> -->
-                 <i class="menu-bullet menu-bullet-dot">
+                <i class="menu-bullet menu-bullet-dot">
                   <span></span>
                 </i>
                 <span class="menu-text">Danh sách hợp đồng</span>
@@ -349,7 +343,7 @@
             </li>
           </router-link>
 
-        <router-link
+          <router-link
             to="/themhopdong"
             v-slot="{ href, navigate, isActive, isExactActive }"
           >
@@ -364,7 +358,7 @@
             >
               <a :href="href" class="menu-link" @click="navigate">
                 <!-- <i class="menu-icon flaticon2-expand"></i> -->
-                 <i class="menu-bullet menu-bullet-dot">
+                <i class="menu-bullet menu-bullet-dot">
                   <span></span>
                 </i>
                 <span class="menu-text">Thêm hợp đồng mới</span>
@@ -374,7 +368,6 @@
         </ul>
       </div>
     </li>
-
 
     <!-- li cua quan ly nhan vien -->
 
@@ -573,7 +566,7 @@
         </ul>
       </div>
     </li>
-<!-- phần cho hệ thông -->
+    <!-- phần cho hệ thông -->
     <li
       aria-haspopup="true"
       data-menu-toggle="hover"
@@ -713,7 +706,7 @@
       v-bind:class="{ 'menu-item-open': hasActiveChildren('/vue-bootstrap') }"
     >
       <a href="#" class="menu-link menu-toggle">
-         <i class="menu-icon flaticon2-protected"></i>
+        <i class="menu-icon flaticon2-protected"></i>
         <span class="menu-text">Dự án</span>
       </a>
       <div class="menu-submenu menu-submenu-classic">
@@ -771,10 +764,22 @@ export default {
 </script>
 <style lang="scss" scoped>
 .menu-item {
-    display: inline-block;
-    border-bottom-width: 4px;
-    --tw-border-opacity: 1;
-    border-color: rgba(0, 0, 0, var(--tw-border-opacity));
-    /* padding: 1.25rem; */
+  display: inline-block;
+  border-bottom-width: 4px;
+  --tw-border-opacity: 1;
+  border-color: rgba(0, 0, 0, var(--tw-border-opacity));
+  padding: 0;
+}
+@media (min-width: 992px) {
+  .header-menu .menu-nav > .menu-item {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    padding: 0;
+    padding: 0;
+  }
 }
 </style>

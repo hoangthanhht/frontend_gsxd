@@ -1,5 +1,20 @@
 <template>
   <div class="header-page-giaocv">
+           <!-- <div>
+    <select2 v-model="myValue" :options="myOptions" multiple />
+
+  </div> -->
+    <!-- <div>
+    <multiselect
+      v-model="myValue"
+      multiple
+      placeholder="Pick some"
+      :custom-label="nameWithLang"
+      label="name"
+      track-by="id"
+      :options="myOptions">
+    </multiselect>
+  </div> -->
     <div class="block-select">
       <div class="btn-add-cv">
         <b-button size="sm" class="mb-2 add-cv icon-tvgs">
@@ -7,26 +22,43 @@
         </b-button>
       </div>
 
-      <div class="theodoi-thicong">
-      
-        <v-select
-          placeholder="Theo nhân sự"
-          class="select-duan"
-          :options="opvselect"
-          v-model="selectedBank"
-        ></v-select>
-    
+      <div class="select-cbb">
+            <b-form-select v-model="selectedPersion" :options="persion">
+              <template #first>
+                <b-form-select-option :value="null" disabled
+                  >-- Theo nhân sự --</b-form-select-option
+                >
+              </template>
+            </b-form-select>
       </div>
 
       <div class="select-cbb">
-        <b-form-select v-model="selected1" :options="options1"></b-form-select>
+         <b-form-select v-model="selectedPriorityLevel" :options="priority_level">
+              <template #first>
+                <b-form-select-option :value="null" disabled
+                  >-- Mức độ ưu tiên --</b-form-select-option
+                >
+              </template>
+            </b-form-select>
       </div>
 
       <div class="select-cbb">
-        <b-form-select v-model="selected2" :options="options2"></b-form-select>
+       <b-form-select v-model="selectedJobStatus" :options="job_status">
+              <template #first>
+                <b-form-select-option :value="null" disabled
+                  >-- Tình trạng công việc --</b-form-select-option
+                >
+              </template>
+            </b-form-select>
       </div>
       <div class="select-cbb">
-        <b-form-select v-model="selected3" :options="options3"></b-form-select>
+            <b-form-select v-model="selectedWorkResults" :options="work_results">
+              <template #first>
+                <b-form-select-option :value="null" disabled
+                  >-- Kết quả công việc --</b-form-select-option
+                >
+              </template>
+            </b-form-select>
       </div>
 
       <div class="search-congv">
@@ -43,102 +75,209 @@
       </div>
     </div>
 
-    <div class="table-cv">
-      <b-table striped hover bordered :items="items" :fields="fields"></b-table>
+ <div  class="card-body pt-0 pb-3">
+      <div class="tab-content">
+        <!--begin::Table-->
+        <div class="table-responsive">
+          <table
+            class="
+              table
+              table-head-custom
+              table-vertical-center
+              table-head-bg
+              table-borderless
+            "
+          >
+            <thead>
+              <tr class="text-left">
+                <!-- <th style="max-width: 50px" class="pl-7">
+                  id
+                </th> -->
+                <th style="display:none">Id</th>
+                <th>Tên</th>
+                <th>Kế hoạch</th>
+                <th>Thực hiện</th>
+                <th>Người đề xuất</th>
+                <th>Người phối hợp</th>
+                <th>Yêu cầu công việc</th>
+                <th>Ưu tiên</th>
+                <th>Kết quả</th>
+                <th>Tình trạng</th>
+                <th>Lưu ý</th>
+              </tr>
+            </thead>
+            <tbody v-if="dataArr.length !== 0">
+              <template v-for="(item, index) in dataArrAssignedWork">
+                <tr v-bind:key="index" class="row_table_note">
+                  <!-- <td contenteditable="true">
+						<span class="text-muted font-weight-bold">{{item.id}}
+                		</span>
+                  </td> -->
+                  <td style="display:none">
+                    <span class="id_vat_tu text-muted font-weight-bold">{{
+                      <!-- item.id !== null ? item.id : "null" -->
+                    }}</span>
+                  </td>
+                  <td>
+                    <span class="ma_vat_tu text-muted font-weight-bold">{{
+                      <!-- item.maVatTu !== null ? item.maVatTu : "null" -->
+                    }}</span>
+                  </td>
+                  <td>
+                    <span class="ten_vat_tu text-muted font-weight-bold">{{
+                      <!-- item.tenVatTu !== null ? item.tenVatTu : "null" -->
+                    }}</span>
+                  </td>
+                  <td>
+                    <span class="don_vi text-muted font-weight-bold">{{
+                      <!-- item.donVi !== null ? item.donVi : "null" -->
+                    }}</span>
+                  </td>
+                  <td>
+                    <span class="gia_vat_tu text-muted font-weight-bold">{{
+                      <!-- item.giaVatTu !== null ? item.giaVatTu : "null" -->
+                    }}</span>
+                  </td>
+
+                  <td>
+                    <span class="khu_vuc text-muted font-weight-bold">{{
+                      <!-- item.khuVuc !== null ? item.khuVuc : "null" -->
+                    }}</span>
+                  </td>
+
+                  <td>
+                    <span class="thoi_diem text-muted font-weight-bold">{{
+                      <!-- item.thoiDiem !== null ? item.thoiDiem : "null" -->
+                    }}</span>
+                  </td>
+
+                  <td>
+                    <span class="nguon text-muted font-weight-bold">{{
+                      <!-- item.nguon !== null ? item.nguon : "null" -->
+                    }}</span>
+                  </td>
+                  <td>
+                    <span class="ghi_chu text-muted font-weight-bold">{{
+                      <!-- item.ghiChu !== null ? item.ghiChu : "null" -->
+                    }}</span>
+                  </td>
+
+                  <td>
+                    <span class="tinh text-muted font-weight-bold">{{
+                      <!-- item.tinh !== null ? item.tinh : "null" -->
+                    }}</span>
+                  </td>
+
+                  <td>
+                    <span class="tac_gia text-muted font-weight-bold">{{
+                      <!-- item.tacGia !== null ? item.tacGia : "null" -->
+                    }}</span>
+                  </td>
+                </tr>
+              </template>
+            </tbody>
+          </table>
+        </div>
+        <!--end::Table-->
+      </div>
     </div>
+
+      <b-pagination
+      v-model="currentPage"
+      align="right"
+      pills
+      @page-click="dataArr(currentPage)"
+      perPage="20"
+      :total-rows="rows"
+      size="lg"
+    >
+    </b-pagination>
   </div>
 </template>
 
 <script>
+import Multiselect from 'vue-multiselect'
 export default {
+  components: { Multiselect },
   data() {
     return {
-      fields: [
-        "Tên",
-        "Kế_hoạch",
-        "Thực_hiện",
-        "Người_đề_xuất",
-        "Người_phối_hợp",
-        "Yêu_cầu_công_việc",
-        "Uu_tiên",
-        "Kết_quả",
-        "Tình_trạng",
-        "Lưu_ý",
+       myValue: null,
+      myOptions: [{id: 'key', text: 'value'}, {id: 'key1', text: 'value1'}, {id: 'key2', text: 'value2'}],
+      //myOptions:['list', 'of', 'options'],
+      rows: 100,
+      dataArrAssignedWork:[],
+      selectedPersion: null, // Array reference
+      persion: [
+        
       ],
-      items: [
-        {
-          isActive: false,
-          Tên: "Hồ sơ thanh toán đợt 8- Khách sạn Premier Best Western",
-          Kế_hoạch: "Bắt đầu: 10:30 04/11/2019,Kết thúc: 17:00 05/11/2019",
-          Thực_hiện: "Bắt đầu: 10:30 04/11/2019,Kết thúc: 17:00 05/11/2019",
-          Người_đề_xuất: "Nguyễn Văn A",
-          Người_phối_hợp: "Nguyễn Văn B,Nguyễn Văn C",
-          Yêu_cầu_công_việc: "trình ký Mr.Tuân",
-          Uu_tiên: "Quan trọng và khẩn cấp",
-          Kết_quả: "Đã hoàn thành",
-          Tình_trạng: "Quá hạn",
-          Lưu_ý: "Chưa cập nhật",
-        },
-        {
-          isActive: false,
-          Tên: "Hồ sơ thanh toán đợt 8- Khách sạn Premier Best Western",
-          Kế_hoạch: "Bắt đầu: 10:30 04/11/2019,Kết thúc: 17:00 05/11/2019",
-          Thực_hiện: "Bắt đầu: 10:30 04/11/2019,Kết thúc: 17:00 05/11/2019",
-          Người_đề_xuất: "Nguyễn Văn A",
-          Người_phối_hợp: "Nguyễn Văn B,Nguyễn Văn C",
-          Yêu_cầu_công_việc: "trình ký Mr.Tuân",
-          Uu_tiên: "Quan trọng và khẩn cấp",
-          Kết_quả: "Đã hoàn thành",
-          Tình_trạng: "Quá hạn",
-          Lưu_ý: "Chưa cập nhật",
-        },
-        {
-          isActive: false,
-          Tên: "Hồ sơ thanh toán đợt 8- Khách sạn Premier Best Western",
-          Kế_hoạch: "Bắt đầu: 10:30 04/11/2019,Kết thúc: 17:00 05/11/2019",
-          Thực_hiện: "Bắt đầu: 10:30 04/11/2019,Kết thúc: 17:00 05/11/2019",
-          Người_đề_xuất: "Nguyễn Văn A",
-          Người_phối_hợp: "Nguyễn Văn B,Nguyễn Văn C",
-          Yêu_cầu_công_việc: "trình ký Mr.Tuân",
-          Uu_tiên: "Quan trọng và khẩn cấp",
-          Kết_quả: "Đã hoàn thành",
-          Tình_trạng: "Quá hạn",
-          Lưu_ý: "Chưa cập nhật",
-        },
+      selectedPriorityLevel: null, // Array reference
+      priority_level: [
+        { value: "1", text: "Quan trọng và khẩn cấp" },
+        { value: "2", text: "Quan trọng nhưng không khẩn cấp" },
+        { value: "3", text: "Khẩn cấp nhưng không quan trọng" },
+        { value: "4", text: "Không quan trọng và không khẩn cấp" },
       ],
-      opvselect:['Nguyễn Văn A',
-       'Nguyễn Văn B',
-       ],
-      selected1: "1", // Array reference
-      options1: [
-        { value: "1", text: "Chọn mức độ ưu tiên" },
-        { value: "a", text: "Quan trọng và khẩn cấp" },
-        { value: "b", text: "Quan trọng nhưng không khẩn cấp" },
-        { value: "c", text: "Khẩn cấp nhưng không quan trọng" },
-        { value: "d", text: "Không quan trọng và không khẩn cấp" },
+       selectedJobStatus: null, // Array reference
+      job_status: [
+        { value: "1", text: "Chưa khởi động" },
+        { value: "2", text: "Đang thực hiện" },
+        { value: "3", text: "Quá hạn" },
+        { value: "4", text: "Đã phê duyệt" },
       ],
-       selected2: "2", // Array reference
-      options2: [
-        { value: "2", text: "Tình trạng công việc" },
-        { value: "a", text: "Chưa khởi động" },
-        { value: "b", text: "Đang thực hiện" },
-        { value: "c", text: "Quá hạn" },
-        { value: "d", text: "Đã phê duyệt" },
-      ],
-       selected3: "3", // Array reference
-      options3: [
-        { value: "3", text: "Kết quả công việc" },
-        { value: "a", text: "Đã hoàn thành" },
-        { value: "b", text: "Chưa hoàn thành" },
+       selectedWorkResults: null, // Array reference
+      work_results: [
+        { value: "1", text: "Kết quả công việc" },
+        { value: "2", text: "Đã hoàn thành" },
+        { value: "3", text: "Chưa hoàn thành" },
 
       ],
     };
   },
-  components:{
+  watch:{
+    myValue: function (old) {
+      console.log('old',old)
+    }
+  },
+  methods: {
+    updateMultiValue (value) {
+      console.log('value',value)
+      this.myValue = value
+    },
+    nameWithLang ({ text }) {
+      return `${text}`
+    },
+    dataArr(page) {
+      let thoidiem = "";
+      if (!this.isMonthDisabledView) {
+        thoidiem = this.selectedThangView;
+      }
+      if (!this.isQuyDisabledView) {
+        thoidiem = this.selectedQuyView;
+      }
+      if (!this.isDayDisabledView) {
+        thoidiem = this.selectedDayView;
+      }
+      var data = {
+        check: 0,
+        user_id: this.currentUserPersonalInfo.user.id,
+        idUserView: this.currentUserPersonalInfo.user.id,
+        tinh: this.selectedTinhView,
+        khuvuc: this.selectedKhuVucView,
+        thoidiem: thoidiem,
+        page: page,
+      };
+      this["storeqlda/viewBaoGiaWithSelecttionOfGuest"](data).then(
+        (response) => {
+          this.dataArrBaoGia = response.data.pagi.data;
+            this.pagination = response.data.pagi;
+            this.rows = response.data.pagi.total;
+        }
+      );
+    },
   }
 };
 </script>
-
+<style src="vue-multiselect/dist/vue-multiselect.min.css"></style>
 <style scoped>
 .search-congv input[type="search"] {
   height: 34px;
@@ -175,6 +314,14 @@ export default {
 }
 .table-cv{
   background-color: #fff;
+}
+.permission .v-menu__content {
+  position: absolute;
+  box-shadow: 0px 5px 5px -3px rgb(0 0 0 / 20%),
+    0px 8px 10px 1px rgb(0 0 0 / 14%), 0px 3px 14px 2px rgb(0 0 0 / 12%);
+  border-radius: 4px;
+  left: 1px !important;
+  top: 135px !important;
 }
 /* .btn-secondary:hover {
   color: #fff;

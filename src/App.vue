@@ -47,7 +47,7 @@ export default {
 </script>
 <style >
 .nav-tabs {
-  display: none;
+  /* display: none; */
 }
 @media (min-width: 992px) {
   .header-fixed.subheader-fixed.subheader-enabled .wrapper {

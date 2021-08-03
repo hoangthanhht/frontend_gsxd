@@ -7,7 +7,6 @@ import ApiService from "@/core/services/api.service";
 //import { VERIFY_AUTH } from "@/core/services/store/store_metronic/auth.module";
 //import { CHECK_LOGIN } from "@/core/services/store/store_qlda/actions";
 
-
 Vue.config.productionTip = false;
 
 // Global 3rd party plugins
