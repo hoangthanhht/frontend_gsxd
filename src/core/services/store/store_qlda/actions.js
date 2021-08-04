@@ -290,517 +290,9 @@ export default {
         }
     },
     /* gọi api cho  báo giá */
-    async getAllListDataBaoGia({ commit }) {
-
-        var config = {
-            headers: {
-                'Accept': 'application/json',
-                //'Authorization' :'Bearer ' + token,
-            }
-        }
-
-        try {
-
-            var result = await axiosInstance.get('/getAllDataTableGiaVT', config);
-            //console.log('getAllListDataBaoGia', result);
-            commit('SET_LIST_DATABGIA', result.data.data)
-            return result
-
-            //console.log("error",result.data.data);
-        } catch (error) {
-            console.log("error", error);
-        }
-    },
-    async getListDataBaoGiaHasPaging(context, page) {
-
-        var config = {
-            headers: {
-                'Accept': 'application/json',
-                //'Authorization' :'Bearer ' + token,
-            }
-        }
-
-        try {
-
-            var result = await axiosInstance.get('/getDataTableBaoGia?page=' + page, config);
-            return result
-
-            //console.log("error",result.data.data);
-        } catch (error) {
-            console.log("error", error);
-        }
-    },
-
-
-    async updateDataGiaVatTuWithId(context, { maVatTu = '', tenVatTu = '', donVi = '',
-        giaVatTu = '', nguon = '', ghiChu = '', tinh = '', tacGia = '', idVatTu = '', idUser = '' }) {
-
-        let data = {
-            maVatTu: maVatTu,
-            tenVatTu: tenVatTu,
-            donVi: donVi,
-            giaVatTu: giaVatTu,
-            nguon: nguon,
-            ghiChu: ghiChu,
-            tinh: tinh,
-            tacGia: tacGia,
-            id: idVatTu,
-            idUser: idUser
-        }
-        // var config = {
-        //     headers:{
-        //         'Accept': 'application/json',    
-        //     }
-        // }
-
-        try {
-
-            var result = await axiosInstance.post(`updateDataGiaVatTu/${data.id}/${data.idUser}`, data);
-
-            if (result.status === 200) {
-                if (result.data.success) {
-                    //commit('SET_USER_INFO', result.data.user);
-                    return {
-                        ok: true,
-                        data: result.data.user,
-                        error: null
-                    }
-                }
-                if (result.data.success === false) {
-                    return {
-                        ok: false,
-                        error: result.data.message,
-                    }
-                }
-            }
-            return {
-                ok: false,
-                error: result.data.message
-            }
-        } catch (error) {
-
-            return {
-                ok: false,
-                error: error.message
-            }
-        }
-    },
-
-
-    //tao bang gia vat tu.bắt buộc phải có context hoặc commit,dispath ...
-    async createBaoGia(context, { tempFinalRs = '', idUserImport = '', agreeOverride = 0 }) {
-        try {
-            let data = {
-                jsonData: tempFinalRs,
-                idUserImport: idUserImport,
-                agreeOverride: agreeOverride
-            }
-            var result = await axiosInstance.post(`/createGiaVT/${data.idUserImport}/${data.agreeOverride}`, data);
-            //console.log('result', result);
-
-            // commit('SET_LOADING', false);
-            if (result.status === 200) {
-
-                if (result.data.success === false) {
-                    return {
-                        ok: false,
-                        error: result.data.message,
-                    }
-                } else {
-                    return {
-                        ok: true,
-                        error: null,
-                        data: result.data
-                    }
-                }
-
-            } else {
-                return {
-                    ok: false,
-                    error: result.data.error
-                }
-
-            }
-
-        } catch (error) {
-            console.log('error');
-
-            // commit('SET_LOADING', false);
-            return {
-                ok: false,
-                error: error.message
-            }
-        }
-    },
+   
     /* CALL API DO KHÁCH HÀNG NHẬP */
-    async guestCreateBaoGia(context, { tempFinalRs = '', idUserImport = '', agreeOverride = 0 }) {
-        try {
-            let data = {
-                jsonData: tempFinalRs,
-                idUserImport: idUserImport,
-                agreeOverride: agreeOverride
-            }
-            var result = await axiosInstance.post(`/guestCreateGiaVT/${data.idUserImport}/${data.agreeOverride}`, data);
-            //console.log('result', result);
-
-            // commit('SET_LOADING', false);
-            if (result.status === 200) {
-
-                if (result.data.success === false) {
-                    return {
-                        ok: false,
-                        error: result.data.message,
-                    }
-                } else {
-                    return {
-                        ok: true,
-                        error: null,
-                        data: result.data
-                    }
-                }
-
-            } else {
-                return {
-                    ok: false,
-                    error: result.data.error
-                }
-
-            }
-
-        } catch (error) {
-            console.log('error');
-
-            // commit('SET_LOADING', false);
-            return {
-                ok: false,
-                error: error.message
-            }
-        }
-    },
-    /* APPROVE BAO GIÁ */
-    async getUserGuestUpBgia(context, { check = '' }) {
-        try {
-            let data = {
-                check: check,
-
-            }
-            var result = await axiosInstance.post(`/getUserUpBaoGia`, data);
-            // console.log('result getUserGuestUpBgia', result);
-
-            // commit('SET_LOADING', false);
-            if (result.status === 200) {
-
-
-                return {
-                    ok: true,
-                    error: null,
-                    data: result.data
-                }
-
-
-            } else {
-                return {
-                    ok: false,
-                    error: result.data.error
-                }
-
-            }
-
-        } catch (error) {
-            console.log('error');
-
-            // commit('SET_LOADING', false);
-            return {
-                ok: false,
-                error: error.message
-            }
-        }
-    },
-
-    async getInfoTinhBaoGiaOfUserGuest(context, { idUserImport = '', check = '' }) {
-        try {
-            let data = {
-                check: check,
-                idUserImport: idUserImport
-            }
-            var result = await axiosInstance.post(`/getInfoTinhBaoGiaOfUser`, data);
-            // console.log('result', result);
-
-            // commit('SET_LOADING', false);
-            if (result.status === 200) {
-
-
-                return {
-                    ok: true,
-                    error: null,
-                    data: result.data
-                }
-
-
-            } else {
-                return {
-                    ok: false,
-                    error: result.data.error
-                }
-
-            }
-
-        } catch (error) {
-            console.log('error');
-
-            // commit('SET_LOADING', false);
-            return {
-                ok: false,
-                error: error.message
-            }
-        }
-    },
-    //api lấy thông tin khu vuc theo thanh phố và người đằng
-    async getInfoBaoGiaOfUserGuest(context, { idUserImport = '', tinh = '', check = '' }) {
-        try {
-            let data = {
-                idUserImport: idUserImport,
-                tinh: tinh,
-                check: check
-            }
-            var result = await axiosInstance.post(`/getInfoBaoGiaOfUser`, data);
-            // console.log('getInfoBaoGiaOfUserGuest', result);
-            // commit('SET_LOADING', false);
-            if (result.status === 200) {
-                return {
-                    ok: true,
-                    error: null,
-                    data: result.data
-                }
-
-
-            } else {
-                return {
-                    ok: false,
-                    error: result.data.error
-                }
-
-            }
-
-        } catch (error) {
-            console.log('error');
-
-            // commit('SET_LOADING', false);
-            return {
-                ok: false,
-                error: error.message
-            }
-        }
-    },
-
-    async getThoiDiemBaoGiaOfUserGuest(context, { idUserImport = '', tinh = '', check = '', khuvuc = '' }) {
-        try {
-            let data = {
-                idUserImport: idUserImport,
-                tinh: tinh,
-                check: check,
-                khuvuc: khuvuc
-            }
-            var result = await axiosInstance.post(`/getThoiDiemBaoGiaOfUser`, data);
-            // console.log('getThoiDiemBaoGiaOfUserGuest', result);
-            // commit('SET_LOADING', false);
-            if (result.status === 200) {
-                return {
-                    ok: true,
-                    error: null,
-                    data: result.data
-                }
-
-
-            } else {
-                return {
-                    ok: false,
-                    error: result.data.error
-                }
-
-            }
-
-        } catch (error) {
-            console.log('error');
-
-            // commit('SET_LOADING', false);
-            return {
-                ok: false,
-                error: error.message
-            }
-        }
-    },
-
-
-    async viewBaoGiaWithSelecttionOfGuest(context, { page = 1, user_id = '', tinh = '', khuvuc = '', thoidiem = '', check = '', idUserView = '', agreebuy = 0 }) {
-        try {
-
-            var result = await axiosInstance.get(`/viewBaoGiaWithSelecttion/${user_id}/${tinh}/${khuvuc}/${thoidiem}/${check}/${idUserView}/${agreebuy}?page=${page}`);
-            context.commit('SET_LIST_DATABGIA_GUEST_VIEW_SELF', result.data.arrRs);
-            context.commit('SET_LIST_DATABGIA_GUEST_VIEW_OTHERPS', result.data.arrRs);
-            if (result.status === 200) {
-
-                return {
-                    ok: true,
-                    error: null,
-                    data: result.data
-                }
-
-
-            } else {
-                return {
-                    ok: false,
-                    error: result.data.error
-                }
-
-            }
-
-        } catch (error) {
-            console.log('error');
-
-            // commit('SET_LOADING', false);
-            return {
-                ok: false,
-                error: error.message
-            }
-        }
-    },
-    async updateDataGiaVatTuGuestUp(context, { maVatTu = '', tenVatTu = '', donVi = '',
-        giaVatTu = '', khuvuc = '', thoidiem = '', nguon = '', ghiChu = '', tinh = '', tacGia = '', idVatTu = '', idUser = '' }) {
-
-        let data = {
-            maVatTu: maVatTu,
-            tenVatTu: tenVatTu,
-            donVi: donVi,
-            giaVatTu: giaVatTu,
-            khuvuc: khuvuc,
-            thoidiem: thoidiem,
-            nguon: nguon,
-            ghiChu: ghiChu,
-            tinh: tinh,
-            tacGia: tacGia,
-            id: idVatTu,
-            idUser: idUser
-        }
-
-
-        try {
-
-            var result = await axiosInstance.post(`updateDataGiaVatTuUserUp/${data.id}/${data.idUser}`, data);
-            if (result.status === 200) {
-                if (result.data.success) {
-                    //commit('SET_USER_INFO', result.data.user);
-                    return {
-                        ok: true,
-                        data: result.data.user,
-                        error: null
-                    }
-                }
-                if (result.data.success === false) {
-                    return {
-                        ok: false,
-                        error: result.data.message,
-                    }
-                }
-            }
-            return {
-                ok: false,
-                error: result.data.message
-            }
-        } catch (error) {
-
-            return {
-                ok: false,
-                error: error.message
-            }
-        }
-    },
-
-    async getAllListDataBaoGiaGuest({ commit }, { user_id = '', tinh = '', khuvuc = '', thoidiem = '' }) {
-
-        let data = {
-            user_id: user_id,
-            khuvuc: khuvuc,
-            tinh: tinh,
-            thoidiem: thoidiem
-        }
-
-
-        try {
-
-            var result = await axiosInstance.post('/baoGiaWithSelecttionForSearchApprove', data);
-            commit('SET_LIST_DATABGIA_GUEST', result.data)
-            return result
-
-            //console.log("error",result.data.data);
-        } catch (error) {
-            console.log("error", error);
-        }
-    },
-
-    async apiHandleLike(context, { user_id = '', tinh = '', khuvuc = '', thoidiem = '', idUserView = '' }) {
-
-        let data = {
-            idUserView: idUserView,
-            user_id: user_id,
-            khuvuc: khuvuc,
-            tinh: tinh,
-            thoidiem: thoidiem
-        }
-
-
-        try {
-
-            var result = await axiosInstance.post('/handleLike', data);
-            console.log('getAllListDataBaoGia', result);
-            return result
-
-            //console.log("error",result.data.data);
-        } catch (error) {
-            console.log("error", error);
-        }
-    },
-
-    async approveGiaVtGuest(context, { giaVt = '', idUserApprove = '', agreeOverride = 0, tinh = '', user_id = 0 }) {
-
-        let data = {
-            giaVt: giaVt,
-            tinh: tinh,
-            user_id: user_id,
-            idUserApprove: idUserApprove,
-            agreeOverride: agreeOverride
-        }
-
-
-        try {
-
-            var result = await axiosInstance.post(`/approveGiaVt/${data.idUserApprove}/${data.agreeOverride}`, data);
-            return result
-
-            //console.log("error",result.data.data);
-        } catch (error) {
-            console.log("error", error);
-        }
-    },
-    async deleteGiaVtGuest(context, { giaVt = '', tinh = '', user_id = 0 }) {
-
-        let data = {
-            giaVt: giaVt,
-            tinh: tinh,
-            user_id: user_id,
-
-        }
-
-        try {
-
-            var result = await axiosInstance.post(`/deleteBaoGia`, data);
-            return result
-
-            //console.log("error",result.data.data);
-        } catch (error) {
-            console.log("error", error);
-        }
-    },
+   
 
     /* gọi api cho verify email */
     async resendVerifyEmail() {
@@ -870,7 +362,7 @@ export default {
             commit('SET_LIST_DATA_PERMISSION', result.data.permission);
             commit('SET_LIST_DATA_ROLE_OF_ALL_USER', result.data.role_of_all_user);
             commit('SET_LIST_DATA_PERMISSION_OF_ALL_USER', result.data.permission_of_all_user);
-
+            return result;
             //console.log("error",result.data.data);
         } catch (error) {
             console.log("error", error);
@@ -1449,20 +941,30 @@ export default {
             }
         }
     },
-    /* ACTION CHO DANG BAI VIET */
-    async ActionCreateArticle(context, { chuDe = '', tieuDe = '', editorData = '', idUser = '' }) {
+    
 
+     /* ACTION CHO TAO TASK */
+     async ActionCreateTask(context, { Ten = '', keHoach = '', thucHien = '', nguoiDeXuat = '',
+     nguoiPhoiHop = '', moTaTask = '', mucDo = '', ketQua = '', tinhTrang = '', luuY = '' }) {
+       
         let data = {
-            chuDe: chuDe,
-            tieuDe: tieuDe,
-            editorData: editorData,
-            idUser: idUser
+            Ten : Ten,
+            keHoach : keHoach?keHoach:null,
+            thucHien : thucHien?thucHien:null,
+            nguoiDeXuat : nguoiDeXuat,
+            nguoiPhoiHop : nguoiPhoiHop,
+            moTaTask : moTaTask,
+            mucDo : mucDo,
+            ketQua : ketQua,
+            tinhTrang : tinhTrang,
+            luuY : luuY,
+            
         }
 
-
+        console.log(data);   
         try {
 
-            var result = await axiosInstance.post(`createArticle`, data);
+            var result = await axiosInstance.post(`createTask`, data);
 
             if (result.status === 200) {
                 //commit('SET_USER_INFO', result.data.user);
@@ -1485,7 +987,7 @@ export default {
             }
         }
     },
-    async getListArticleHasPaging(context, page) {
+    async getListTaskHasPaging(context, page) {
 
         var config = {
             headers: {
@@ -1496,7 +998,7 @@ export default {
 
         try {
 
-            var result = await axiosInstance.get('/getListArticle?page=' + page, config);
+            var result = await axiosInstance.get('/showTask?page=' + page, config);
             context.commit('SET_LIST_POST', result.data.data);
             return result
             //console.log("error",result.data.data);
