@@ -126,9 +126,9 @@ export default new Router({
 				},
 				/* route cho báo cáo */
 				{
-					path: "/baocaohoatdongcongtruong",
-					name: "baocaohoatdongcongtruong",
-					component: () => import("@/view/pages/baocao/baochoatdongctrg/bc_tonghop.vue"),
+					path: "/baocaongay",
+					name: "baocaongay",
+					component: () => import("@/view/pages/baocao/baocaongay.vue"),
 					beforeEnter: (to, from, next) =>  {
 						let userSlug = (store.getters.currentUserPersonalInfo.slug)
 						if(userSlug) {
@@ -180,9 +180,9 @@ export default new Router({
 					}
 				},
 				{
-					path: "/nhattrinh",
-					name: "nhattrinh",
-					component: () => import("@/view/pages/baocao/nhat_trinh/nhat_trinh.vue"),
+					path: "/baocaotuan",
+					name: "baocaotuan",
+					component: () => import("@/view/pages/baocao/baocaotuan.vue"),
 					beforeEnter: (to, from, next) =>  {
 						let userSlug = (store.getters.currentUserPersonalInfo.slug)
 						if(!userSlug) {
@@ -273,7 +273,7 @@ export default new Router({
 				{
 					path: "/baocaothang",
 					name: "baocaothang",
-					component: () => import("@/view/pages/baocao/bao_cao_thang/bao_cao_thang.vue"),
+					component: () => import("@/view/pages/baocao/baocaothang.vue"),
 					beforeEnter: (to, from, next) =>  {
 						let userSlug = (store.getters.currentUserPersonalInfo.slug)
 						if(userSlug) {

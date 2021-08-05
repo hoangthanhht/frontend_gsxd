@@ -1006,4 +1006,52 @@ export default {
             console.log("error", error);
         }
     },
+
+    /* BAO CÁO */
+    async getTimeBaoCao(context, { kind = '' }) {
+      
+       let data = {
+           kind : kind,
+       }
+       try {
+           var result = await axiosInstance.post(`getTimeBaoCao`, data);
+
+           if (result.status === 200) {
+               //commit('SET_USER_INFO', result.data.user);
+               return {
+                   ok: true,
+                   data: result.data.data,
+                   error: null
+               }
+
+           }
+           return {
+               ok: false,
+               error: result.data.message
+           }
+       } catch (error) {
+
+           return {
+               ok: false,
+               error: error.message
+           }
+       }
+   },
+   async getListReport(context ,time = '') {
+    let tokenLocal = localStorage.getItem(CONFIG_ACCESS_TOKEN);
+    var config = {
+        headers:{
+            'Accept': 'application/json',
+            'Authorization' :'Bearer ' + tokenLocal,
+        }
+    }
+    try {
+       
+        var result = await axiosInstance.get(`/post/bcday/${time}`,config);
+         //commit('SET_LIST_POSTS',result.data)
+        return result.data.data;
+    } catch(error) {
+        console.log("error", error);
+    }
+},
 }

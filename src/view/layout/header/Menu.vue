@@ -101,7 +101,7 @@
         <span class="menu-arrow"></span>
         <ul class="menu-subnav">
           <router-link
-            to="/baocaohoatdongcongtruong"
+            to="/baocaongay"
             v-slot="{ href, navigate, isActive, isExactActive }"
           >
             <li
@@ -118,13 +118,13 @@
                 <i class="menu-bullet menu-bullet-dot">
                   <span></span>
                 </i>
-                <span class="menu-text">Báo cáo hoạt động công trường</span>
+                <span class="menu-text">Báo cáo ngày</span>
               </a>
             </li>
           </router-link>
 
           <router-link
-            to="/"
+            to="/baocaotuan"
             v-slot="{ href, navigate, isActive, isExactActive }"
           >
             <li
@@ -140,29 +140,7 @@
                 <i class="menu-bullet menu-bullet-dot">
                   <span></span>
                 </i>
-                <span class="menu-text">Báo cáo quản lý hồ sơ</span>
-              </a>
-            </li>
-          </router-link>
-
-          <router-link
-            to="/nhattrinh"
-            v-slot="{ href, navigate, isActive, isExactActive }"
-          >
-            <li
-              aria-haspopup="true"
-              data-menu-toggle="hover"
-              class="menu-item"
-              :class="[
-                isActive && 'menu-item-active',
-                isExactActive && 'menu-item-active',
-              ]"
-            >
-              <a :href="href" class="menu-link" @click="navigate">
-                <i class="menu-bullet menu-bullet-dot">
-                  <span></span>
-                </i>
-                <span class="menu-text">Nhật trình</span>
+                <span class="menu-text">Báo cáo tuần</span>
               </a>
             </li>
           </router-link>
@@ -188,6 +166,7 @@
               </a>
             </li>
           </router-link>
+
 
           <router-link
             to="/baocaokhoiquanly"
