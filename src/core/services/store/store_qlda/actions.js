@@ -290,9 +290,9 @@ export default {
         }
     },
     /* gọi api cho  báo giá */
-   
+
     /* CALL API DO KHÁCH HÀNG NHẬP */
-   
+
 
     /* gọi api cho verify email */
     async resendVerifyEmail() {
@@ -383,7 +383,7 @@ export default {
             role_id: role_id,
             permission_id: permission_id,
         }
- 
+
 
         try {
 
@@ -941,27 +941,25 @@ export default {
             }
         }
     },
-    
 
-     /* ACTION CHO TAO TASK */
-     async ActionCreateTask(context, { Ten = '', keHoach = '', thucHien = '', nguoiDeXuat = '',
-     nguoiPhoiHop = '', moTaTask = '', mucDo = '', ketQua = '', tinhTrang = '', luuY = '' }) {
-       
+
+    /* ACTION CHO TAO TASK */
+    async ActionCreateTask(context, { Ten = '', keHoach = '', thucHien = '', nguoiDeXuat = '',
+        nguoiPhoiHop = '', moTaTask = '', mucDo = '', ketQua = '', tinhTrang = '', luuY = '' }) {
+
         let data = {
-            Ten : Ten,
-            keHoach : keHoach?keHoach:null,
-            thucHien : thucHien?thucHien:null,
-            nguoiDeXuat : nguoiDeXuat,
-            nguoiPhoiHop : nguoiPhoiHop,
-            moTaTask : moTaTask,
-            mucDo : mucDo,
-            ketQua : ketQua,
-            tinhTrang : tinhTrang,
-            luuY : luuY,
-            
-        }
+            Ten: Ten,
+            keHoach: keHoach ? keHoach : null,
+            thucHien: thucHien ? thucHien : null,
+            nguoiDeXuat: nguoiDeXuat,
+            nguoiPhoiHop: nguoiPhoiHop,
+            moTaTask: moTaTask,
+            mucDo: mucDo,
+            ketQua: ketQua,
+            tinhTrang: tinhTrang,
+            luuY: luuY,
 
-        console.log(data);   
+        }
         try {
 
             var result = await axiosInstance.post(`createTask`, data);
@@ -1009,49 +1007,95 @@ export default {
 
     /* BAO CÁO */
     async getTimeBaoCao(context, { kind = '' }) {
-      
-       let data = {
-           kind : kind,
-       }
-       try {
-           var result = await axiosInstance.post(`getTimeBaoCao`, data);
 
-           if (result.status === 200) {
-               //commit('SET_USER_INFO', result.data.user);
-               return {
-                   ok: true,
-                   data: result.data.data,
-                   error: null
-               }
-
-           }
-           return {
-               ok: false,
-               error: result.data.message
-           }
-       } catch (error) {
-
-           return {
-               ok: false,
-               error: error.message
-           }
-       }
-   },
-   async getListReport(context ,time = '') {
-    let tokenLocal = localStorage.getItem(CONFIG_ACCESS_TOKEN);
-    var config = {
-        headers:{
-            'Accept': 'application/json',
-            'Authorization' :'Bearer ' + tokenLocal,
+        let data = {
+            kind: kind,
         }
-    }
-    try {
-       
-        var result = await axiosInstance.get(`/post/bcday/${time}`,config);
-         //commit('SET_LIST_POSTS',result.data)
-        return result.data.data;
-    } catch(error) {
-        console.log("error", error);
-    }
-},
+        try {
+            var result = await axiosInstance.post(`getTimeBaoCao`, data);
+
+            if (result.status === 200) {
+                //commit('SET_USER_INFO', result.data.user);
+                return {
+                    ok: true,
+                    data: result.data.data,
+                    error: null
+                }
+
+            }
+            return {
+                ok: false,
+                error: result.data.message
+            }
+        } catch (error) {
+
+            return {
+                ok: false,
+                error: error.message
+            }
+        }
+    },
+    async getListReport(context,{ nameProj = '' , time = ''}) {
+        let tokenLocal = localStorage.getItem(CONFIG_ACCESS_TOKEN);
+        var config = {
+            headers: {
+                'Accept': 'application/json',
+                'Authorization': 'Bearer ' + tokenLocal,
+            }
+        }
+        try {
+
+            var result = await axiosInstance.get(`/getContentBaoCao/${time}/${nameProj}`, config);
+            //commit('SET_LIST_POSTS',result.data)
+            return result;
+        } catch (error) {
+            console.log("error", error);
+        }
+    },
+    async getNameProject(context, { kind = '' }) {
+        let data = {
+            kind: kind,
+        }
+        try {
+            var result = await axiosInstance.post(`getNameProject`,data);
+
+            if (result.status === 200) {
+                //commit('SET_USER_INFO', result.data.user);
+                return {
+                    ok: true,
+                    data: result.data.data,
+                    error: null
+                }
+
+            }
+            return {
+                ok: false,
+                error: result.data.message
+            }
+        } catch (error) {
+
+            return {
+                ok: false,
+                error: error.message
+            }
+        }
+    },
+
+    async deleteReport(context, idReport = '') {
+        let tokenLocal = localStorage.getItem(CONFIG_ACCESS_TOKEN);
+        var config = {
+            headers: {
+                'Accept': 'application/json',
+                'Authorization': 'Bearer ' + tokenLocal,
+            }
+        }
+        try {
+
+            var result = await axiosInstance.delete(`/post/bcday/${idReport}`, config);
+            //commit('SET_LIST_POSTS',result.data)
+            return result;
+        } catch (error) {
+            console.log("error", error);
+        }
+    },
 }

@@ -1,36 +1,78 @@
 <template>
   <div>
-    <div class="col-md-2">
-      <button v-on:click="handleClick" class="" id="button">Xem Bao Cao</button>
-      <!-- <button v-on:click="handleClickPost" class="" id="buttonp">
-        test
-      </button>
-      <button v-on:click="handleClickGet" class="" id="buttong">
-        GetAPI
-      </button> -->
+    <div class="block-select">
+      <div class="btn-add-cv">
+        <b-button
+          @click="handleClick"
+          size="sm"
+          class="mb-2 add-cv icon-tvgs pt-4 pb-4"
+        >
+          Xem báo cáo
+        </b-button>
+      </div>
+
+      <div class="select-cbb">
+        <b-form-select v-model="selectedTime" :options="time">
+          <template #first>
+            <b-form-select-option :value="''" disabled
+              >-- Theo thời gian --</b-form-select-option
+            >
+          </template>
+        </b-form-select>
+      </div>
+
+      <div class="select-cbb">
+        <b-form-select v-model="selectedSite" :options="site">
+          <template #first>
+            <b-form-select-option :value="null" disabled
+              >-- Theo công trường --</b-form-select-option
+            >
+          </template>
+        </b-form-select>
+      </div>
+
+      <div class="search-congv">
+        <b-input-group size="sm" class="mb-2 add-cv icon-tvgs">
+          <b-form-input type="search" placeholder="Search terms"></b-form-input>
+          <b-input-group-prepend is-text>
+            <b-icon icon="search"></b-icon>
+          </b-input-group-prepend>
+
+          <b-input-group-prepend is-text>
+            <b-icon icon="arrow-repeat"></b-icon>
+          </b-input-group-prepend>
+        </b-input-group>
+      </div>
     </div>
-    <div class="bccontainer">
+    <div class="bccontainer pt-10">
       <div contenteditable="true" class="baocao">
         <p class="kindBC">BÁO CÁO TUẦN TƯ VẤN GIÁM SÁT</p>
-        <p class="dateBC">Ngày 08 tháng 04 năm 2020</p>
+        <p class="dateBC">Từ ngày {{ getdate[0] }} đến ngày {{ getdate[1] }}</p>
         <div class="project">
           <p class="project_title">Dự án:</p>
-          <p>XÂY DỰNG TÒA NHÀ CÔNG TY CP GIÁ XÂY DỰNG</p>
+          <p>{{ duan }}</p>
         </div>
         <div class="address">
           <p class="project_title">Địa điểm:</p>
-          <p>Số 124, Nguyễn Ngọc Nại, Thanh Xuân, Hà Nội</p>
+          <p>{{ diadiem }}</p>
         </div>
         <div class="reccept">
           <p class="project_title">Nơi nhận:</p>
           <div class="name_reccept">
-            <p>- Chủ đầu tư</p>
-            <p>- Ban quản lý dự án</p>
+            <p>- Chủ đầu tư : {{ cdt }}</p>
+            <p>- Ban quản lý dự án : {{ bql }}</p>
             <p>- Đồng gửi Văn phòng Công ty TVGS</p>
           </div>
         </div>
         <p class="baocao_muc">I. CÔNG TÁC VĂN PHÒNG, HỒ SƠ, VĂN BẢN CỦA TVGS</p>
-        <div class="baocao_hosongthu"></div>
+        <div
+		v-for="(itemArr, index) in hoSoArr"
+        :key="'HS'+index" 
+		class="baocao_hosongthu">
+		   <p class="baocao_contentcvngthu-noidung">
+            {{ itemArr }}
+          </p>
+		</div>
         <p class="baocao_muc">II. CÔNG TÁC GIÁM SÁT THI CÔNG XÂY DỰNG</p>
         <div class="baocao_contentcvngthu">
           <template v-for="(itemArr, index) in tenNT">
@@ -56,12 +98,27 @@
           </template>
         </div>
         <p class="baocao_muc">III. KIẾN NGHỊ, KHUYẾN CÁO CỦA TƯ VẤN GIÁM SÁT</p>
-        <div class="baocao_kiennghi"></div>
+        <div
+          v-for="(itemArr, index) in kienNghiArr"
+          :key="'KN' + index"
+          class="baocao_kiennghi"
+        >
+          <p class="baocao_contentcvngthu-noidung">
+            {{ itemArr }}
+          </p>
+        </div>
         <p class="baocao_muc">
           IV. CÔNG TÁC AN TOÀN LAO ĐỘNG, VỆ SINH MÔI TRƯỜNG, PHÒNG CHÁY CHỮA
           CHÁY
         </p>
-        <div class="baocao_antoan"></div>
+        <div   
+		v-for="(itemArr, index) in anToanArr"
+        :key="'AT' + index"
+		class="baocao_antoan">
+		   <p class="baocao_contentcvngthu-noidung">
+            {{ itemArr }}
+          </p>
+		</div>
         <p class="baocao_muc">V. HÌNH ẢNH ĐÍNH KÈM (NẾU CÓ)</p>
         <div class="img_list">
           <div
@@ -69,12 +126,12 @@
             :key="index"
             class="img_list-item"
           >
-          <!-- <div class="img_list-contentimg"></div> -->
+            <!-- <div class="img_list-contentimg"></div> -->
             <img class="img_list-contentimg" v-bind:src="getStringUrl(index)" />
           </div>
         </div>
         <div class="baocao_footbc">
-          <h5>THAY MẶT ĐOÀN TƯ VẤN GIÁM SÁT</h5>
+          <h5 class="pt-2">THAY MẶT ĐOÀN TƯ VẤN GIÁM SÁT</h5>
           <p>Trưởng đoàn tư vấn giám sát</p>
         </div>
         <br />
@@ -95,7 +152,6 @@ export default {
   name: "tvgs-header",
   data() {
     return {
-      url: "http://127.0.0.1:8000/api/v1/products",
       indexMuc: [],
       selectedFile: null,
       rowObject: [], //JSON.parse(this.$store.state.listReport[0].contentJson.replace(/\\/g,"")),
@@ -104,83 +160,66 @@ export default {
       tenNT: [],
       tenCvNthu: [],
       imgArr: [],
+      hoSoArr: [],
+      kienNghiArr: [],
+      anToanArr: [],
+      diadiem: "",
+      duan: "",
+      cdt: "",
+      bql: "",
+      selectedTime: '', // Array reference
+      time: [],
+      selectedSite: null, // Array reference
+      site: [],
     };
   },
   created() {
-    this.getListReport(this.getTokenStorage);
+    let data = {
+      kind: "W",
+    };
+    this["storeqlda/getTimeBaoCao"](data).then((res) => {
+      let arrTemp = res.data;
+      for (var i in arrTemp) {
+        let data = {
+          value: arrTemp[i].dateBaocao,
+          text: arrTemp[i].dateBaocao,
+        };
+        this.time.push(data);
+      }
+    });
+
+    data = {
+      kind: "W",
+    };
+    this["storeqlda/getNameProject"](data).then((res) => {
+      let arrTemp = res.data;
+      for (var i in arrTemp) {
+        let data = {
+          value: arrTemp[i].tenDuan,
+          text: arrTemp[i].tenDuan,
+        };
+        this.site.push(data);
+      }
+    });
   },
-  watch: {
-    // mucArr: function (val, oldVal) {
-    //   console.log('watchmucArr',val)
-    // },
-    // ndcvArr:function (val, oldVal) {
-    //   console.log('ndcvArr',val)
-    // },
-  },
+  watch: {},
   computed: {
-    ...mapGetters(["getListPost","getTokenStorage"]),
+    ...mapGetters(["getListPost", "getTokenStorage"]),
+    getdate() {
+      let arrDate = this.selectedTime.split("-");
+      return arrDate;
+    },
   },
-  //   async created() {
-  //     const response = await fetch(this.url);
-  //     const data = await response.json();
-  //     this.rowObject = data[1].contentjson;
-  //   },
   methods: {
-    ...mapActions(["getListReport"]),
+    ...mapActions([
+      "storeqlda/getTimeBaoCao",
+      "storeqlda/getListReport",
+      "storeqlda/getNameProject",
+    ]),
     getStringUrl(index) {
       return this.imgArr[index];
     },
-    // arrayBufferToBase64(buffer) {
-    //   var binary = "";
-    //   var bytes = [].slice.call(new Uint8Array(buffer));
-    //   bytes.forEach((b) => (binary += String.fromCharCode(b)));
-    //   return window.btoa(binary);
-    // },
-    // parseExcelFile(inputElement) {
-    //   const wb = new Excel.Workbook();
-    //   const reader = new FileReader();
-    //   var arrImg = [];
-    //   reader.readAsArrayBuffer(inputElement);
-    //   reader.onload = () => {
-    //     const buffer = reader.result;
-    //     // console.log("buffer", buffer);
-    //     wb.xlsx.load(buffer)
-    // 	.then((workbook) => {
-    //       var worksheet = wb.getWorksheet("BaoCaoNgay");
-    //       for (const image of worksheet.getImages()) {
-    //         const img = workbook.model.media.find(
-    //           (m) => m.index === image.imageId
-    //         );
-    //         // console.log("img.buffer", img.buffer);
-    //         var bf = img.buffer;
-    //         var rs = `data:image/jpg;base64,${this.arrayBufferToBase64(bf)}`;
-    // 		this.imgArr.push(rs)
 
-    //       }
-
-    //     });
-    //   };
-
-    // },
-    handleClickGet() {
-      //var _this = this
-      //   fetch(this.url)
-      //     .then(function (response) {
-      //       return response.json();
-      //     })
-      //     .then((data) => {
-      // 	console.log((data[1].contentJson))
-      // 	this.rowObject = JSON.parse(data[1].contentJson);
-      // 	//console.log(this.rowObject)
-      // 	//this.imgArr = data[1].imageUrl;
-      // });
-      // cái này dùng ơ row funtion thì mới gán vào biến của vue đc
-      // nếu dùng hàm bình thường thì this chính là cái hàm đó.nên sẽ không gán đc. còn dùng hàm arrow funtion thì nó
-      // không có đối tượng this nên sẽ gán đc. nếu không muốn dùng ơ rao function thì phải đặt 1 biến trong hàm handleClickGet()
-      //rồi gán biến this cho biến đó sau đó mới dùng đc bỉnh thường trong hàm callback của hàm then. khi khai báo như var _this = this
-      //trên thì ta sẽ dùng được biến _this như bình thường trong then. có thể tách hàm gọi api ra như này cũng đc hoặc đưa nó vào
-      // lifecycle create cũng đc
-    },
     getTencvNthu(key) {
       return Object.keys(this.rowObject[this.mucArr[1]][key]);
     },
@@ -193,70 +232,93 @@ export default {
       this.tenCvNthu = Object.keys(
         this.rowObject[this.mucArr[1]][this.tenNT[1]]
       );
-      //   var indexMuc1 = indexMuc.forEach(function (rowob,index,arr) {
-
-      //   })
+      this.hoSoArr = this.rowObject[this.mucArr[0]];
+      this.kienNghiArr = this.rowObject[this.mucArr[2]];
+      this.anToanArr = this.rowObject[this.mucArr[3]];
     },
 
     handleClickPost() {
       this.handleArr();
     },
 
-    handlePostMethod(data) {
-      var option = {
-        method: "POST",
-        body: JSON.stringify(data),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      };
-      fetch(this.url, option); // cái này đẩy dữ
-      // .then(function (response) {
-      // 	//    console.log('response', response.json())
-      // 	 response
-      // 	// console.log('response.json()',response.json())
-      // })
-      // .then(function(data) {
-      // 	console.log('data',data)
-      // })
-    },
     handleChange(event) {
       this.selectedFile = event.target.files[0];
       this.parseExcelFile(this.selectedFile);
     },
     handleClick() {
-      if(this.getListPost.data[2].contentJson) {
-        this.rowObject = JSON.parse(
-          this.getListPost.data[2].contentJson.replace(/\\/g, "")
-        );
-         this.handleArr();
-      }
-      if(this.getListPost.data[2].imgBase64) {
-        this.imgArr = JSON.parse(
-          this.getListPost.data[2].imgBase64.replace(/\\/g, "")
-        );
-
-      }
-     
-     
-      //this.getNdCvArr
+      let data = {
+        time: this.selectedTime.replace(/\//g, "_"),
+        nameProj: this.selectedSite,
+      };
+      this["storeqlda/getListReport"](data).then((rs) => {
+		let res = rs.data.data;
+        if (res.length > 0) {
+          if (res[0].contentJson) {
+            this.rowObject = JSON.parse(res[0].contentJson.replace(/\\/g, ""));
+            this.handleArr();
+          }
+          if (res[0].imgBase64) {
+            this.imgArr = JSON.parse(res[0].imgBase64.replace(/\\/g, ""));
+          }
+          if (res[0].tenDuan) {
+            this.duan = res[0].tenDuan;
+          }
+          if (res[0].diaDiem) {
+            this.diadiem = res[0].diaDiem;
+          }
+          if (res[0].chuDauTu) {
+            this.cdt = res[0].chuDauTu;
+          }
+          if (res[0].banQuanLy) {
+            this.bql = res[0].banQuanLy;
+          }
+        }
+      });
     },
-    //  getNdCvArr() {
-
-    // 	this.ndcvArr = this.rowObject.filter(function (rowob,index,arr) {
-    // 	if(index> 6 && index < 34)
-    // 	{
-    // 		return index
-    // 	}
-    //   		})
-    // 	 console.log('ndcvArr',this.ndcvArr)
-    //    },
   },
 };
 </script>
 
 
 <style scoped>
+.search-congv input[type="search"] {
+  height: 43px;
+}
+
+.btn-add-cv {
+  height: 43px;
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+.block-select {
+  display: flex;
+  justify-content: space-between;
+}
+.icon-tvgs .b-icon.bi {
+  position: relative;
+  left: 0.5px;
+  top: auto;
+}
+.select-duan {
+  width: 200px;
+  background-color: #fff;
+}
+.select-cbb .custom-select {
+  height: 43px;
+}
+.select-cbb {
+  max-width: 200px;
+}
+.header-page-giaocv {
+  margin-left: 10px;
+  margin-right: 10px;
+}
+.table-cv {
+  background-color: #fff;
+}
+
+/* /////////////////////////// */
 .img_list-contentimg {
   width: 100%;
   height: 100%;
@@ -288,7 +350,7 @@ export default {
 }
 .dateBC {
   border-bottom: 1px solid;
-  text-align: right;
+  text-align: center;
   margin: 0;
   line-height: 25px;
   font-size: 1rem;
@@ -331,7 +393,7 @@ p {
   padding-right: 10px;
 }
 .baocao_footbc p {
-  margin-right: 70px;
+  margin-right: 48px;
 }
 .baocao_contentcvngthu {
   padding-left: 10px;

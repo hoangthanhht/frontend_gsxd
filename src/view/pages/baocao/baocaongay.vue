@@ -16,7 +16,7 @@
           :options="time"
         >
           <template #first>
-            <b-form-select-option :value="null" disabled
+            <b-form-select-option :value="''" disabled
               >-- Theo thời gian --</b-form-select-option
             >
           </template>
@@ -33,6 +33,15 @@
             >
           </template>
         </b-form-select>
+      </div>
+
+       <div class="btn-add-cv">
+        <b-button 
+        @click="handleClickDelete"
+        size="sm" 
+        class="mb-2 add-cv icon-tvgs pt-4 pb-4">
+           Xóa báo cáo
+        </b-button>
       </div>
 
       <div class="search-congv">
@@ -54,22 +63,29 @@
         <p class="dateBC">Ngày {{getdate[0]}} tháng {{getdate[1]}} năm {{getdate[2]}}</p>
         <div class="project">
           <p class="project_title">Dự án:</p>
-          <p>XÂY DỰNG TÒA NHÀ CÔNG TY CP GIÁ XÂY DỰNG</p>
+          <p>{{duan}}</p>
         </div>
         <div class="address">
           <p class="project_title">Địa điểm:</p>
-          <p>Số 124, Nguyễn Ngọc Nại, Thanh Xuân, Hà Nội</p>
+          <p>{{diadiem}}</p>
         </div>
         <div class="reccept">
           <p class="project_title">Nơi nhận:</p>
           <div class="name_reccept">
-            <p>- Chủ đầu tư</p>
-            <p>- Ban quản lý dự án</p>
+            <p>- Chủ đầu tư : {{cdt}}</p>
+            <p>- Ban quản lý dự án : {{bql}}</p>
             <p>- Đồng gửi Văn phòng Công ty TVGS</p>
           </div>
         </div>
         <p class="baocao_muc">I. CÔNG TÁC VĂN PHÒNG, HỒ SƠ, VĂN BẢN CỦA TVGS</p>
-        <div class="baocao_hosongthu"></div>
+        <div
+            v-for="(itemArr, index) in hoSoArr"
+                :key="'HS'+index" 
+            class="baocao_hosongthu">
+              <p class="baocao_contentcvngthu-noidung">
+                    {{ itemArr }}
+                  </p>
+            </div>
         <p class="baocao_muc">II. CÔNG TÁC GIÁM SÁT THI CÔNG XÂY DỰNG</p>
         <div class="baocao_contentcvngthu">
           <template v-for="(itemArr, index) in tenNT">
@@ -94,13 +110,28 @@
             </template>
           </template>
         </div>
-        <p class="baocao_muc">III. KIẾN NGHỊ, KHUYẾN CÁO CỦA TƯ VẤN GIÁM SÁT</p>
-        <div class="baocao_kiennghi"></div>
+         <p class="baocao_muc">III. KIẾN NGHỊ, KHUYẾN CÁO CỦA TƯ VẤN GIÁM SÁT</p>
+        <div
+          v-for="(itemArr, index) in kienNghiArr"
+          :key="'KN' + index"
+          class="baocao_kiennghi"
+        >
+          <p class="baocao_contentcvngthu-noidung">
+            {{ itemArr }}
+          </p>
+        </div>
         <p class="baocao_muc">
           IV. CÔNG TÁC AN TOÀN LAO ĐỘNG, VỆ SINH MÔI TRƯỜNG, PHÒNG CHÁY CHỮA
           CHÁY
         </p>
-        <div class="baocao_antoan"></div>
+        <div   
+          v-for="(itemArr, index) in anToanArr"
+              :key="'AT' + index"
+          class="baocao_antoan">
+            <p class="baocao_contentcvngthu-noidung">
+                  {{ itemArr }}
+                </p>
+          </div>
         <p class="baocao_muc">V. HÌNH ẢNH ĐÍNH KÈM (NẾU CÓ)</p>
         <div class="img_list">
           <div
@@ -142,13 +173,19 @@ export default {
       tenNT: [],
       tenCvNthu: [],
       imgArr: [],
-      selectedTime: '08/04/2020', // Array reference
+      hoSoArr: [],
+      kienNghiArr: [],
+      anToanArr: [],
+      diadiem:'',
+      duan:'',
+      cdt:'',
+      bql:'',
+      jsonResponse:null,
+      selectedTime: '', // Array reference
       time: [
-
       ],
       selectedSite: null, // Array reference
       site: [
-
       ],
     };
   },
@@ -166,34 +203,44 @@ export default {
         this.time.push(data);
       }
    });
+
+    data = {
+      kind :'D'
+    }
+    this['storeqlda/getNameProject'](data).then((res)=>{
+     let arrTemp = res.data;
+          for (var i in arrTemp) {
+        let data = {
+          value: arrTemp[i].tenDuan,
+          text: arrTemp[i].tenDuan,
+        };
+        this.site.push(data);
+      }
+   });
   },
   watch: {
 
   },
   computed: {
-    ...mapGetters(["getListPost","getTokenStorage"]),
+    ...mapGetters([ 
+      "currentUserPersonalInfo",
+      "storeqlda/currentUser",
+      ]),
     getdate(){
       let arrDate = this.selectedTime.split('/');
       return arrDate;
     }
   },
-  //   async created() {
-  //     const response = await fetch(this.url);
-  //     const data = await response.json();
-  //     this.rowObject = data[1].contentjson;
-  //   },
   methods: {
      ...mapActions([
       "storeqlda/getTimeBaoCao",
       "storeqlda/getListReport",
+      "storeqlda/getNameProject",
+      "storeqlda/deleteReport",
       
     ]),
     getStringUrl(index) {
       return this.imgArr[index];
-    },
-    
-    handleClickGet() {
-     
     },
     getTencvNthu(key) {
       return Object.keys(this.rowObject[this.mucArr[1]][key]);
@@ -207,32 +254,66 @@ export default {
       this.tenCvNthu = Object.keys(
         this.rowObject[this.mucArr[1]][this.tenNT[1]]
       );
+      this.hoSoArr = this.rowObject[this.mucArr[0]];
+      this.kienNghiArr = this.rowObject[this.mucArr[2]];
+      this.anToanArr = this.rowObject[this.mucArr[3]];
     },
 
     handleClickPost() {
       this.handleArr();
     },
 
-
     handleChange(event) {
       this.selectedFile = event.target.files[0];
       this.parseExcelFile(this.selectedFile);
     },
+    handleClickDelete () {
+       let res = this.jsonResponse.data.data;
+        var idUser = this["storeqlda/currentUser"].id;
+        if(idUser == res[0].user_id) {
+          let idReport = res[0].id
+          this["storeqlda/deleteReport"](idReport).then((rs)=>{
+              alert(rs.data.message)
+          })
+        }else {
+          alert('Bạn không được phép xóa báo cáo của người khác')
+        }
+    },
     handleClick() {
-      let data = this.selectedTime.replace(/\//g,"-")
-      this['storeqlda/getListReport'](data).then((res)=>{
-      if(res) {
-        this.rowObject = JSON.parse(
-          res[0].contentJson.replace(/\\/g, "")
-        );
-         this.handleArr();
+      let data = {
+       time: this.selectedTime.replace(/\//g,"_"),
+        nameProj:this.selectedSite
       }
-      if(res[0].imgBase64) {
-        this.imgArr = JSON.parse(
-          res[0].imgBase64.replace(/\\/g, "")
-        );
-
-      }
+      this['storeqlda/getListReport'](data).then((rs)=>{
+        this.jsonResponse = rs;
+        console.log(this.jsonResponse);
+        let res = rs.data.data;
+        if(res.length>0) {
+          if(res[0].contentJson) {
+            this.rowObject = JSON.parse(
+              res[0].contentJson.replace(/\\/g, "")
+            );
+             this.handleArr();
+          }
+          if(res[0].imgBase64) {
+            this.imgArr = JSON.parse(res[0].imgBase64.replace(/\\/g, "")
+            );
+          };
+           if(res[0].tenDuan) {
+             this.duan = res[0].tenDuan
+            
+          };
+           if(res[0].diaDiem) {
+            this.diadiem = res[0].diaDiem
+            
+          };
+           if(res[0].chuDauTu) {
+            this.cdt = res[0].chuDauTu
+          };
+           if(res[0].banQuanLy) {
+            this.bql = res[0].banQuanLy
+          };
+        }
       });
 
     },
