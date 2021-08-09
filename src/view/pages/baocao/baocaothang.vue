@@ -12,20 +12,20 @@
       </div>
 
       <div class="select-cbb">
-        <b-form-select v-model="selectedTime" :options="time">
+        <b-form-select v-model="selectedSite" :options="site">
           <template #first>
-            <b-form-select-option :value="''" disabled
-              >-- Theo thời gian --</b-form-select-option
+            <b-form-select-option :value="null" disabled
+              >-- Theo công trường --</b-form-select-option
             >
           </template>
         </b-form-select>
       </div>
 
       <div class="select-cbb">
-        <b-form-select v-model="selectedSite" :options="site">
+        <b-form-select v-model="selectedTime" :options="time">
           <template #first>
-            <b-form-select-option :value="null" disabled
-              >-- Theo công trường --</b-form-select-option
+            <b-form-select-option :value="''" disabled
+              >-- Theo thời gian --</b-form-select-option
             >
           </template>
         </b-form-select>
@@ -44,66 +44,102 @@
         </b-input-group>
       </div>
     </div>
-    <div class="bccontainer pt-10">
+
+    <div
+      v-for="(item, idx) in jsonArrResponse"
+      :key="idx"
+      class="bccontainer pt-10"
+    >
       <div contenteditable="true" class="baocao">
-        <p class="kindBC">BÁO CÁO THÁNG TƯ VẤN GIÁM SÁT</p>
-        <p class="dateBC">Từ ngày {{ getdate[0] }} đến ngày {{ getdate[1] }}</p>
+        <div class="kindBC flex items-center h-24">
+          <p class="text-3xl pl-60">BÁO CÁO THÁNG TƯ VẤN GIÁM SÁT</p>
+          <div class="action hidden flex pl-8">
+            <div class="pr-5">
+              <button
+                v-on:click="handleEdit($event,idx)"
+                type="button"
+                class="btn btn-warning"
+              >
+                Update
+              </button>
+            </div>
+            <div>
+              <button
+                v-on:click="handleDelete(idx)"
+                type="button"
+                class="btn btn-danger"
+              >
+                Delete
+              </button>
+            </div>
+          </div>
+        </div>
+        <p class="dateBC">
+        Từ ngày {{ getdate[0] }} đến ngày {{ getdate[1] }}
+        </p>
         <div class="project">
           <p class="project_title">Dự án:</p>
-          <p>{{ duan }}</p>
+          <p class="ten_du_an">{{ duan[idx] }}</p>
         </div>
         <div class="address">
           <p class="project_title">Địa điểm:</p>
-          <p>{{ diadiem }}</p>
+          <p class="dia_diem_du_an">{{ diadiem[idx] }}</p>
         </div>
         <div class="reccept">
           <p class="project_title">Nơi nhận:</p>
           <div class="name_reccept">
-            <p>- Chủ đầu tư : {{ cdt }}</p>
-            <p>- Ban quản lý dự án : {{ bql }}</p>
+            <p>- Chủ đầu tư : <span class="chu_dau_tu">{{ cdt[idx] }}</span></p>
+            <p>- Ban quản lý dự án : <span class="ban_quan_ly">{{ bql[idx] }}</span></p>
             <p>- Đồng gửi Văn phòng Công ty TVGS</p>
           </div>
         </div>
         <p class="baocao_muc">I. CÔNG TÁC VĂN PHÒNG, HỒ SƠ, VĂN BẢN CỦA TVGS</p>
         <div
-        v-for="(itemArr, index) in hoSoArr"
-            :key="'HS'+index" 
-        class="baocao_hosongthu">
-          <p class="baocao_contentcvngthu-noidung">
-                {{ itemArr }}
-              </p>
+          v-for="(itemArr, index) in hoSoArr[idx]"
+          :key="'HS' + index"
+          class="baocao_hosongthu"
+        >
+          <p class="baocao_contentcvngthu-noidunghoso">
+            {{ itemArr }}
+          </p>
         </div>
         <p class="baocao_muc">II. CÔNG TÁC GIÁM SÁT THI CÔNG XÂY DỰNG</p>
         <div class="baocao_contentcvngthu">
-          <template v-for="(itemArr, index) in tenNT">
-            <div :key="index" class="baocao_contentcvngthu-nament">
+          <template v-for="(itemArr, index) in tenNT[idx]">
+            <div :key="index" ref="nament" class="baocao_contentcvngthu-nament">
+            <p class="nament">
               {{ itemArr }}
-            </div>
-            <template v-for="(itemArr1, index1) in getTencvNthu(itemArr)">
+
+            </p>
+            <template v-for="(itemArr1, index1) in getTencvNthu(idx, itemArr)">
               <div
                 :key="'A' + index1 + index"
                 class="baocao_contentcvngthu-mucngthu"
               >
                 {{ itemArr1 }}
               </div>
-
               <p
-                v-for="(itemArr2, index2) in getNdcvNthu(itemArr, itemArr1)"
+                v-for="(itemArr2, index2) in getNdcvNthu(
+                  idx,
+                  itemArr,
+                  itemArr1
+                )"
                 :key="'B' + index1 + index + index2"
                 class="baocao_contentcvngthu-noidung"
               >
                 {{ itemArr2 }}
               </p>
             </template>
+            </div>
           </template>
         </div>
         <p class="baocao_muc">III. KIẾN NGHỊ, KHUYẾN CÁO CỦA TƯ VẤN GIÁM SÁT</p>
         <div
-          v-for="(itemArr, index) in kienNghiArr"
+          v-for="(itemArr, index) in kienNghiArr[idx]"
           :key="'KN' + index"
           class="baocao_kiennghi"
         >
-          <p class="baocao_contentcvngthu-noidung">
+          <p class="baocao_contentcvngthu-noidungkiennghi">
             {{ itemArr }}
           </p>
         </div>
@@ -111,28 +147,38 @@
           IV. CÔNG TÁC AN TOÀN LAO ĐỘNG, VỆ SINH MÔI TRƯỜNG, PHÒNG CHÁY CHỮA
           CHÁY
         </p>
-        <div   
-        v-for="(itemArr, index) in anToanArr"
-            :key="'AT' + index"
-        class="baocao_antoan">
-          <p class="baocao_contentcvngthu-noidung">
-                {{ itemArr }}
-              </p>
+        <div
+          v-for="(itemArr, index) in anToanArr[idx]"
+          :key="'AT' + index"
+          class="baocao_antoan"
+        >
+          <p class="baocao_contentcvngthu-noidungantoan">
+            {{ itemArr }}
+          </p>
         </div>
         <p class="baocao_muc">V. HÌNH ẢNH ĐÍNH KÈM (NẾU CÓ)</p>
         <div class="img_list">
           <div
-            v-for="(item, index) in imgArr"
+            v-for="(item, index) in imgArr[idx]"
             :key="index"
             class="img_list-item"
           >
             <!-- <div class="img_list-contentimg"></div> -->
-            <img class="img_list-contentimg" v-bind:src="getStringUrl(index)" />
+            <img
+              class="img_list-contentimg"
+              v-bind:src="getStringUrl(idx, index)"
+            />
           </div>
         </div>
-        <div class="baocao_footbc">
-          <h5 class="pt-2">THAY MẶT ĐOÀN TƯ VẤN GIÁM SÁT</h5>
-          <p>Trưởng đoàn tư vấn giám sát</p>
+        <div class="baocao_footbc flex justify-between">
+          <div>
+            <h5 class="pt-2 pl-2">THAY MẶT ĐOÀN TƯ VẤN GIÁM SÁT</h5>
+            <p>Trưởng đoàn tư vấn giám sát</p>
+          </div>
+          <div>
+            <h5 class="pt-2">NGƯỜI LÀM BÁO CÁO</h5>
+            <p style="margin-right: 0">Trưởng đoàn tư vấn giám sát</p>
+          </div>
         </div>
         <br />
         <br />
@@ -154,7 +200,7 @@ export default {
     return {
       indexMuc: [],
       selectedFile: null,
-      rowObject: [], //JSON.parse(this.$store.state.listReport[0].contentJson.replace(/\\/g,"")),
+      dataGiamSat: [], //JSON.parse(this.$store.state.listReport[0].contentJson.replace(/\\/g,"")),
       mucArr: [],
       ndcvArr: [],
       tenNT: [],
@@ -163,10 +209,12 @@ export default {
       hoSoArr: [],
       kienNghiArr: [],
       anToanArr: [],
-      diadiem: "",
-      duan: "",
-      cdt: "",
-      bql: "",
+      diadiem: [],
+      duan: [],
+      cdt: [],
+      bql: [],
+      jsonResponse: null,
+      jsonArrResponse: [],
       selectedTime: "", // Array reference
       time: [],
       selectedSite: null, // Array reference
@@ -175,20 +223,6 @@ export default {
   },
   created() {
     let data = {
-      kind: "M",
-    };
-    this["storeqlda/getTimeBaoCao"](data).then((res) => {
-      let arrTemp = res.data;
-      for (var i in arrTemp) {
-        let data = {
-          value: arrTemp[i].dateBaocao,
-          text: arrTemp[i].dateBaocao,
-        };
-        this.time.push(data);
-      }
-    });
-
-    data = {
       kind: "M",
     };
     this["storeqlda/getNameProject"](data).then((res) => {
@@ -202,9 +236,27 @@ export default {
       }
     });
   },
-  watch: {},
+  watch: {
+    selectedSite:function() {
+      let data = {
+      kind: "M",
+      site:this.selectedSite
+    };
+     this.time = []
+    this["storeqlda/getTimeBaoCao"](data).then((res) => {
+      let arrTemp = res.data;
+      for (var i in arrTemp) {
+        let data = {
+          value: arrTemp[i].dateBaocao,
+          text: arrTemp[i].dateBaocao,
+        };
+        this.time.push(data);
+      }
+    });
+    }
+  },
   computed: {
-    ...mapGetters(["getListPost", "getTokenStorage"]),
+    ...mapGetters(["currentUserPersonalInfo", "storeqlda/currentUser"]),
     getdate() {
       let arrDate = this.selectedTime.split("-");
       return arrDate;
@@ -215,64 +267,194 @@ export default {
       "storeqlda/getTimeBaoCao",
       "storeqlda/getListReport",
       "storeqlda/getNameProject",
+       "storeqlda/deleteReport",
+        "storeqlda/updateReport"
     ]),
-    getStringUrl(index) {
-      return this.imgArr[index];
+      getStringUrl(idx, index) {
+      return this.imgArr[idx][index];
     },
-
-    getTencvNthu(key) {
-      return Object.keys(this.rowObject[this.mucArr[1]][key]);
+    getTencvNthu(idx, key) {
+      return Object.keys(this.dataGiamSat[idx][this.mucArr[idx][1]][key]);
     },
-    getNdcvNthu(key1, key2) {
-      return this.rowObject[this.mucArr[1]][key1][key2];
+    getNdcvNthu(idx, key1, key2) {
+      return this.dataGiamSat[idx][this.mucArr[idx][1]][key1][key2];
     },
-    handleArr() {
-      this.mucArr = Object.keys(this.rowObject);
-      this.tenNT = Object.keys(this.rowObject[this.mucArr[1]]);
-      this.tenCvNthu = Object.keys(
-        this.rowObject[this.mucArr[1]][this.tenNT[1]]
+	  handleDelete (idx) {
+		   let res = this.jsonResponse.data.data;
+      var idUser = this["storeqlda/currentUser"].id;
+      if (idUser == res[idx].user_id) {
+        let idReport = res[idx].id;
+        this["storeqlda/deleteReport"](idReport).then((rs) => {
+          alert(rs.data.message);
+        });
+      } else {
+        alert("Bạn không được phép xóa báo cáo của người khác");
+      }
+	},
+    getParentSelect(el, select) {
+      while (el.parentElement) {
+        var pr = el.parentElement;
+        if (pr.matches(select)) {
+          return pr;
+        }
+        el = pr;
+      }
+    },
+    handleEdit(e,idx) {
+      let elParentLarge = this.getParentSelect(e.target, ".baocao");
+      let elMucBc = elParentLarge.querySelectorAll(".baocao_muc");
+      let elNoiDungHoSo = elParentLarge.querySelectorAll(
+        ".baocao_contentcvngthu-noidunghoso"
       );
-      this.hoSoArr = this.rowObject[this.mucArr[0]];
-      this.kienNghiArr = this.rowObject[this.mucArr[2]];
-      this.anToanArr = this.rowObject[this.mucArr[3]];
+      // biến này phục vụ cho việc lấy ra các mục của nhà thầu dó
+      let elTenNhaThau = elParentLarge.querySelectorAll(
+        ".baocao_contentcvngthu-nament"
+      );
+      let elMucNgthu = null// biến này chỉ có chứa tên nhà thầu
+      let elNameNT = elParentLarge.querySelectorAll(
+        ".nament"
+      );
+      let elKienNghi = elParentLarge.querySelectorAll(
+        ".baocao_contentcvngthu-noidungkiennghi"
+      );
+      let elAnToan = elParentLarge.querySelectorAll(
+        ".baocao_contentcvngthu-noidungantoan"
+      );
+      let tenDuAn = elParentLarge.querySelector('.ten_du_an')
+      let diaDiemDuAn = elParentLarge.querySelector('.dia_diem_du_an')
+      let chuDauTu = elParentLarge.querySelector('.chu_dau_tu')
+      let banQuanLy = elParentLarge.querySelector('.ban_quan_ly')
+      let jsonHoSo = ""
+      let jsonKienNghi = ""
+       let jsonAnToan = "";
+       let temp = "";var i;
+      for ( i = 0; i < elNoiDungHoSo.length; i++) {
+        // dùng vòng for này khi dung lặp chp nodelist tạo ra từ quyr selector all
+        if (temp == "") {
+          temp = `"${elNoiDungHoSo[i].innerText}"`;
+        } else {
+          temp = temp + "," + `"${elNoiDungHoSo[i].innerText}"`;
+        }
+      }
+      jsonHoSo = `"${elMucBc[0].innerText}":[${temp}]`;
+      temp = "";
+      for ( i = 0; i < elKienNghi.length; i++) {
+        // dùng vòng for này khi dung lặp chp nodelist tạo ra từ quyr selector all
+        if (temp == "") {
+          temp = `"${elKienNghi[i].innerText}"`;
+        } else {
+          temp = temp + "," + `"${elKienNghi[i].innerText}"`;
+        }
+      }
+      jsonKienNghi = `"${elMucBc[2].innerText}":[${temp}]`;
+
+      temp = "";
+      for ( i = 0; i < elAnToan.length; i++) {
+        // dùng vòng for này khi dung lặp chp nodelist tạo ra từ quyr selector all
+        if (temp == "") {
+          temp = `"${elAnToan[i].innerText}"`;
+        } else {
+          temp = temp + "," + `"${elAnToan[i].innerText}"`;
+        }
+      }
+      jsonAnToan = `"${elMucBc[3].innerText}":[${temp}]`;
+       
+       temp = '' ;let contentCv = '';let jsonContentNt = '';let rsFinal = '';
+      for ( i = 0; i < elTenNhaThau.length; i++) {
+        elMucNgthu = elTenNhaThau[i].querySelectorAll('.baocao_contentcvngthu-mucngthu')
+
+        for (var j = 0; j < elMucNgthu.length; j++) {
+          let nextSibling = elMucNgthu[j].nextElementSibling;
+         while(nextSibling) {
+           if (temp == "") {
+             temp = `"${nextSibling.innerText}"`;
+               } else {
+                 temp = temp + "," + `"${nextSibling.innerText}"`;
+               }
+               nextSibling = nextSibling.nextElementSibling;
+              if(nextSibling!==null){
+               if(nextSibling.tagName != 'P'){
+                 break;
+               }
+
+            }
+        }
+        if (contentCv == "") {
+              contentCv = `"${elMucNgthu[j].innerText}":[${temp}]`;
+          } else {
+            contentCv = contentCv + "," + `"${elMucNgthu[j].innerText}":[${temp}]`;
+          }
+          temp='';
+        }
+         if (jsonContentNt == "") {
+           jsonContentNt = `"${elNameNT[i].innerText}":{${contentCv}}`;
+          } else {
+            jsonContentNt = jsonContentNt + "," + `"${elNameNT[i].innerText}":{${contentCv}}`;
+          }
+          contentCv = '';
+      }
+      jsonContentNt = `"${elMucBc[1].innerText}":{${jsonContentNt}}`;
+      rsFinal = `{${jsonHoSo},${jsonContentNt},${jsonKienNghi},${jsonAnToan}}`
+       
+      var idUser = this["storeqlda/currentUser"].id;
+      if (idUser == this.jsonArrResponse[idx].user_id) {
+        let data = {
+          contentJson:rsFinal,
+          dateBaocao:this.selectedTime,
+          tenDuan:tenDuAn.innerText,
+          diaDiem:diaDiemDuAn.innerText,
+          chuDauTu:chuDauTu.innerText,
+          banQuanLy:banQuanLy.innerText,
+          idReport:this.jsonArrResponse[idx].id
+        }
+        this["storeqlda/updateReport"](data).then((rs) => {
+          alert(rs.data.message);
+        });
+      } else {
+        alert("Bạn không được phép sửa báo cáo của người khác");
+      }
     },
 
-    handleClickPost() {
-      this.handleArr();
-    },
 
-    handleChange(event) {
-      this.selectedFile = event.target.files[0];
-      this.parseExcelFile(this.selectedFile);
-    },
-    handleClick() {
+   handleClick() {
       let data = {
         time: this.selectedTime.replace(/\//g, "_"),
         nameProj: this.selectedSite,
       };
       this["storeqlda/getListReport"](data).then((rs) => {
-         let res = rs.data.data;
+        this.jsonResponse = rs;
+        this.jsonArrResponse = rs.data.data;
+		let res = this.jsonArrResponse;
+      for (var i in res) {
         if (res.length > 0) {
-          if (res[0].contentJson) {
-            this.rowObject = JSON.parse(res[0].contentJson.replace(/\\/g, ""));
-            this.handleArr();
+          if (res[i].contentJson) {
+            this.dataGiamSat.push(
+              JSON.parse(res[i].contentJson.replace(/\\/g, ""))
+            );
           }
-          if (res[0].imgBase64) {
-            this.imgArr = JSON.parse(res[0].imgBase64.replace(/\\/g, ""));
+          if (res[i].imgBase64) {
+            this.imgArr.push(JSON.parse(res[i].imgBase64.replace(/\\/g, "")));
           }
-          if (res[0].tenDuan) {
-            this.duan = res[0].tenDuan;
+          if (res[i].tenDuan) {
+            this.duan.push(res[i].tenDuan);
           }
-          if (res[0].diaDiem) {
-            this.diadiem = res[0].diaDiem;
+          if (res[i].diaDiem) {
+            this.diadiem.push(res[i].diaDiem);
           }
-          if (res[0].chuDauTu) {
-            this.cdt = res[0].chuDauTu;
+          if (res[i].chuDauTu) {
+            this.cdt.push(res[i].chuDauTu);
           }
-          if (res[0].banQuanLy) {
-            this.bql = res[0].banQuanLy;
+          if (res[i].banQuanLy) {
+            this.bql.push(res[i].banQuanLy);
           }
+          this.mucArr.push(Object.keys(this.dataGiamSat[i]));
+          this.tenNT.push(Object.keys(this.dataGiamSat[i][this.mucArr[i][1]]));
+          this.hoSoArr.push(this.dataGiamSat[i][this.mucArr[i][0]]);
+          this.kienNghiArr.push(this.dataGiamSat[i][this.mucArr[i][2]]);
+          this.anToanArr.push(this.dataGiamSat[i][this.mucArr[i][3]]);
         }
+      }
+    
       });
     },
   },
@@ -340,13 +522,14 @@ export default {
   width: 60%;
   border: 1px solid;
 }
+.kindBC:hover > .action { display: flex; }
 .kindBC {
-  border-bottom: 1px solid;
+  /* border-bottom: 1px solid;
   text-align: center;
   margin: 0;
-  line-height: 60px;
+  line-height: 60px; */
   background-color: #99ff99;
-  font-size: 1.6rem;
+  /* font-size: 1.6rem; */
 }
 .dateBC {
   border-bottom: 1px solid;
@@ -401,7 +584,9 @@ p {
 .baocao_contentcvngthu-noidung {
   font-size: 13.5px;
   font-style: italic;
+  font-weight: 300;
   padding-left: 4px;
+  color: #000;
 }
 .baocao_contentcvngthu-mucngthu {
   color: #000;

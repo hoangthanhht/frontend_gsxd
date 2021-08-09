@@ -133,7 +133,7 @@
           {{currentVote}}
         </span>
       <i 
-	  ref="icon-element_vote"
+	    ref="icon-element_vote"
       @click="handleLike"
       class="flaticon-like icon-2x pl-4" 
       style="cursor: pointer;disabled: true"></i>

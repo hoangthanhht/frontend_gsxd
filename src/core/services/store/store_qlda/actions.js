@@ -1006,10 +1006,11 @@ export default {
     },
 
     /* BAO CÁO */
-    async getTimeBaoCao(context, { kind = '' }) {
+    async getTimeBaoCao(context, { kind = '',site='' }) {
 
         let data = {
             kind: kind,
+            site:site
         }
         try {
             var result = await axiosInstance.post(`getTimeBaoCao`, data);
@@ -1092,6 +1093,34 @@ export default {
         try {
 
             var result = await axiosInstance.delete(`/post/bcday/${idReport}`, config);
+            //commit('SET_LIST_POSTS',result.data)
+            return result;
+        } catch (error) {
+            console.log("error", error);
+        }
+    },
+
+    async updateReport(context, {contentJson = '',idReport = '',dateBaocao = ''
+    ,tenDuan = '',diaDiem = '',chuDauTu = '',banQuanLy=''}) {
+        let tokenLocal = localStorage.getItem(CONFIG_ACCESS_TOKEN);
+        let data = {
+            contentJson:contentJson,
+            dateBaocao:dateBaocao,
+            tenDuan:tenDuan,
+            diaDiem:diaDiem,
+            chuDauTu:chuDauTu,
+            banQuanLy:banQuanLy,
+            idReport:idReport,
+          }
+        var config = {
+            headers: {
+                'Accept': 'application/json',
+                'Authorization': 'Bearer ' + tokenLocal,
+            }
+        }
+        try {
+
+            var result = await axiosInstance.patch(`/post/bcday/${idReport}`, data,config);
             //commit('SET_LIST_POSTS',result.data)
             return result;
         } catch (error) {
