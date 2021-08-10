@@ -10,27 +10,38 @@
           <p>Loại Hồ sơ:</p>
 
           <div class="theodoi-thicong">
-            <v-select
-              class="select-duan"
-              :options="options"
-              v-model="selectedBank"
-            ></v-select>
+           <multiselect
+            v-model="selectedKindFile"
+            :custom-label="custom_label"
+            label="name"
+            track-by="id"
+            selectLabel="Ấn enter để chọn"
+            deselectLabel="Ấn enter để bỏ chọn"
+            :options="kindfile"
+          >
+          </multiselect>
           </div>
 
-          <p>Chọn dự án:</p>
+          <p class="pt-2">Chọn dự án:</p>
 
           <div class="theodoi-thicong">
-            <v-select
-              class="select-duan"
-              :options="options"
-              v-model="selectedBank"
-            ></v-select>
+           <multiselect
+            v-model="selectedProject"
+            :custom-label="custom_label"
+            label="name"
+            track-by="id"
+            selectLabel="Ấn enter để chọn"
+            deselectLabel="Ấn enter để bỏ chọn"
+            :options="project"
+          >
+          </multiselect>
           </div>
         </div>
         <div class="hs-gr1">
           <div class="gr-ten-hs">
-            <p>Tên Hồ sơ</p>
+            <p class="pt-2">Tên Hồ sơ</p>
             <b-form-input
+              v-model="fileName"
               id="input-1"
               type="email"
               placeholder="Nhập tên công việc"
@@ -39,72 +50,77 @@
           </div>
 
           <div class="gr-sl">
-            <p>Số lượng:</p>
-            <input
-              type="number"
-              id="quantity"
-              name="quantity"
-              min="-9999"
-              max="9999"
-              style="width: 100%; height: 38px"
-            />
-          </div>
-        </div>
-
-        <div class="hs-gr2">
-          <div class="gr-nhan">
-            <p>Ngày nhận:</p>
-            <form action="">
-              <input
-                style="height: 34px; width: 100%"
-                type="date"
-                id="birthday"
-                name="birthday"
-              />
-            </form>
-          </div>
-
-          <div class="gr-tra">
-            <p>Ngày trả:</p>
-            <form action="">
-              <input
-                style="height: 34px; width: 100%"
-                type="date"
-                id="birthday"
-                name="birthday"
-              />
-            </form>
-          </div>
-        </div>
-
-        <div class="hs-gr3">
-          <div class="gr-ktra">
-            <p>Lần kiểm tra:</p>
-            <input
+            <p class="pt-2">Số lượng:</p>
+            <b-form-input
+              v-model="quantity"
               type="number"
               id="quantity"
               name="quantity"
               min="-9999"
               max="9999"
               style="width: 100%; height: 34px"
-            />
+            >
+            </b-form-input>
+          </div>
+        </div>
+
+        <div class="hs-gr2">
+          <div class="gr-nhan">
+            <p class="pt-2">Ngày nhận:</p>
+            <b-form-input
+              v-model="timeReceive"
+              id="input-1"
+              type="date"
+              required
+            ></b-form-input>
+          </div>
+
+          <div class="gr-tra">
+            <p class="pt-2">Ngày trả:</p>
+           <b-form-input
+              v-model="timeReturn"
+              id="input-1"
+              type="date"
+              required
+            ></b-form-input>
+          </div>
+        </div>
+
+        <div class="hs-gr3">
+          <div class="gr-ktra">
+            <p class="pt-2">Lần kiểm tra:</p>
+            <b-form-input
+              v-model="timeTest"
+              type="number"
+              id="quantity"
+              name="quantity"
+              min="-9999"
+              max="9999"
+              style="width: 100%; height: 38px"
+            >
+            </b-form-input>
           </div>
 
           <div class="gr-kqua">
-            <p>Kết quả kiểm tra:</p>
-            <v-select
-              class="select-duan"
-              :options="options"
-              v-model="selectedBank"
-            ></v-select>
+            <p class="pt-2">Kết quả kiểm tra:</p>
+            <b-form-select
+              v-model="selectedResult"
+              :options="result"
+            >
+              <template #first>
+                <b-form-select-option :value="null" disabled
+                  >-- Kết quả --</b-form-select-option
+                >
+              </template>
+            </b-form-select>
           </div>
         </div>
 
         <div class="hs-gr4">
-          <p>Lý do không đạt:</p>
+          <p class="pt-2">Lý do không đạt:</p>
           <b-form-textarea
             id="textarea"
-            v-model="text"
+            v-model="reason"
             placeholder="Lưu ý"
             rows="3"
             max-rows="6"
@@ -113,7 +129,7 @@
         </div>
 
         <div class="hs-gr5">
-          <p>File và tài liệu liên quan</p>
+          <p class="pt-2">File và tài liệu liên quan</p>
           <b-form-file id="file-small" size="sm"></b-form-file>
         </div>
       </div>
@@ -140,7 +156,7 @@
         </b-button>
       </div>
       <div class="add-gr51 add-gr52">
-        <b-button size="sm" class="mb-2 tao-cv">
+        <b-button @click="handleSave" size="sm" class="mb-2 tao-cv">
           <b-icon icon="check2" aria-hidden="true"></b-icon> Cập nhật
         </b-button>
       </div>
@@ -149,17 +165,90 @@
 </template>
 
 <script>
+import Multiselect from "vue-multiselect";
+import { mapActions, mapGetters } from "vuex";
 import CompThemHs from "./comp_them_hs/muc_them_ho_so";
 export default {
   data() {
     return {
+      fileName:'',
+      quantity:0,
+      timeReceive:'',
+      timeReturn:'',
+      timeTest:'',
+      reason:'',
+      selectedResult: null, // Array reference
+      result: [
+        { value: "Đạt", text: "Đạt" },
+        { value: "Không đạt", text: "Không đạt" },
+      ],
+      selectedKindFile: null, // Array reference
+       kindfile: [
+         { id: "1", text: "Hồ sơ nghiệm thu công việc" },
+        { id: "2", text: "Hồ sơ nghiệm thu vật liệu" },
+        { id: "2", text: "Hồ sơ nghiệm thu thiết bị" },
+      ],
+      selectedProject: null, // Array reference
+      project: [],
       isActive: false,
     };
   },
   components: {
     CompThemHs,
+    Multiselect
+  },
+     computed: {
+    ...mapGetters([
+      "storeqlda/getListDataUserGTer",
+      "currentUserPersonalInfo",
+      "storeqlda/currentUser",
+    ]),
   },
   methods: {
+     ...mapActions(["storeqlda/ActionCreateFile", "storeqlda/getListDataUser"]),
+      custom_label({ text }) {
+      return `${text}`;
+    },
+      handleSave() {
+
+      let dateReceive = "";let timeReturn = "";
+      if (this.timeReceive && this.timeReturn) {
+        let arrtimeReceive = this.timeReceive.split("-");
+        let arrtimeReturn = this.timeReturn.split("-");
+      dateReceive =
+          arrtimeReceive[2] +
+          "/" +
+          arrtimeReceive[1] +
+          "/" +
+          arrtimeReceive[0]
+      timeReturn =
+          arrtimeReturn[2] +
+          "/" +
+          arrtimeReturn[1] +
+          "/" +
+          arrtimeReturn[0];
+      }
+
+
+      var data = {
+        duAn: this.selectedProject,
+        loaiHoSo: this.selectedKindFile.text,
+        tenHoSo: this.fileName,
+        soLuong: this.quantity,
+        ngayNhan: dateReceive,
+        ngayTra: timeReturn,
+        lanKiemTra: this.timeTest,
+        ketQua: this.selectedResult,
+        lyDoKhongDat: this.reason,
+        noiDungThayDoiTk: null,
+        nguyenNhanThayDoiTk: null,
+        nguoiPheDuyet: null,
+        yKienTVGS: null,
+      };
+      this["storeqlda/ActionCreateFile"](data).then((res) => {
+        alert(res.data);
+      });
+    },
     handleClick() {
       // console.log('comp cha',this.isActive);
       this.isActive = !this.isActive;
@@ -167,7 +256,7 @@ export default {
   },
 };
 </script>
-
+<style src="vue-multiselect/dist/vue-multiselect.min.css"></style>
 <style scoped>
 .them-hs-ngthu {
   margin-left: 10px;

@@ -12,6 +12,7 @@
           <div class="gr-ten-hs">
             <p>Tên hồ sơ thiết kế & thay đổi thiết kế:</p>
             <b-form-input
+              v-model="fileName"
               id="input-1"
               type="text"
               placeholder="Nhập tên công việc"
@@ -20,33 +21,36 @@
           </div>
           <div class="gr-sl">
             <p>Ngày nhận:</p>
-            <form action="">
-              <input
-                style="height: 34px; width: 100%"
-                type="date"
-                id="birthday"
-                name="birthday"
-              />
-            </form>
+            <b-form-input
+              v-model="timeReceive"
+              id="input-1"
+              type="date"
+              required
+            ></b-form-input>
           </div>
         </div>
 
         <div class="select-for-hs">
-          <p>Chọn dự án:</p>
+          <p class="pt-2">Chọn dự án:</p>
 
           <div>
-            <v-select
-              class="select-duan"
-              :options="options"
-              v-model="selectedBank"
-            ></v-select>
+          <multiselect
+            v-model="selectedProject"
+            :custom-label="custom_label"
+            label="name"
+            track-by="id"
+            selectLabel="Ấn enter để chọn"
+            deselectLabel="Ấn enter để bỏ chọn"
+            :options="project"
+          >
+          </multiselect>
           </div>
         </div>
         <div class="hs-gr2">
-          <p>Nội dung tk/ thay đổi tk:</p>
+          <p class="pt-2">Nội dung tk/ thay đổi tk:</p>
           <b-form-textarea
             id="textarea"
-            v-model="text"
+            v-model="contentChange"
             placeholder="Lưu ý"
             rows="3"
             max-rows="6"
@@ -55,10 +59,10 @@
         </div>
 
         <div class="hs-gr3">
-          <p>Nguyên nhân thay đổi:</p>
+          <p class="pt-2">Nguyên nhân thay đổi:</p>
           <b-form-textarea
             id="textarea"
-            v-model="text"
+            v-model="reason"
             placeholder="Lưu ý"
             rows="3"
             max-rows="6"
@@ -67,18 +71,19 @@
         </div>
 
         <div class="hs-gr4">
-          <p>Người phê duyệt:</p>
+          <p class="pt-2">Người phê duyệt:</p>
           <b-form-input
+            v-model="approver"
             id="input-1"
             type="text"
             placeholder="Nhập tên người phê duyệt"
             required
           ></b-form-input>
 
-          <p>Nhận xét của TVGS về Hồ sơ thiết kế và thay đổi TK</p>
+          <p class="pt-2">Nhận xét của TVGS về Hồ sơ thiết kế và thay đổi TK</p>
           <b-form-textarea
             id="textarea"
-            v-model="text"
+            v-model="comment"
             placeholder="Lưu ý"
             rows="3"
             max-rows="6"
@@ -87,7 +92,7 @@
         </div>
 
         <div class="hs-gr5">
-          <p>File và tài liệu liên quan</p>
+          <p class="pt-2">File và tài liệu liên quan</p>
           <b-form-file id="file-small" size="sm"></b-form-file>
         </div>
       </div>
@@ -115,7 +120,7 @@
         </b-button>
       </div>
       <div class="add-gr51 add-gr52">
-        <b-button size="sm" class="mb-2 tao-cv">
+        <b-button @click="handleSave" size="sm" class="mb-2 tao-cv">
           <b-icon icon="check2" aria-hidden="true"></b-icon> Cập nhật
         </b-button>
       </div>
@@ -125,24 +130,78 @@
 
 <script>
 import CompThemHs from "./comp_them_hs/muc_them_ho_so";
+import { mapActions, mapGetters } from "vuex";
+import Multiselect from "vue-multiselect";
 export default {
   data() {
     return {
+      comment:'',
+      approver:'',
+      reason:'',
+      contentChange:'',
+      timeReceive:'',
+      fileName:'',
+      selectedProject: null, // Array reference
+      project: [],
       isActive: false,
     };
   },
   components: {
     CompThemHs,
+    Multiselect
+  },
+   computed: {
+    ...mapGetters([
+      "storeqlda/getListDataUserGTer",
+      "currentUserPersonalInfo",
+      "storeqlda/currentUser",
+    ]),
   },
   methods: {
+     ...mapActions(["storeqlda/ActionCreateFile", "storeqlda/getListDataUser"]),
+     custom_label({ text }) {
+      return `${text}`;
+    },
+       handleSave() {
+      let dateReceive = "";
+      if (this.timeReceive ) {
+        let arrtimeReceive = this.timeReceive.split("-");
+      dateReceive =
+          arrtimeReceive[2] +
+          "/" +
+          arrtimeReceive[1] +
+          "/" +
+          arrtimeReceive[0]
+
+      }
+
+
+      var data = {
+        duAn: this.selectedProject,
+        loaiHoSo: 'hồ sơ thiết kế',
+        tenHoSo: this.fileName,
+        soLuong: null,
+        ngayNhan: dateReceive,
+        ngayTra: null,
+        lanKiemTra: null,
+        ketQua: null,
+        lyDoKhongDat: null,
+        noiDungThayDoiTk: this.contentChange,
+        nguyenNhanThayDoiTk: this.reason,
+        nguoiPheDuyet: this.approver,
+        yKienTVGS: this.comment,
+      };
+      this["storeqlda/ActionCreateFile"](data).then((res) => {
+        alert(res.data);
+      });
+    },
     handleClick() {
-      // console.log('comp cha',this.isActive);
       this.isActive = !this.isActive;
     },
   },
 };
 </script>
-
+<style src="vue-multiselect/dist/vue-multiselect.min.css"></style>
 <style scoped>
 .them-hs-ngthu {
   margin-left: 10px;

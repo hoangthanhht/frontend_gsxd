@@ -302,15 +302,15 @@ export default {
       project: [],
       selectedPriorityLevel: null, // Array reference
       priority_level: [
-        { value: "1", text: "Quan trọng và khẩn cấp" },
-        { value: "2", text: "Quan trọng nhưng không khẩn cấp" },
-        { value: "3", text: "Khẩn cấp nhưng không quan trọng" },
-        { value: "4", text: "Không quan trọng và không khẩn cấp" },
+        { value: "Quan trọng và khẩn cấp", text: "Quan trọng và khẩn cấp" },
+        { value: "Quan trọng nhưng không khẩn cấp", text: "Quan trọng nhưng không khẩn cấp" },
+        { value: "Khẩn cấp nhưng không quan trọng", text: "Khẩn cấp nhưng không quan trọng" },
+        { value: "Không quan trọng và không khẩn cấp", text: "Không quan trọng và không khẩn cấp" },
       ],
       selectedResult: null, // Array reference
       result: [
-        { value: "1", text: "Chưa hoàn thành" },
-        { value: "2", text: "Đã hoàn thành" },
+        { value: "Chưa hoàn thành", text: "Chưa hoàn thành" },
+        { value: "Đã hoàn thành", text: "Đã hoàn thành" },
       ],
     };
   },

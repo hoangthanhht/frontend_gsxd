@@ -17,9 +17,12 @@
   </div> -->
     <div class="block-select">
       <div class="btn-add-cv">
-        <b-button size="sm" class="mb-2 add-cv icon-tvgs pt-4 pb-4">
+       <router-link 
+       to="/themcongviec"
+       tag="b-button"
+       class="mb-2 add-cv icon-tvgs pt-3 pb-3">
           <b-icon icon="plus" aria-hidden="true"></b-icon> Thêm
-        </b-button>
+       </router-link>
       </div>
 
       <div class="select-cbb">
@@ -285,7 +288,7 @@ export default {
 }
 
 .btn-add-cv {
-  height: 43px;
+  height: 40px;
   padding-top: 0;
   padding-bottom: 0;
 }
@@ -316,13 +319,14 @@ export default {
 .table-cv {
   background-color: #fff;
 }
-.permission .v-menu__content {
-  position: absolute;
-  box-shadow: 0px 5px 5px -3px rgb(0 0 0 / 20%),
-    0px 8px 10px 1px rgb(0 0 0 / 14%), 0px 3px 14px 2px rgb(0 0 0 / 12%);
-  border-radius: 4px;
-  left: 1px !important;
-  top: 135px !important;
+.card-body {
+ background-color: #fff;
+}
+.multiselect, .multiselect__input, .multiselect__single {
+    font-size: 1rem;
+}
+.multiselect__placeholder {
+    font-size: 1rem;
 }
 /* .btn-secondary:hover {
   color: #fff;

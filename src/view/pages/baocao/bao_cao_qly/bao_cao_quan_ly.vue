@@ -1,30 +1,72 @@
 <template>
   <div class="header-page-giaocv">
+    <!-- <div>
+    <select2 v-model="myValue" :options="myOptions" multiple />
+
+  </div> -->
+    <!-- <div>
+    <multiselect
+      v-model="myValue"
+      multiple
+      placeholder="Pick some"
+      :custom-label="nameWithLang"
+      label="name"
+      track-by="id"
+      :options="myOptions">
+    </multiselect>
+  </div> -->
     <div class="block-select">
       <div class="btn-add-cv">
-        <b-button size="sm" class="mb-2 add-cv icon-tvgs">
+        <b-button size="sm" class="mb-2 add-cv icon-tvgs pt-4 pb-4">
           <b-icon icon="plus" aria-hidden="true"></b-icon> Thêm
         </b-button>
       </div>
 
-      <div class="theodoi-thicong">
-        <v-select
+      <div class="select-cbb">
+        <multiselect
+          v-model="selectedPersion"
+          multiple
           placeholder="Theo nhân sự"
-          class="select-duan"
-          :options="['Nguyễn Văn A','Nguyễn Văn B']"
-          v-model="selectedBank"
-        ></v-select>
+          :custom-label="custom_label_persion"
+          label="name"
+          track-by="id"
+          selectLabel="Ấn enter để chọn"
+          deselectLabel="Ấn enter để bỏ chọn"
+          :options="persion"
+        >
+        </multiselect>
       </div>
 
       <div class="select-cbb">
-        <b-form-select v-model="selected1" :options="options1"></b-form-select>
+        <b-form-select
+          v-model="selectedPriorityLevel"
+          :options="priority_level"
+        >
+          <template #first>
+            <b-form-select-option :value="null" disabled
+              >-- Mức độ ưu tiên --</b-form-select-option
+            >
+          </template>
+        </b-form-select>
       </div>
 
       <div class="select-cbb">
-        <b-form-select v-model="selected2" :options="options2"></b-form-select>
+        <b-form-select v-model="selectedJobStatus" :options="job_status">
+          <template #first>
+            <b-form-select-option :value="null" disabled
+              >-- Tình trạng công việc --</b-form-select-option
+            >
+          </template>
+        </b-form-select>
       </div>
       <div class="select-cbb">
-        <b-form-select v-model="selected3" :options="options3"></b-form-select>
+        <b-form-select v-model="selectedWorkResults" :options="work_results">
+          <template #first>
+            <b-form-select-option :value="null" disabled
+              >-- Kết quả công việc --</b-form-select-option
+            >
+          </template>
+        </b-form-select>
       </div>
 
       <div class="search-congv">
@@ -41,118 +83,209 @@
       </div>
     </div>
 
-    <div class="table-cv">
-      <b-table striped hover bordered :items="items" :fields="fields"></b-table>
+    <div class="card-body pt-0 pb-3">
+      <div class="tab-content">
+        <!--begin::Table-->
+        <div class="table-responsive table-striped">
+          <table
+            class="
+              table
+              table-head-custom
+              table-vertical-center
+              table-head-bg
+              table-borderless
+              
+            "
+          >
+            <thead>
+              <tr class="text-left">
+                <!-- <th style="max-width: 50px" class="pl-7">
+                  id
+                </th> -->
+                <th style="display: none">Id</th>
+                <th>Tên</th>
+                <th>Kế hoạch</th>
+                <th>Thực hiện</th>
+                <th>Người đề xuất</th>
+                <th>Người phối hợp</th>
+                <th>Yêu cầu công việc</th>
+                <th>Ưu tiên</th>
+                <th>Kết quả</th>
+                <th>Tình trạng</th>
+                <th>Lưu ý</th>
+              </tr>
+            </thead>
+            <tbody v-if="dataArr.length !== 0">
+              <template v-for="(item, index) in dataArrAssignedWork">
+                <tr v-bind:key="index" class="row_table_note">
+                  <!-- <td contenteditable="true">
+						<span class="text-muted font-weight-bold">{{item.id}}
+                		</span>
+                  </td> -->
+                  <td style="display: none">
+                    <span class="id_vat_tu text-muted font-weight-bold">{{
+                      item.id !== null ? item.id : "null"
+                    }}</span>
+                  </td>
+                  <td>
+                    <span class="ma_vat_tu text-muted font-weight-bold">{{
+                      item.Ten !== null ? item.Ten : "null"
+                    }}</span>
+                  </td>
+                  <td>
+                    <span class="ten_vat_tu text-muted font-weight-bold">{{
+                      item.keHoach !== null ? item.keHoach : "null"
+                    }}</span>
+                  </td>
+                  <td>
+                    <span class="don_vi text-muted font-weight-bold">{{
+                      item.thucHien !== null ? item.thucHien : "null"
+                    }}</span>
+                  </td>
+                  <td>
+                    <span class="gia_vat_tu text-muted font-weight-bold">{{
+                      item.nguoiDeXuat !== null ? item.nguoiDeXuat : "null"
+                    }}</span>
+                  </td>
+
+                  <td>
+                    <span class="khu_vuc text-muted font-weight-bold">{{
+                      item.nguoiPhoiHop !== null ? item.nguoiPhoiHop : "null"
+                    }}</span>
+                  </td>
+
+                  <td>
+                    <span class="thoi_diem text-muted font-weight-bold">{{
+                      item.moTaTask !== null ? item.moTaTask : "null"
+                    }}</span>
+                  </td>
+
+                  <td>
+                    <span class="nguon text-muted font-weight-bold">{{
+                      item.mucDo !== null ? item.mucDo : "null"
+                    }}</span>
+                  </td>
+                  <td>
+                    <span class="ghi_chu text-muted font-weight-bold">{{
+                      item.ketQua !== null ? item.ketQua : "null"
+                    }}</span>
+                  </td>
+
+                  <td>
+                    <span class="tinh text-muted font-weight-bold">{{
+                      item.tinhTrang !== null ? item.tinhTrang : "null"
+                    }}</span>
+                  </td>
+
+                  <td>
+                    <span class="tac_gia text-muted font-weight-bold">{{
+                      item.luuY !== null ? item.luuY : "null"
+                    }}</span>
+                  </td>
+                </tr>
+              </template>
+            </tbody>
+          </table>
+        </div>
+        <!--end::Table-->
+      </div>
     </div>
+
+    <b-pagination
+      v-model="currentPage"
+      align="right"
+      pills
+      @page-click="dataArr(currentPage)"
+      perPage="20"
+      :total-rows="rows"
+      size="lg"
+    >
+    </b-pagination>
   </div>
 </template>
 
 <script>
+import Multiselect from "vue-multiselect";
+import { mapActions, mapGetters } from "vuex";
 export default {
+  components: { Multiselect },
   data() {
     return {
-      fields: [
-        "Tên",
-        "Kế_hoạch",
-        "Thực_hiện",
-        "Người_đề_xuất",
-        "Người_phối_hợp",
-        "Yêu_cầu_công_việc",
-        "Uu_tiên",
-        "Kết_quả",
-        "Tình_trạng",
-        "Lưu_ý",
+      text: "",
+      currentPage: 1,
+      rows: 100,
+      dataArrAssignedWork: [],
+      selectedPersion: null, // Array reference
+      persion: [],
+      selectedPriorityLevel: null, // Array reference
+      priority_level: [
+        { value: "1", text: "Quan trọng và khẩn cấp" },
+        { value: "2", text: "Quan trọng nhưng không khẩn cấp" },
+        { value: "3", text: "Khẩn cấp nhưng không quan trọng" },
+        { value: "4", text: "Không quan trọng và không khẩn cấp" },
       ],
-      items: [
-        {
-          isActive: false,
-          Tên: "Hồ sơ thanh toán đợt 8- MeLinh Plaza",
-          Kế_hoạch: "Bắt đầu: 10:30 04/04/2021,Kết thúc: 17:00 05/04/2021",
-          Thực_hiện: "Bắt đầu: 10:30 04/04/2021,Kết thúc: 17:00 05/04/2021",
-          Người_đề_xuất: "Nguyễn Như Vậy",
-          Người_phối_hợp: "Vũ Đức Tuân Nguyễn Hồng Quang Trịnh Thị Tuyến",
-          Yêu_cầu_công_việc: "trình ký Mr.Tuân, nộp hồ sơ lên Euro",
-          Uu_tiên: "Quan trọng và khẩn cấp",
-          Kết_quả: "Đã hoàn thành",
-          Tình_trạng: "Quá hạn",
-          Lưu_ý: "Chưa cập nhật",
-        },
-        {
-          isActive: false,
-          Tên: "Hồ sơ thanh toán đợt 8- MeLinh Plaza",
-          Kế_hoạch: "Bắt đầu: 10:30 04/04/2021,Kết thúc: 17:00 05/04/2021",
-          Thực_hiện: "Bắt đầu: 10:30 04/04/2021,Kết thúc: 17:00 05/04/2021",
-          Người_đề_xuất: "Nguyễn Như Tùng",
-          Người_phối_hợp: "Vũ Đức Tuân Nguyễn Hồng Quang Trịnh Thị Tuyến",
-          Yêu_cầu_công_việc: "trình ký Mr.Tuân, nộp hồ sơ lên Euro",
-          Uu_tiên: "Quan trọng và khẩn cấp",
-          Kết_quả: "Đã hoàn thành",
-          Tình_trạng: "Quá hạn",
-          Lưu_ý: "Chưa cập nhật",
-        },
-        {
-          isActive: false,
-          Tên: "Hồ sơ thanh toán đợt 8- MeLinh Plaza",
-          Kế_hoạch: "Bắt đầu: 10:30 04/04/2021,Kết thúc: 17:00 05/04/2021",
-          Thực_hiện: "Bắt đầu: 10:30 04/04/2021,Kết thúc: 17:00 05/04/2021",
-          Người_đề_xuất: "Nguyễn Như Tùng",
-          Người_phối_hợp: "Vũ Đức Tuân Nguyễn Hồng Quang Trịnh Thị Tuyến",
-          Yêu_cầu_công_việc: "trình ký Mr.Tuân, nộp hồ sơ lên Euro",
-          Uu_tiên: "Quan trọng và khẩn cấp",
-          Kết_quả: "Đã hoàn thành",
-          Tình_trạng: "Quá hạn",
-          Lưu_ý: "Chưa cập nhật",
-        },
+      selectedJobStatus: null, // Array reference
+      job_status: [
+        { value: "1", text: "Chưa khởi động" },
+        { value: "2", text: "Đang thực hiện" },
+        { value: "3", text: "Quá hạn" },
+        { value: "4", text: "Đã phê duyệt" },
       ],
-      selected: ["b"], // Array reference
-      options: [
-        { value: "a", text: "This is First option" },
-        { value: "b", text: "Default Selected Option" },
-        { value: "c", text: "This is another option" },
-        { value: "d", text: "This one is disabled", disabled: true },
-        { value: "e", text: "This is option e" },
-        { value: "f", text: "This is option f" },
-        { value: "g", text: "This is option g" },
-      ],
-
-          selected1: "1", // Array reference
-      options1: [
-        { value: "1", text: "Chọn mức độ ưu tiên" },
-        { value: "a", text: "Quan trọng và khẩn cấp" },
-        { value: "b", text: "Quan trọng nhưng không khẩn cấp" },
-        { value: "c", text: "Khẩn cấp nhưng không quan trọng" },
-        { value: "d", text: "Không quan trọng và không khẩn cấp" },
-      ],
-       selected2: "2", // Array reference
-      options2: [
-        { value: "2", text: "Tình trạng công việc" },
-        { value: "a", text: "Chưa khởi động" },
-        { value: "b", text: "Đang thực hiện" },
-        { value: "c", text: "Quá hạn" },
-        { value: "d", text: "Đã phê duyệt" },
-      ],
-       selected3: "3", // Array reference
-      options3: [
-        { value: "3", text: "Kết quả công việc" },
-        { value: "a", text: "Đã hoàn thành" },
-        { value: "b", text: "Chưa hoàn thành" },
-
+      selectedWorkResults: null, // Array reference
+      work_results: [
+        { value: "1", text: "Kết quả công việc" },
+        { value: "2", text: "Đã hoàn thành" },
+        { value: "3", text: "Chưa hoàn thành" },
       ],
     };
   },
+  computed: {
+    ...mapGetters(["storeqlda/getListDataUserGTer"]),
+  },
+  created() {
+    this["storeqlda/getListDataUser"]().then(() => {
+      let arrTemp = this["storeqlda/getListDataUserGTer"];
+      for (var i in arrTemp) {
+        let data = {
+          id: arrTemp[i].id,
+          text: arrTemp[i].name,
+        };
+        this.persion.push(data);
+        }
+    });
+  },
+  mounted() {
+    this.dataArr(this.currentPage);
+  },
+  methods: {
+    ...mapActions([
+      "storeqlda/getListTaskHasPaging",
+      "storeqlda/getListDataUser",
+    ]),
+    custom_label_persion({ text }) {
+      return `${text}`;
+    },
+    dataArr(page) {
+      var data = {
+        page: page,
+      };
+      this["storeqlda/getListTaskHasPaging"](data).then((response) => {
+        this.dataArrAssignedWork = response.data.data;
+        this.pagination = response.data;
+        this.rows = response.data.total;
+      });
+    },
+  },
 };
 </script>
-
+<style src="vue-multiselect/dist/vue-multiselect.min.css"></style>
 <style scoped>
-.table-cv{
-  background-color: #fff;
-}
 .search-congv input[type="search"] {
-  height: 34px;
+  height: 43px;
 }
 
 .btn-add-cv {
-  height: 38px;
+  height: 43px;
   padding-top: 0;
   padding-bottom: 0;
 }
@@ -167,15 +300,29 @@ export default {
   top: auto;
 }
 .select-duan {
-	width: 200px;
-	background-color: #fff;
+  width: 200px;
+  background-color: #fff;
 }
-.select-cbb .custom-select{
-	height: 34px;
+.select-cbb .custom-select {
+  height: 43px;
+}
+.select-cbb {
+  max-width: 200px;
 }
 .header-page-giaocv {
   margin-left: 10px;
   margin-right: 10px;
+}
+.table-cv {
+  background-color: #fff;
+}
+.permission .v-menu__content {
+  position: absolute;
+  box-shadow: 0px 5px 5px -3px rgb(0 0 0 / 20%),
+    0px 8px 10px 1px rgb(0 0 0 / 14%), 0px 3px 14px 2px rgb(0 0 0 / 12%);
+  border-radius: 4px;
+  left: 1px !important;
+  top: 135px !important;
 }
 /* .btn-secondary:hover {
   color: #fff;

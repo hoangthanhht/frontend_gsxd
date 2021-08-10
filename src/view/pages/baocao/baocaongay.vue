@@ -423,6 +423,17 @@ export default {
         time: this.selectedTime.replace(/\//g, "_"),
         nameProj: this.selectedSite,
       };
+      this.duan = [];
+      this.diadiem = [];
+      this.cdt = [];
+      this.bql = [];
+      this.mucArr = [];
+      this.tenNT = [];
+      this.hoSoArr = [];
+      this.kienNghiArr = [];
+      this.anToanArr = [];
+      this.dataGiamSat = [];
+      this.imgArr = [];
       this["storeqlda/getListReport"](data).then((rs) => {
         this.jsonResponse = rs;
         this.jsonArrResponse = rs.data.data;

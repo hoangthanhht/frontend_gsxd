@@ -1127,4 +1127,82 @@ export default {
             console.log("error", error);
         }
     },
+    
+    /* ACTION CHO TAO HO SƠ */
+    async ActionCreateFile(context, { 
+        duAn ='',
+        loaiHoSo ='',
+        tenHoSo ='',
+        soLuong ='',
+        ngayNhan ='',
+        ngayTra ='',
+        lanKiemTra ='',
+        ketQua ='',
+        lyDoKhongDat ='',
+        noiDungThayDoiTk ='',
+        nguyenNhanThayDoiTk ='',
+        nguoiPheDuyet ='',
+        yKienTVGS ='',
+    }) {
+
+        let data = {
+            duAn:duAn,                           
+            loaiHoSo:loaiHoSo,                           
+            tenHoSo:tenHoSo,                         
+            soLuong:soLuong,                           
+            ngayNhan:ngayNhan,                           
+            ngayTra:ngayTra,                           
+            lanKiemTra:lanKiemTra,                           
+            ketQua:ketQua,                            
+            lyDoKhongDat:lyDoKhongDat,                           
+            noiDungThayDoiTk:noiDungThayDoiTk,                         
+            nguyenNhanThayDoiTk:nguyenNhanThayDoiTk,                            
+            nguoiPheDuyet:nguoiPheDuyet,                           
+            yKienTVGS:yKienTVGS,                       
+
+        }
+        try {
+
+            var result = await axiosInstance.post(`createFile`, data);
+
+            if (result.status === 200) {
+                //commit('SET_USER_INFO', result.data.user);
+                return {
+                    ok: true,
+                    data: result.data.msg,
+                    error: null
+                }
+
+            }
+            return {
+                ok: false,
+                error: result.data.message
+            }
+        } catch (error) {
+
+            return {
+                ok: false,
+                error: error.message
+            }
+        }
+    },
+    async getListFileHasPaging(context, page) {
+
+        var config = {
+            headers: {
+                'Accept': 'application/json',
+                //'Authorization' :'Bearer ' + token,
+            }
+        }
+
+        try {
+
+            var result = await axiosInstance.get('/showFile?page=' + page, config);
+            context.commit('SET_LIST_POST', result.data.data);
+            return result
+            //console.log("error",result.data.data);
+        } catch (error) {
+            console.log("error", error);
+        }
+    },
 }
