@@ -997,7 +997,7 @@ export default {
         try {
 
             var result = await axiosInstance.get('/showTask?page=' + page, config);
-            context.commit('SET_LIST_POST', result.data.data);
+            // context.commit('SET_LIST_POST', result.data.data);
             return result
             //console.log("error",result.data.data);
         } catch (error) {
@@ -1198,7 +1198,158 @@ export default {
         try {
 
             var result = await axiosInstance.get('/showFile?page=' + page, config);
-            context.commit('SET_LIST_POST', result.data.data);
+            return result
+            //console.log("error",result.data.data);
+        } catch (error) {
+            console.log("error", error);
+        }
+    },
+
+     /* ACTION CHO TAO HỢP ĐỒNG */
+     async ActionCreateContract(context, { 
+        tenHopDong ='',
+        duAn ='',
+        giaTriHD ='',
+        nhanSuLienQuan ='',
+        batDau ='',
+        ketThuc ='',
+        donVi ='',
+        khoiLuong ='',
+       
+    }) {
+
+        let data = {
+            tenHopDong:tenHopDong,                           
+            duAn:duAn,                           
+            giaTriHD:giaTriHD,                         
+            nhanSuLienQuan:nhanSuLienQuan,                           
+            batDau:batDau,                           
+            ketThuc:ketThuc,                           
+            donVi:donVi,                           
+            khoiLuong:khoiLuong,                            
+                                
+
+        }
+        try {
+
+            var result = await axiosInstance.post(`createContract`, data);
+
+            if (result.status === 200) {
+                //commit('SET_USER_INFO', result.data.user);
+                return {
+                    ok: true,
+                    data: result.data.msg,
+                    error: null
+                }
+
+            }
+            return {
+                ok: false,
+                error: result.data.message
+            }
+        } catch (error) {
+
+            return {
+                ok: false,
+                error: error.message
+            }
+        }
+    },
+    async getListContractHasPaging(context, page) {
+
+        var config = {
+            headers: {
+                'Accept': 'application/json',
+                //'Authorization' :'Bearer ' + token,
+            }
+        }
+
+        try {
+
+            var result = await axiosInstance.get('/showContract?page=' + page, config);
+            return result
+            //console.log("error",result.data.data);
+        } catch (error) {
+            console.log("error", error);
+        }
+    },
+
+     /* ACTION CHO TAO DỰ ÁN */
+     async ActionCreateProject(context, { 
+        tenDuAn ='',
+        maDuAn ='',
+        tenCdt ='',
+        moTaDuAn ='',
+        ngayBatDau ='',
+        ngayKetThuc ='',
+        ngayKetThucThucTe ='',
+        trangThai ='',
+        nhanSuChinh ='',
+        nhanSuLienQuan ='',
+       
+    }) {
+
+        let data = {
+            tenDuAn:tenDuAn,                           
+            maDuAn:maDuAn,                           
+            tenCdt:tenCdt,                         
+            moTaDuAn:moTaDuAn,                           
+            ngayBatDau:ngayBatDau,                           
+            ngayKetThuc:ngayKetThuc,                           
+            ngayKetThucThucTe:ngayKetThucThucTe,                           
+            trangThai:trangThai,                            
+            nhanSuChinh:nhanSuChinh,                            
+            nhanSuLienQuan:nhanSuLienQuan,                            
+        }
+        try {
+
+            var result = await axiosInstance.post(`createProject`, data);
+
+            if (result.status === 200) {
+                //commit('SET_USER_INFO', result.data.user);
+                return {
+                    ok: true,
+                    data: result.data.msg,
+                    error: null
+                }
+
+            }
+            return {
+                ok: false,
+                error: result.data.message
+            }
+        } catch (error) {
+
+            return {
+                ok: false,
+                error: error.message
+            }
+        }
+    },
+    async getListProjectHasPaging(context, page) {
+
+        var config = {
+            headers: {
+                'Accept': 'application/json',
+                //'Authorization' :'Bearer ' + token,
+            }
+        }
+
+        try {
+
+            var result = await axiosInstance.get('/showProject?page=' + page, config);
+            return result
+            //console.log("error",result.data.data);
+        } catch (error) {
+            console.log("error", error);
+        }
+    },
+
+    async getListProjectName() {
+
+        try {
+
+            var result = await axiosInstance.get('/getProjectName');
             return result
             //console.log("error",result.data.data);
         } catch (error) {

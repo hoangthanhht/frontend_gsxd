@@ -93,7 +93,7 @@
 
         <div class="hs-gr5">
           <p class="pt-2">File và tài liệu liên quan</p>
-          <b-form-file id="file-small" size="sm"></b-form-file>
+          <b-form-file class="z-0" id="file-small" size="sm"></b-form-file>
         </div>
       </div>
 
@@ -150,15 +150,32 @@ export default {
     CompThemHs,
     Multiselect
   },
+   created() {
+     this["storeqlda/getListProjectName"]().then((res) => {
+       let arrTemp = res.data;
+      for (var i in arrTemp) {
+        let data = {
+          id: arrTemp[i].id,
+          text: arrTemp[i].tenDuAn,
+        };
+        this.project.push(data);
+      }
+    });
+
+  },
    computed: {
     ...mapGetters([
       "storeqlda/getListDataUserGTer",
       "currentUserPersonalInfo",
       "storeqlda/currentUser",
+    
     ]),
   },
   methods: {
-     ...mapActions(["storeqlda/ActionCreateFile", "storeqlda/getListDataUser"]),
+     ...mapActions(["storeqlda/ActionCreateFile",
+            "storeqlda/getListDataUser",
+            "storeqlda/getListProjectName",
+      ]),
      custom_label({ text }) {
       return `${text}`;
     },
@@ -174,8 +191,6 @@ export default {
           arrtimeReceive[0]
 
       }
-
-
       var data = {
         duAn: this.selectedProject,
         loaiHoSo: 'hồ sơ thiết kế',
@@ -268,5 +283,14 @@ export default {
 }
 .hstk_note .add-gr41 p{
 padding: 10px;
+}
+.multiselect, .multiselect__input, .multiselect__single {
+    font-size: 1rem !important;
+}
+.multiselect__placeholder {
+    font-size: 1rem;
+}
+.custom-file-label {
+    cursor: pointer;
 }
 </style>

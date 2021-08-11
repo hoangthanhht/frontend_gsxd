@@ -2,58 +2,94 @@
   <div class="add-gr">
     <!-- group 1 -->
     <div class="add-gr1">
-      <h5 class="mb-3 header-title">Cập nhật thông tin công việc</h5>
+      <h5 class="mb-3 header-title">Thêm nhân sự</h5>
       <b-form>
+        <div class="grid grid-flow-col grid-cols-7 grid-rows-3 gap-2">
         <b-form-group
+          class="col-span-5"
           id="input-group-1"
-          label="Tên công việc (tiêu đề)"
+          label="Tên dự án"
           label-for="input-1"
         >
           <b-form-input
-            v-model="nameTask"
+            v-model="nameProject"
             id="input-1"
             type="text"
-            placeholder="Nhập tên công việc"
+            placeholder="Nhập dự án"
             required
           ></b-form-input>
         </b-form-group>
 
         <b-form-group
-          description="Việc mô tả chi tiết công việc sẽ giúp người thực hiện dễ dàng hơn"
-          id="input-group-2"
-          label="Nội dung công việc"
-          label-for="input-2"
+         class="col-span-5"
+          id="input-group-1"
+          label="Mẫ dự án"
+          label-for="input-1"
         >
-          <b-form-textarea
-            id="textarea"
-            v-model="descriptionTask"
-            placeholder="Nội dung chi tiết công việc"
-            rows="3"
-            max-rows="6"
-          ></b-form-textarea>
+          <b-form-input
+            v-model="codeProject"
+            id="input-1"
+            type="text"
+            placeholder="Nhập mã dự án"
+            required
+          ></b-form-input>
         </b-form-group>
 
         <b-form-group
+         class="col-span-5"
+          id="input-group-1"
+          label="Mẫ dự án"
+          label-for="input-1"
+        >
+          <b-form-input
+            v-model="codeProject"
+            id="input-1"
+            type="text"
+            placeholder="Nhập mã dự án"
+            required
+          ></b-form-input>
+        </b-form-group>
+
+       <div class="bg-green-400  col-span-2 row-span-3 mt-10 mb-10">
+         ảnh
+       </div>
+
+        </div>
+
+         <b-form-group
+          id="input-group-1"
+          label="Tên chủ đầu tư"
+          label-for="input-1"
+        >
+          <b-form-input
+            v-model="nameInvestor"
+            id="input-1"
+            type="text"
+            placeholder="Nhập tên chủ đầu tư"
+            required
+          ></b-form-input>
+        </b-form-group>
+
+
+        <b-form-group
           id="input-group-2"
-          tooltip
-          label="Lưu ý"
+          label="Mô tả, ghi chú về dự án"
           label-for="input-2"
         >
           <b-form-textarea
             id="textarea"
-            v-model="note"
-            placeholder="Lưu ý"
+            v-model="descriptionProject"
+            placeholder="Mô tả, ghi chú về dự án"
             rows="3"
             max-rows="6"
-          >
-          </b-form-textarea>
+          ></b-form-textarea>
         </b-form-group>
 
         <div class="add-gr11">
           <div class="add-gr111">
             <b-form-group
               id="input-group-1"
-              label="Thời gian bắt đầu:"
+              label="Ngày bắt đầu tiếp nhận:"
               label-for="input-1"
             >
               <b-form-input
@@ -82,90 +118,68 @@
         </div>
         <!-- input -->
         <div class="add-gr11">
+
+           <div class="add-gr111">
+              <b-form-group
+              id="input-group-1"
+              label="Thời gian kết thúc thực tế:"
+              label-for="input-1"
+            >
+              <b-form-input
+                v-model="timeReal"
+                id="input-1"
+                type="date"
+                required
+              ></b-form-input>
+            </b-form-group>
+          </div>
+
           <div class="add-gr111">
             <b-form-group
               id="input-group-1"
-              label="Mức độ ưu tiên:"
+              label="Trạng thái dự án::"
               label-for="input-1"
             >
               <b-form-select
-                v-model="selectedPriorityLevel"
-                :options="priority_level"
+                v-model="selectedStatusProject"
+                :options="status_project"
               >
                 <template #first>
                   <b-form-select-option :value="null" disabled
-                    >-- Mức độ ưu tiên --</b-form-select-option
+                    >-- Trạng thái dự án: --</b-form-select-option
                   >
                 </template>
               </b-form-select>
             </b-form-group>
           </div>
 
-          <div class="add-gr111">
-            <b-form-group
-              id="input-group-1"
-              label="Trạng thái công việc"
-              label-for="input-1"
-            >
-              <b-form-input
-                v-model="statusTask"
-                id="input-1"
-                type="text"
-                required
-              ></b-form-input>
-            </b-form-group>
-          </div>
+         
         </div>
-
-        <!-- input 3 -->
-        <div class="add-gr11">
-          <div class="add-gr111">
-            <b-form-group
-              id="input-group-1"
-              label="Thời gian bắt đầu thực tế:"
-              label-for="input-1"
-            >
-              <b-form-input
-                v-model="timeStartReal"
-                id="input-1"
-                type="date"
-                required
-              ></b-form-input>
-            </b-form-group>
-          </div>
-
-          <div class="add-gr111">
-            <b-form-group
-              id="input-group-1"
-              label="Thời gian kết thúc thực tế:"
-              label-for="input-1"
-            >
-              <b-form-input
-                v-model="timeFinishReal"
-                id="input-1"
-                type="date"
-                required
-              ></b-form-input>
-            </b-form-group>
-          </div>
-        </div>
-        <!-- combobox -->
-
-        <b-form-group
-          id="input-group-1"
-          label="Kết quả thực hiện:"
-          label-for="input-1"
-        >
-          <b-form-select
-            v-model="selectedResult"
-            :options="result"
-          ></b-form-select>
-        </b-form-group>
       </b-form>
     </div>
     <!-- group 2 -->
     <div class="add-gr2">
-      <h5 class="mb-3 header-title">Thành phần liên quan</h5>
+      <h5 class="mb-3 header-title">Nhân viên tham gia dự án</h5>
+      <b-form>
+        <b-form-group
+          id="input-group-1"
+          label="Nhân sự phụ trách chính:"
+          label-for="input-1"
+        >
+          <multiselect
+            v-model="selectedPersionMain"
+            multiple
+            :custom-label="custom_label"
+            label="name"
+            track-by="id"
+            selectLabel="Ấn enter để chọn"
+            deselectLabel="Ấn enter để bỏ chọn"
+            :options="persion_main"
+          >
+          </multiselect>
+        </b-form-group>
+      </b-form>
+
       <b-form>
         <b-form-group
           id="input-group-1"
@@ -173,53 +187,14 @@
           label-for="input-1"
         >
           <multiselect
-            v-model="selectedPersionDo"
+            v-model="selectedInvolve"
             multiple
             :custom-label="custom_label"
             label="name"
             track-by="id"
             selectLabel="Ấn enter để chọn"
             deselectLabel="Ấn enter để bỏ chọn"
-            :options="persion_do"
-          >
-          </multiselect>
-        </b-form-group>
-      </b-form>
-      <b-form>
-        <b-form-group
-          id="input-group-1"
-          label="Người giao việc:"
-          label-for="input-1"
-        >
-          <multiselect
-            v-model="selectedPersionAssign"
-            multiple
-            :custom-label="custom_label"
-            label="name"
-            track-by="id"
-            selectLabel="Ấn enter để chọn"
-            deselectLabel="Ấn enter để bỏ chọn"
-            :options="persion_assign"
-          >
-          </multiselect>
-        </b-form-group>
-      </b-form>
-
-      <b-form>
-        <b-form-group
-          id="input-group-1"
-          label="Dự án liên quan:"
-          label-for="input-1"
-        >
-          <multiselect
-            v-model="selectedProject"
-            multiple
-            :custom-label="custom_label"
-            label="name"
-            track-by="id"
-            selectLabel="Ấn enter để chọn"
-            deselectLabel="Ấn enter để bỏ chọn"
-            :options="project"
+            :options="project_involve"
           >
           </multiselect>
         </b-form-group>
@@ -229,8 +204,8 @@
     <!-- group 3 -->
     <div class="add-gr3">
       <h5>File và tài liệu liên quan</h5>
-        <input class="cursor-pointer" type="file" name="" id="">
-      <!-- <b-form-file class="z-0" style="cursor: pointer" id="file-small" size="sm"></b-form-file> -->
+
+      <b-form-file class="z-0 cursor-pointer" id="file-small" size="sm"></b-form-file>
     </div>
 
     <div class="add-gr4">
@@ -286,31 +261,29 @@ export default {
     return {
       text: "", // cần khai báo data này không sẽ gặp wraning text is not define trong hàm custom_label
       currentTab: 0,
-      nameTask: "",
-      descriptionTask: "",
-      note: "",
-      timeStart: "",
-      timeExpect: "",
-      statusTask: "",
-      timeStartReal: "",
-      timeFinishReal: "",
-      selectedPersionDo: null, // Array reference
-      persion_do: [],
-      selectedPersionAssign: null, // Array reference
-      persion_assign: [],
-      selectedProject: null, // Array reference
-      project: [],
-      selectedPriorityLevel: null, // Array reference
-      priority_level: [
-        { value: "Quan trọng và khẩn cấp", text: "Quan trọng và khẩn cấp" },
-        { value: "Quan trọng nhưng không khẩn cấp", text: "Quan trọng nhưng không khẩn cấp" },
-        { value: "Khẩn cấp nhưng không quan trọng", text: "Khẩn cấp nhưng không quan trọng" },
-        { value: "Không quan trọng và không khẩn cấp", text: "Không quan trọng và không khẩn cấp" },
-      ],
-      selectedResult: null, // Array reference
-      result: [
+
+      nameProject:'',
+      codeProject:'',
+      nameInvestor:'',
+      descriptionProject:'',
+      timeStart:'',
+      timeExpect:'',
+      timeReal:'',
+
+      selectedStatusProject: null, // Array reference
+      status_project: [
+        { value: "Dự án mới", text: "Dự án mới" },
         { value: "Chưa hoàn thành", text: "Chưa hoàn thành" },
         { value: "Đã hoàn thành", text: "Đã hoàn thành" },
+
+      ],
+      selectedPersionMain: null, // Array reference
+      persion_main: [
+
+      ],
+      selectedInvolve: null, // Array reference
+      project_involve: [
+
       ],
     };
   },
@@ -322,22 +295,10 @@ export default {
           id: arrTemp[i].id,
           text: arrTemp[i].name,
         };
-        this.persion_do.push(data);
-        this.persion_assign.push(data);
+        this.persion_main.push(data);
+        this.project_involve.push(data);
       }
     });
-
-     this["storeqlda/getListProjectName"]().then((res) => {
-       let arrTemp = res.data;
-      for (var i in arrTemp) {
-        let data = {
-          id: arrTemp[i].id,
-          text: arrTemp[i].tenDuAn,
-        };
-        this.project.push(data);
-      }
-    });
-
   },
   mounted() {},
   computed: {
@@ -348,97 +309,83 @@ export default {
     ]),
   },
   methods: {
-    ...mapActions([
-      "storeqlda/ActionCreateTask",
-      "storeqlda/getListDataUser",
-      "storeqlda/getListProjectName",
-     ]),
-     
+    ...mapActions(["storeqlda/ActionCreateProject", "storeqlda/getListDataUser"]),
     custom_label({ text }) {
       return `${text}`;
     },
     handleSave() {
+      let dateStart = "";
       let datePlan = "";
       let dateReal = "";
-      if (this.timeStart && this.timeExpect) {
+      if (this.timeStart) {
         let arrTimeStartKh = this.timeStart.split("-");
-        let arrTimeFinishKh = this.timeExpect.split("-");
-        datePlan =
-          "Bắt đầu : " +
+        dateStart =
           arrTimeStartKh[2] +
           "/" +
           arrTimeStartKh[1] +
           "/" +
-          arrTimeStartKh[0] +
-          "," +
-          "Kết thúc " +
-          arrTimeFinishKh[2] +
-          "/" +
-          arrTimeFinishKh[1] +
-          "/" +
-          arrTimeFinishKh[0];
+          arrTimeStartKh[0]
       }
-      if (this.timeFinishReal && this.timeFinishReal) {
-        let arrTimeStartReal = this.timeStartReal.split("-");
-        let arrTimeFinishReal = this.timeFinishReal.split("-");
+         if (this.timeExpect) {
+        let arrtimeExpect = this.timeExpect.split("-");
+        datePlan =
+          arrtimeExpect[2] +
+          "/" +
+          arrtimeExpect[1] +
+          "/" +
+          arrtimeExpect[0]
+      }
+         if (this.timeReal) {
+        let arrtimeReal = this.timeReal.split("-");
         dateReal =
-          "Bắt đầu : " +
-          arrTimeStartReal[2] +
+          arrtimeReal[2] +
           "/" +
-          arrTimeStartReal[1] +
+          arrtimeReal[1] +
           "/" +
-          arrTimeStartReal[0] +
-          "," +
-          "Kết thúc " +
-          arrTimeFinishReal[2] +
-          "/" +
-          arrTimeFinishReal[1] +
-          "/" +
-          arrTimeFinishReal[0];
+          arrtimeReal[0]
       }
-      let nguoiDeXuat = "";
-      for (var i in this.selectedPersionAssign) {
-        if (!nguoiDeXuat) {
-          nguoiDeXuat = this.selectedPersionAssign[i].text;
+      let nguoiChinh = "";
+      for (var i in this.selectedPersionMain) {
+        if (!nguoiChinh) {
+          nguoiChinh = this.selectedPersionMain[i].text;
         } else {
-          nguoiDeXuat = nguoiDeXuat + "," + this.selectedPersionAssign[i].text;
+          nguoiChinh = nguoiChinh + "," + this.selectedPersionMain[i].text;
         }
       }
-         let nguoiPhoiHop = "";
-      for (var j in this.selectedPersionDo) {
-        if (!nguoiPhoiHop) {
-          nguoiPhoiHop = this.selectedPersionDo[j].text;
+         let nguoiLienQuan = "";
+      for (var j in this.selectedInvolve) {
+        if (!nguoiLienQuan) {
+          nguoiLienQuan = this.selectedInvolve[j].text;
         } else {
-          nguoiPhoiHop = nguoiPhoiHop + "," + this.selectedPersionDo[j].text;
+          nguoiLienQuan = nguoiLienQuan + "," + this.selectedInvolve[j].text;
         }
       }
       var data = {
-        Ten: this.nameTask,
-        keHoach: datePlan,
-        thucHien: dateReal,
-        nguoiDeXuat: nguoiDeXuat,
-        nguoiPhoiHop: nguoiPhoiHop,
-        moTaTask: this.descriptionTask,
-        mucDo: this.selectedPriorityLevel,
-        ketQua: this.selectedResult,
-        tinhTrang: this.statusTask,
-        luuY: this.note,
+        tenDuAn: this.nameProject,
+        maDuAn: this.codeProject,
+        tenCdt: this.nameInvestor,
+        moTaDuAn: this.descriptionProject,
+        ngayBatDau: dateStart,
+        ngayKetThuc: datePlan,
+        ngayKetThucThucTe: dateReal,
+        trangThai: this.selectedStatusProject,
+        nhanSuChinh: nguoiChinh,
+        nhanSuLienQuan: nguoiLienQuan,
       };
-      this["storeqlda/ActionCreateTask"](data).then((res) => {
+      this["storeqlda/ActionCreateProject"](data).then((res) => {
         alert(res.data);
       });
     },
   },
   watch: {
+
   },
 };
 </script>
 
 <style scoped>
 .custom-file-label {
-  text-align: right;
-  cursor: pointer !important;
-  background-color: red;
+    cursor: pointer;
 }
 .add-gr {
   position: relative;

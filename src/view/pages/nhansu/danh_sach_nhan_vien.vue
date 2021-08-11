@@ -2,9 +2,12 @@
   <div class="container-nhanvien">
     <div class="block-select">
       <div class="btn-add-cv">
-        <b-button size="sm" class="mb-2 add-cv icon-tvgs">
-          <b-icon icon="plus" aria-hidden="true"></b-icon> Thêm
-        </b-button>
+         <router-link 
+          to="/themnhansu"
+          tag="b-button"
+          class="mb-2 add-cv icon-tvgs pt-3 pb-3">
+          <b-icon icon="plus" aria-hidden="true"></b-icon> Thêm nhân sự
+       </router-link>
       </div>
 
       <div class="select-cbb">

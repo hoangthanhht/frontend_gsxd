@@ -445,6 +445,47 @@ export default new Router({
 						}
 					}
 				},
+				{
+					path: "/danhsachhopdong",
+					name: "danhsachhopdong",
+					component: () => import("@/view/pages/hopdong/danh_sach_hop_dong.vue"),
+					beforeEnter: (to, from, next) =>  {
+						let userSlug = (store.getters.currentUserPersonalInfo.slug)
+						if(!userSlug) {
+							store.dispatch('storeqlda/checkLogin',null,{ root: true }).then(()=>next())
+						}else{
+							next();
+						}
+					}
+				},
+
+				/* route cho du an */
+				{
+					path: "/themduan",
+					name: "themduan",
+					component: () => import("@/view/pages/duan/them_du_an"),
+					beforeEnter: (to, from, next) =>  {
+						let userSlug = (store.getters.currentUserPersonalInfo.slug)
+						if(!userSlug) {
+							store.dispatch('storeqlda/checkLogin',null,{ root: true }).then(()=>next())
+						}else{
+							next();
+						}
+					}
+				},
+				{
+					path: "/danhsachduan",
+					name: "danhsachduan",
+					component: () => import("@/view/pages/duan/danh_sach_du_an"),
+					beforeEnter: (to, from, next) =>  {
+						let userSlug = (store.getters.currentUserPersonalInfo.slug)
+						if(!userSlug) {
+							store.dispatch('storeqlda/checkLogin',null,{ root: true }).then(()=>next())
+						}else{
+							next();
+						}
+					}
+				},
 				// {
 				// 	path: "/hosotke",
 				// 	name: "hosotke",
@@ -524,6 +565,20 @@ export default new Router({
 						}
 					}
 				},
+				{
+					path: "/themnhansu",
+					name: "themnhansu",
+					component: () => import("@/view/pages/nhansu/them_nhan_su.vue"),
+					beforeEnter: (to, from, next) =>  {
+						let userSlug = (store.getters.currentUserPersonalInfo.slug)
+						if(!userSlug) {
+							store.dispatch('storeqlda/checkLogin',null,{ root: true }).then(()=>next())
+						}else{
+							next();
+						}
+					}
+				},
+				
 				/* route cho mục quản lý nhân viên */
 				{
 					path: "/dsnhanvien",

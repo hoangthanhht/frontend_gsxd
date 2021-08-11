@@ -3,51 +3,11 @@
     <div class="div-fillter">
      <div class="btn-add-cv">
        <router-link 
-       to="/themhoso"
+       to="/themduan"
        tag="b-button"
-       class="mb-2 add-cv icon-tvgs pt-3 pb-3">
-          <b-icon icon="plus" aria-hidden="true"></b-icon> Thêm
+       class="mb-2 add-cv icon-tvgs pt-3 pb-3 bg-red-600">
+          <b-icon icon="plus" aria-hidden="true"></b-icon> Thêm dự án mới
        </router-link>
-      </div>
-
-      <div class="select-cbb">
-        <b-form-select
-          v-model="selectedTimeCreate"
-          :options="time_create"
-        >
-          <template #first>
-            <b-form-select-option :value="null" disabled
-              >-- Thời gian tạo hồ sơ --</b-form-select-option
-            >
-          </template>
-        </b-form-select>
-      </div>
-
-      <div class="select-cbb">
-        <b-form-select
-          v-model="selectedPriorityLevel"
-          :options="priority_level"
-        >
-          <template #first>
-            <b-form-select-option :value="null" disabled
-              >-- Tình trạng hồ sơ --</b-form-select-option
-            >
-          </template>
-        </b-form-select>
-      </div>
-
-      <div class="select-cbb">
-        <multiselect
-          v-model="selectedKindFile"
-          placeholder="Loại hồ sơ"
-          :custom-label="custom_label_persion"
-          label="name"
-          track-by="id"
-          selectLabel="Ấn enter để chọn"
-          deselectLabel="Ấn enter để bỏ chọn"
-          :options="kindfile"
-        >
-        </multiselect>
       </div>
 
       <div class="search-congv">
@@ -84,17 +44,15 @@
                   id
                 </th> -->
                 <th style="display: none">Id</th>
-                <th>Tên hồ sơ</th>
-                <th>Số lượng</th>
-                <th>Lần kiểm tra</th>
-                <th>Ngày</th>
-                <th>Kết quả</th>
-                <th>Người kiểm tra</th>
+                <th>Tên dự án</th>
+                <th>Ngày bắt đầu</th>
+                <th>Ngày kết thúc</th>
+                <th>Nhân sự liên quan</th>
                 <th></th>
               </tr>
             </thead>
             <tbody v-if="dataArr.length !== 0">
-              <template v-for="(item, index) in dataArrFile">
+              <template v-for="(item, index) in dataArrProject">
                 <tr v-bind:key="index" class="row_table_note">
                   <!-- <td contenteditable="true">
 						<span class="text-muted font-weight-bold">{{item.id}}
@@ -105,41 +63,33 @@
                       item.id !== null ? item.id : "null"
                     }}</span>
                   </td>
+
                   <td>
                     <span class="ma_vat_tu text-muted font-weight-bold">{{
-                      item.tenHoSo !== null ? item.tenHoSo : "null"
+                      item.tenDuAn !== null ? item.tenDuAn : "null"
                     }}</span>
                   </td>
+
                   <td>
                     <span class="ten_vat_tu text-muted font-weight-bold">{{
-                      item.soLuong !== null ? item.soLuong : "null"
+                      item.ngayBatDau !== null ? item.ngayBatDau : "null"
                     }}</span>
                   </td>
+
                   <td>
-                    <span class="don_vi text-muted font-weight-bold">{{
-                      item.lanKiemTra !== null ? item.lanKiemTra : "null"
+                    <span class="ten_vat_tu text-muted font-weight-bold">{{
+                      item.ngayKetThuc !== null ? item.ngayKetThuc : "null"
                     }}</span>
-                  </td>
+                  </td>  
+
                   <td>
-                    <span class="gia_vat_tu text-muted font-weight-bold">Nhận : {{
-                      item.ngayNhan !== null ? item.ngayNhan : "null"
-                    }} , 
-                    Trả : {{
-                      item.ngayTra !== null ? item.ngayTra : "null"
+                    <span class="ten_vat_tu text-muted font-weight-bold">Nhân sự chính: {{
+                      item.nhanSuChinh !== null ? item.nhanSuChinh : "null"
+                    }} ,
+                    Nhân sự liên quan: {{
+                      item.nhanSuLienQuan !== null ? item.nhanSuLienQuan : "null"
                     }}
                     </span>
-                  </td>
-
-                  <td>
-                    <span class="khu_vuc text-muted font-weight-bold">{{
-                      item.ketQua !== null ? item.ketQua : "null"
-                    }}</span>
-                  </td>
-
-                  <td>
-                    <span class="thoi_diem text-muted font-weight-bold">{{
-                      item.nguoiPheDuyet !== null ? item.nguoiPheDuyet : "null"
-                    }}</span>
                   </td>
 
                   <td>
@@ -172,15 +122,15 @@
 </template>
 
 <script>
-import Multiselect from "vue-multiselect";
+//import Multiselect from "vue-multiselect";
 import { mapActions } from "vuex";
 export default {
-  components: { Multiselect },
+  components: {  },
   data() {
     return {
       currentPage: 1,
       rows: 100,
-      dataArrFile: [],
+      dataArrProject: [],
       selectedKindFile: null, // Array reference
       kindfile: [ 
          { id: "1", text: "Hồ sơ nghiệm thu công việc" },
@@ -206,7 +156,7 @@ export default {
   },
   methods: {
     ...mapActions([
-      "storeqlda/getListFileHasPaging",
+      "storeqlda/getListProjectHasPaging",
       "storeqlda/getListDataUser",
     ]),
     custom_label_persion({ text }) {
@@ -216,8 +166,8 @@ export default {
       var data = {
         page: page,
       };
-      this["storeqlda/getListFileHasPaging"](data).then((response) => {
-        this.dataArrFile = response.data.data;
+      this["storeqlda/getListProjectHasPaging"](data).then((response) => {
+        this.dataArrProject = response.data.data;
         this.pagination = response.data;
         this.rows = response.data.total;
       });

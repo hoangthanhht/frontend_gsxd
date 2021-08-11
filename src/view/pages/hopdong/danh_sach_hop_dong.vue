@@ -17,7 +17,7 @@
         >
           <template #first>
             <b-form-select-option :value="null" disabled
-              >-- Thời gian tạo hồ sơ --</b-form-select-option
+              >-- Thời gian tạo hợp đồng --</b-form-select-option
             >
           </template>
         </b-form-select>
@@ -30,7 +30,7 @@
         >
           <template #first>
             <b-form-select-option :value="null" disabled
-              >-- Tình trạng hồ sơ --</b-form-select-option
+              >-- Tình trạng hợp đồng --</b-form-select-option
             >
           </template>
         </b-form-select>
@@ -38,14 +38,14 @@
 
       <div class="select-cbb">
         <multiselect
-          v-model="selectedKindFile"
-          placeholder="Loại hồ sơ"
+          v-model="selectedKindContract"
+          placeholder="Loại hợp đồng"
           :custom-label="custom_label_persion"
           label="name"
           track-by="id"
           selectLabel="Ấn enter để chọn"
           deselectLabel="Ấn enter để bỏ chọn"
-          :options="kindfile"
+          :options="kindcontract"
         >
         </multiselect>
       </div>
@@ -84,17 +84,20 @@
                   id
                 </th> -->
                 <th style="display: none">Id</th>
-                <th>Tên hồ sơ</th>
-                <th>Số lượng</th>
-                <th>Lần kiểm tra</th>
-                <th>Ngày</th>
-                <th>Kết quả</th>
-                <th>Người kiểm tra</th>
+                <th>Tên hợp đồng</th>
+                <th>loại hợp đồng</th>
+                <th>dự Án</th>
+                <th>giá trị hợp đồng</th>
+                <th>nhán sự</th>
+                <th>bắt đầu</th>
+                <th>kết thúc</th>
+                <th>đơn vị</th>
+                <th>khối lượng</th>
                 <th></th>
               </tr>
             </thead>
             <tbody v-if="dataArr.length !== 0">
-              <template v-for="(item, index) in dataArrFile">
+              <template v-for="(item, index) in dataArrContract">
                 <tr v-bind:key="index" class="row_table_note">
                   <!-- <td contenteditable="true">
 						<span class="text-muted font-weight-bold">{{item.id}}
@@ -107,40 +110,57 @@
                   </td>
                   <td>
                     <span class="ma_vat_tu text-muted font-weight-bold">{{
-                      item.tenHoSo !== null ? item.tenHoSo : "null"
+                      item.tenHopDong !== null ? item.tenHopDong : "null"
                     }}</span>
                   </td>
+
+                    <td>
+                    <span class="ma_vat_tu text-muted font-weight-bold">{{
+                      item.loaiHopDong !== null ? item.loaiHopDong : "null"
+                    }}</span>
+                  </td>
+
                   <td>
                     <span class="ten_vat_tu text-muted font-weight-bold">{{
-                      item.soLuong !== null ? item.soLuong : "null"
+                      item.duAn !== null ? item.duAn : "null"
                     }}</span>
                   </td>
                   <td>
                     <span class="don_vi text-muted font-weight-bold">{{
-                      item.lanKiemTra !== null ? item.lanKiemTra : "null"
+                      item.giaTriHD !== null ? item.giaTriHD : "null"
                     }}</span>
                   </td>
                   <td>
-                    <span class="gia_vat_tu text-muted font-weight-bold">Nhận : {{
-                      item.ngayNhan !== null ? item.ngayNhan : "null"
-                    }} , 
-                    Trả : {{
-                      item.ngayTra !== null ? item.ngayTra : "null"
-                    }}
+                    <span class="gia_vat_tu text-muted font-weight-bold">{{
+                      item.nhanSuLienQuan !== null ? item.nhanSuLienQuan : "null"
+                    }} 
                     </span>
                   </td>
 
                   <td>
                     <span class="khu_vuc text-muted font-weight-bold">{{
-                      item.ketQua !== null ? item.ketQua : "null"
+                      item.batDau !== null ? item.batDau : "null"
                     }}</span>
                   </td>
 
                   <td>
                     <span class="thoi_diem text-muted font-weight-bold">{{
-                      item.nguoiPheDuyet !== null ? item.nguoiPheDuyet : "null"
+                      item.ketThuc !== null ? item.ketThuc : "null"
                     }}</span>
                   </td>
+
+                       <td>
+                    <span class="thoi_diem text-muted font-weight-bold">{{
+                      item.donVi !== null ? item.donVi : "null"
+                    }}</span>
+                  </td>
+
+                  <td>
+                    <span class="thoi_diem text-muted font-weight-bold">{{
+                      item.khoiLuong !== null ? item.khoiLuong : "null"
+                    }}</span>
+                  </td>
+
 
                   <td>
                     <span class="nguon text-muted font-weight-bold">
@@ -180,17 +200,17 @@ export default {
     return {
       currentPage: 1,
       rows: 100,
-      dataArrFile: [],
-      selectedKindFile: null, // Array reference
-      kindfile: [ 
-         { id: "1", text: "Hồ sơ nghiệm thu công việc" },
-        { id: "2", text: "Hồ sơ nghiệm thu vật liệu" },
-        { id: "2", text: "Hồ sơ nghiệm thu thiết bị" },
+      dataArrContract: [],
+      selectedKindContract: null, // Array reference
+      kindcontract: [ 
+         { id: "1", text: "Hợp đồng trọn gói" },
+        { id: "2", text: "Hợp đồng đơn giá cố định" },
+        { id: "3", text: "Hợp đồng đơn giá thay đổi" },
         ],
       selectedPriorityLevel: null, // Array reference
       priority_level: [
-        { value: "1", text: "Đã duyệt" },
-        { value: "2", text: "Chưa duyệt" },
+        { value: "1", text: "Đã ký" },
+        { value: "2", text: "Chưa ký" },
       ],
       selectedTimeCreate: null, // Array reference
       time_create: [
@@ -206,7 +226,7 @@ export default {
   },
   methods: {
     ...mapActions([
-      "storeqlda/getListFileHasPaging",
+      "storeqlda/getListContractHasPaging",
       "storeqlda/getListDataUser",
     ]),
     custom_label_persion({ text }) {
@@ -216,8 +236,8 @@ export default {
       var data = {
         page: page,
       };
-      this["storeqlda/getListFileHasPaging"](data).then((response) => {
-        this.dataArrFile = response.data.data;
+      this["storeqlda/getListContractHasPaging"](data).then((response) => {
+        this.dataArrContract = response.data.data;
         this.pagination = response.data;
         this.rows = response.data.total;
       });

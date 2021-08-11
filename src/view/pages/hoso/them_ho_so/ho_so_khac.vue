@@ -130,7 +130,7 @@
 
         <div class="hs-gr5">
           <p class="pt-2">File và tài liệu liên quan</p>
-          <b-form-file id="file-small" size="sm"></b-form-file>
+          <b-form-file class="z-0" id="file-small" size="sm"></b-form-file>
         </div>
       </div>
       <div class="hstk_note">
@@ -204,8 +204,24 @@ export default {
       "storeqlda/currentUser",
     ]),
   },
+       created() {
+     this["storeqlda/getListProjectName"]().then((res) => {
+       let arrTemp = res.data;
+      for (var i in arrTemp) {
+        let data = {
+          id: arrTemp[i].id,
+          text: arrTemp[i].tenDuAn,
+        };
+        this.project.push(data);
+      }
+    });
+
+  },
   methods: {
-     ...mapActions(["storeqlda/ActionCreateFile", "storeqlda/getListDataUser"]),
+     ...mapActions(["storeqlda/ActionCreateFile",
+                     "storeqlda/getListDataUser",
+                     "storeqlda/getListProjectName",
+                     ]),
       custom_label({ text }) {
       return `${text}`;
     },
@@ -267,7 +283,8 @@ export default {
   background-color: #fff;
   padding: 10px;
 }
-.select-for-hs {
+.custom-file-label {
+    cursor: pointer;
 }
 .hs-gr1 {
   display: flex;
@@ -328,5 +345,12 @@ export default {
 }
 .hstk_note .add-gr41 p {
   padding: 10px;
+}
+.multiselect, .multiselect__input, .multiselect__single {
+    font-size: 1rem !important;
+}
+
+.multiselect__placeholder {
+    font-size: 1rem;
 }
 </style>
