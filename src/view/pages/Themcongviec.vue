@@ -267,11 +267,19 @@
           <b-icon icon="x-octagon-fill" aria-hidden="true"></b-icon> Bỏ qua
         </b-button>
       </div>
-      <div class="add-gr51 add-gr52">
+
+        <div v-if="idCurrentTask" class="add-gr51 add-gr52">
+      <b-button @click="handleUpdate" size="sm" class="mb-2 tao-cv">
+        <b-icon icon="check2" aria-hidden="true"></b-icon> Cập nhật
+      </b-button>
+      </div>
+
+      <div v-else class="add-gr51 add-gr52">
         <b-button @click="handleSave" size="sm" class="mb-2 tao-cv">
-          <b-icon icon="check2" aria-hidden="true"></b-icon> Cập nhật
+          <b-icon icon="check2" aria-hidden="true"></b-icon> Tạo công việc
         </b-button>
       </div>
+    
     </div>
   </div>
 </template>
@@ -284,6 +292,7 @@ export default {
   components: { Multiselect },
   data() {
     return {
+      idCurrentTask:null,
       text: "", // cần khai báo data này không sẽ gặp wraning text is not define trong hàm custom_label
       currentTab: 0,
       nameTask: "",
@@ -315,6 +324,25 @@ export default {
     };
   },
   created() {
+      this.idCurrentTask = this.$route.params.id;
+     if(this.idCurrentTask!== undefined){
+        this["storeqlda/getTaskWithId"](this.idCurrentTask).then((res)=>{
+         this.nameTask = res.data.Ten ;
+         this.descriptionTask = res.data.moTaTask ;
+         this.note = res.data.luuY ;
+        this.timeStart=JSON.parse(res.data.keHoach)[0] ;
+        this.timeExpect=JSON.parse(res.data.keHoach)[1] ;
+        this.statusTask=res.data.tinhTrang ;
+        this.timeStartReal=JSON.parse(res.data.thucHien)[0] ;
+        this.timeFinishReal=JSON.parse(res.data.thucHien)[1];
+        this.selectedPersionDo = JSON.parse(res.data.nguoiPhoiHop);
+        this.selectedPersionAssign = JSON.parse(res.data.nguoiDeXuat);
+        this.selectedProject = JSON.parse(res.data.duanLienQuan);
+        this.selectedPriorityLevel =res.data.mucDo;
+        this.selectedResult = res.data.ketQua;
+        })
+
+     }
     this["storeqlda/getListDataUser"]().then(() => {
       let arrTemp = this["storeqlda/getListDataUserGTer"];
       for (var i in arrTemp) {
@@ -352,72 +380,54 @@ export default {
       "storeqlda/ActionCreateTask",
       "storeqlda/getListDataUser",
       "storeqlda/getListProjectName",
+      "storeqlda/getTaskWithId",
+      "storeqlda/ActionUpdateTask",
+      
      ]),
      
     custom_label({ text }) {
       return `${text}`;
     },
-    handleSave() {
-      let datePlan = "";
-      let dateReal = "";
-      if (this.timeStart && this.timeExpect) {
-        let arrTimeStartKh = this.timeStart.split("-");
-        let arrTimeFinishKh = this.timeExpect.split("-");
-        datePlan =
-          "Bắt đầu : " +
-          arrTimeStartKh[2] +
-          "/" +
-          arrTimeStartKh[1] +
-          "/" +
-          arrTimeStartKh[0] +
-          "," +
-          "Kết thúc " +
-          arrTimeFinishKh[2] +
-          "/" +
-          arrTimeFinishKh[1] +
-          "/" +
-          arrTimeFinishKh[0];
-      }
-      if (this.timeFinishReal && this.timeFinishReal) {
-        let arrTimeStartReal = this.timeStartReal.split("-");
-        let arrTimeFinishReal = this.timeFinishReal.split("-");
-        dateReal =
-          "Bắt đầu : " +
-          arrTimeStartReal[2] +
-          "/" +
-          arrTimeStartReal[1] +
-          "/" +
-          arrTimeStartReal[0] +
-          "," +
-          "Kết thúc " +
-          arrTimeFinishReal[2] +
-          "/" +
-          arrTimeFinishReal[1] +
-          "/" +
-          arrTimeFinishReal[0];
-      }
-      let nguoiDeXuat = "";
-      for (var i in this.selectedPersionAssign) {
-        if (!nguoiDeXuat) {
-          nguoiDeXuat = this.selectedPersionAssign[i].text;
-        } else {
-          nguoiDeXuat = nguoiDeXuat + "," + this.selectedPersionAssign[i].text;
-        }
-      }
-         let nguoiPhoiHop = "";
-      for (var j in this.selectedPersionDo) {
-        if (!nguoiPhoiHop) {
-          nguoiPhoiHop = this.selectedPersionDo[j].text;
-        } else {
-          nguoiPhoiHop = nguoiPhoiHop + "," + this.selectedPersionDo[j].text;
-        }
-      }
+    handleUpdate(){
+       let arrTimekh = []
+      let arrTimereal = []
+      arrTimekh.push(this.timeStart)
+      arrTimekh.push(this.timeExpect)
+      arrTimereal.push(this.timeStartReal)
+      arrTimereal.push(this.timeFinishReal)
       var data = {
         Ten: this.nameTask,
-        keHoach: datePlan,
-        thucHien: dateReal,
-        nguoiDeXuat: nguoiDeXuat,
-        nguoiPhoiHop: nguoiPhoiHop,
+        keHoach: JSON.stringify(arrTimekh),
+        thucHien: JSON.stringify(arrTimereal),
+        nguoiDeXuat:JSON.stringify(this.selectedPersionAssign),
+        nguoiPhoiHop:JSON.stringify(this.selectedPersionDo),
+        duanLienQuan:JSON.stringify(this.selectedProject),
+        moTaTask: this.descriptionTask,
+        mucDo: this.selectedPriorityLevel,
+        ketQua: this.selectedResult,
+        tinhTrang: this.statusTask,
+        luuY: this.note,
+        idTask:this.idCurrentTask
+      };
+      this["storeqlda/ActionUpdateTask"](data).then((res) => {
+        alert(res.data);
+      });
+    },
+    handleSave() {
+     
+      let arrTimekh = []
+      let arrTimereal = []
+      arrTimekh.push(this.timeStart)
+      arrTimekh.push(this.timeExpect)
+      arrTimereal.push(this.timeStartReal)
+      arrTimereal.push(this.timeFinishReal)
+      var data = {
+        Ten: this.nameTask,
+        keHoach: JSON.stringify(arrTimekh),
+        thucHien: JSON.stringify(arrTimereal),
+        nguoiDeXuat:JSON.stringify(this.selectedPersionAssign),
+        nguoiPhoiHop:JSON.stringify(this.selectedPersionDo),
+        duanLienQuan:JSON.stringify(this.selectedProject),
         moTaTask: this.descriptionTask,
         mucDo: this.selectedPriorityLevel,
         ketQua: this.selectedResult,

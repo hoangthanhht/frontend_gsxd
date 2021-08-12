@@ -194,6 +194,7 @@ export default {
       var data = {
         duAn: this.selectedProject,
         loaiHoSo: 'hồ sơ thiết kế',
+        kyHieuHoSo: 'hstk',
         tenHoSo: this.fileName,
         soLuong: null,
         ngayNhan: dateReceive,

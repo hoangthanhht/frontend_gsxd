@@ -35,100 +35,124 @@
       </div>
     </div>
 
-    <div class="table-dsnhanvien">
-      <b-table
-        class="text-center"
-        striped
-        hover
-        bordered
-        :items="items"
-        :fields="fields"
-        responsive="sm"
-      >
-        <template #cell(Stt)="data">
-          <div>
-            <p style="vertical-align: middle" variant="info" size="sm">{{
-              data.index + 1
-            }}</p>
-          </div>
-        </template>
-
-        <template #cell(chọn)="row">
-          <!-- As `row.showDetails` is one-way, we call the toggleDetails function on @change -->
-          <b-form-checkbox
-            v-model="row.detailsShowing"
-            @change="row.toggleDetails"
+      <div class="card-body pt-0 pb-3">
+      <div class="tab-content">
+        <!--begin::Table-->
+        <div class="table-responsive table-striped">
+          <table
+            class="
+              table
+              table-head-custom
+              table-vertical-center
+              table-head-bg
+              table-borderless
+              
+            "
           >
-          </b-form-checkbox>
-        </template>
+            <thead>
+              <tr class="text-left">
+                <!-- <th style="max-width: 50px" class="pl-7">
+                  id
+                </th> -->
+                <th style="display: none">Id</th>
+                <th>Họ tên</th>
+                <th>Mã nhân viên</th>
+                <th>Ngày sinh</th>
+                <th>Năm tốt nghiệp</th>
+                <th>Ngày vào công ty</th>
+                <th>Chức danh</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody v-if="dataArr.length !== 0">
+              <template v-for="(item, index) in dataArrInfoEmploy">
+                <tr v-bind:key="index" class="row_table_note">
+                  <!-- <td contenteditable="true">
+						<span class="text-muted font-weight-bold">{{item.id}}
+                		</span>
+                  </td> -->
+                  <td style="display: none">
+                    <span class="id_vat_tu text-muted font-weight-bold">{{
+                      item.id !== null ? item.id : "null"
+                    }}</span>
+                  </td>
 
-      </b-table>
+                  <td>
+                    <span class="ma_vat_tu text-muted font-weight-bold">{{
+                      item.nameEmploy !== null ? item.nameEmploy : "null"
+                    }}</span>
+                  </td>
+
+                  <td>
+                    <span class="ten_vat_tu text-muted font-weight-bold">{{
+                      item.codeEmploy !== null ? item.codeEmploy : "null"
+                    }}</span>
+                  </td>
+
+                  <td>
+                    <span class="ten_vat_tu text-muted font-weight-bold">{{
+                      item.birthdayEmploy !== null ? item.birthdayEmploy : "null"
+                    }}</span>
+                  </td>  
+
+                  <td>
+                    <span class="ten_vat_tu text-muted font-weight-bold">{{
+                      item.graduationYearEmploy !== null ? item.graduationYearEmploy : "null"
+                    }}
+                    </span>
+                  </td>
+
+                   <td>
+                    <span class="ten_vat_tu text-muted font-weight-bold">{{
+                      item.DateOfReceivingTheJob !== null ? item.DateOfReceivingTheJob : "null"
+                    }}
+                    </span>
+                  </td>
+
+                     <td>
+                    <span class="ten_vat_tu text-muted font-weight-bold">{{
+                      item.Position !== null ? item.Position : "null"
+                    }}
+                    </span>
+                  </td>
+
+                  <td>
+                    <span class="nguon text-muted font-weight-bold">
+                      <i class="menu-icon cursor-pointer flaticon2-edit"></i>
+                    </span>
+                  </td>
+ 
+            
+                </tr>
+              </template>
+            </tbody>
+          </table>
+        </div>
+        <!--end::Table-->
+      </div>
     </div>
+
+    <b-pagination
+      v-model="currentPage"
+      align="right"
+      pills
+      @page-click="dataArr(currentPage)"
+      perPage="20"
+      :total-rows="rows"
+      size="lg"
+    >
+    </b-pagination>
   </div>
 </template>
 
 <script>
+import { mapActions } from "vuex";
 export default {
   data() {
     return {
-      fields: [
-        "Stt",
-        "chọn",
-        "Họ_tên",
-        "Mã_nhân_viên",
-        "ngày_sinh",
-        "năm_tốt_nghiệp",
-        "ngày_vào_Cty",
-        "Số_năm",
-        "mã_số_chức_danh",
-        "chức_danh_tại_Cty",
-        "ghi_chú",
-      ],
-      items: [
-        {
-          isActive: true,
-          Stt: null,
-          chọn: "",
-          Họ_tên: "Mai Văn T",
-          Mã_nhân_viên: "APA101",
-          ngày_sinh: "22/02/1982",
-          năm_tốt_nghiệp: "2009",
-          ngày_vào_Cty: "13/04/2015",
-          Số_năm: 6,
-          mã_số_chức_danh: "12",
-          chức_danh_tại_Cty: "P.GĐ",
-          ghi_chú: "",
-        },
-        {
-          isActive: true,
-          Stt: null,
-          chọn: "",
-          Họ_tên: "Mai Văn T",
-          Mã_nhân_viên: "APA101",
-          ngày_sinh: "22/02/1982",
-          năm_tốt_nghiệp: "2009",
-          ngày_vào_Cty: "13/04/2015",
-          Số_năm: 6,
-          mã_số_chức_danh: "12",
-          chức_danh_tại_Cty: "P.GĐ",
-          ghi_chú: "",
-        },
-        {
-          isActive: true,
-          Stt: null,
-          chọn: "",
-          Họ_tên: "Mai Văn T",
-          Mã_nhân_viên: "APA101",
-          ngày_sinh: "22/02/1982",
-          năm_tốt_nghiệp: "2009",
-          ngày_vào_Cty: "13/04/2015",
-          Số_năm: 6,
-          mã_số_chức_danh: "12",
-          chức_danh_tại_Cty: "P.GĐ",
-          ghi_chú: "",
-        },
-      ],
-      opvselect: ["Nguyễn Văn A", "Nguyễn Văn B"],
+      currentPage: 1,
+      rows: 100,
+      dataArrInfoEmploy: [],
       selected1: "1", // Array reference
       options1: [
         { value: "1", text: "Đang cộng tác" },
@@ -150,6 +174,25 @@ export default {
         { value: "b", text: "P ĐOÀN" },
       ],
     };
+  },
+    mounted() {
+    this.dataArr(this.currentPage);
+  },
+   methods: {
+    ...mapActions([
+      "storeqlda/getListInfomationEmployHasPaging",
+      "storeqlda/getListDataUser",
+    ]),
+    dataArr(page) {
+      var data = {
+        page: page,
+      };
+      this["storeqlda/getListInfomationEmployHasPaging"](data).then((response) => {
+        this.dataArrInfoEmploy = response.data.data;
+        this.pagination = response.data;
+        this.rows = response.data.total;
+      });
+    },
   },
 };
 </script>

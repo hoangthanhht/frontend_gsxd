@@ -116,6 +116,7 @@
                 <th>Kết quả</th>
                 <th>Tình trạng</th>
                 <th>Lưu ý</th>
+                <th></th>
               </tr>
             </thead>
             <tbody v-if="dataArr.length !== 0">
@@ -137,23 +138,23 @@
                   </td>
                   <td>
                     <span class="ten_vat_tu text-muted font-weight-bold">{{
-                      item.keHoach !== null ? item.keHoach : "null"
+                     handleGetDate(index)[0]!== null ? handleGetDate(index)[0]: ""
                     }}</span>
                   </td>
                   <td>
                     <span class="don_vi text-muted font-weight-bold">{{
-                      item.thucHien !== null ? item.thucHien : "null"
+                     handleGetDate(index)[1]!== null ? handleGetDate(index)[1]: ""
                     }}</span>
                   </td>
                   <td>
                     <span class="gia_vat_tu text-muted font-weight-bold">{{
-                      item.nguoiDeXuat !== null ? item.nguoiDeXuat : "null"
+                      handleGetPersion(index)[0] !== null ? handleGetPersion(index)[0] : ""
                     }}</span>
                   </td>
 
                   <td>
                     <span class="khu_vuc text-muted font-weight-bold">{{
-                      item.nguoiPhoiHop !== null ? item.nguoiPhoiHop : "null"
+                      handleGetPersion(index)[1] !== null ? handleGetPersion(index)[1] : ""
                     }}</span>
                   </td>
 
@@ -184,6 +185,14 @@
                     <span class="tac_gia text-muted font-weight-bold">{{
                       item.luuY !== null ? item.luuY : "null"
                     }}</span>
+                  </td>
+
+                   <td>
+                    <span class="nguon text-muted font-weight-bold">
+                      <i 
+                       @click="handleEdit(index)"
+                       class="menu-icon cursor-pointer flaticon2-edit"></i>
+                    </span>
                   </td>
                 </tr>
               </template>
@@ -244,6 +253,7 @@ export default {
   },
   computed: {
     ...mapGetters(["storeqlda/getListDataUserGTer"]),
+
   },
   created() {
     this["storeqlda/getListDataUser"]().then(() => {
@@ -265,6 +275,110 @@ export default {
       "storeqlda/getListTaskHasPaging",
       "storeqlda/getListDataUser",
     ]),
+    handleGetPersion(index){
+       let arrTemp =[];
+        let persionAssign = "";
+      let persionDo = "";
+       if (this.dataArrAssignedWork[index].nguoiDeXuat) {
+          arrTemp = JSON.parse(this.dataArrAssignedWork[index].nguoiDeXuat);
+         for (var i in arrTemp) {
+            if(persionAssign=='') {
+              persionAssign = arrTemp[i].text
+            }else{
+              persionAssign = persionAssign + ',' + arrTemp[i].text
+            }
+         }
+       }
+       if (this.dataArrAssignedWork[index].nguoiPhoiHop) {
+          arrTemp = JSON.parse(this.dataArrAssignedWork[index].nguoiPhoiHop);
+         for (var j in arrTemp) {
+            if(persionDo=='') {
+              persionDo = arrTemp[j].text
+            }else{
+              persionDo = persionDo + ',' + arrTemp[j].text
+            }
+         }
+       }
+        arrTemp =[];
+      if(persionAssign){
+        arrTemp.push(persionAssign);
+      }
+       if(persionDo){
+         arrTemp.push(persionDo);
+       }
+      return arrTemp;
+    },
+    handleGetDate(index){
+       let datePlan = "";
+      let dateReal = "";
+      let arrTemp =[];
+      if (this.dataArrAssignedWork[index].keHoach) {
+       arrTemp = JSON.parse(this.dataArrAssignedWork[index].keHoach);
+        let arrTimeStartKh = arrTemp[0].split("-");
+        let arrTimeFinishKh = arrTemp[1].split("-");
+        datePlan =
+          "Bắt đầu : " +
+          arrTimeStartKh[2] +
+          "/" +
+          arrTimeStartKh[1] +
+          "/" +
+          arrTimeStartKh[0] +
+          "," +
+          "Kết thúc " +
+          arrTimeFinishKh[2] +
+          "/" +
+          arrTimeFinishKh[1] +
+          "/" +
+          arrTimeFinishKh[0];
+      }
+      if (this.dataArrAssignedWork[index].thucHien) { 
+         arrTemp = JSON.parse(this.dataArrAssignedWork[index].thucHien);
+        let arrTimeStartReal = arrTemp[0].split("-");
+        let arrTimeFinishReal =arrTemp[1].split("-");
+        dateReal =
+          "Bắt đầu : " +
+          arrTimeStartReal[2] +
+          "/" +
+          arrTimeStartReal[1] +
+          "/" +
+          arrTimeStartReal[0] +
+          "," +
+          "Kết thúc " +
+          arrTimeFinishReal[2] +
+          "/" +
+          arrTimeFinishReal[1] +
+          "/" +
+          arrTimeFinishReal[0];
+      }
+      arrTemp =[];
+      if(datePlan){
+        arrTemp.push(datePlan);
+      }
+       if(datePlan){
+         arrTemp.push(dateReal);
+       }
+      return arrTemp;
+      // let nguoiDeXuat = "";
+      // for (var i in this.selectedPersionAssign) {
+      //   if (!nguoiDeXuat) {
+      //     nguoiDeXuat = this.selectedPersionAssign[i].text;
+      //   } else {
+      //     nguoiDeXuat = nguoiDeXuat + "," + this.selectedPersionAssign[i].text;
+      //   }
+      // }
+      //    let nguoiPhoiHop = "";
+      // for (var j in this.selectedPersionDo) {
+      //   if (!nguoiPhoiHop) {
+      //     nguoiPhoiHop = this.selectedPersionDo[j].text;
+      //   } else {
+      //     nguoiPhoiHop = nguoiPhoiHop + "," + this.selectedPersionDo[j].text;
+      //   }
+      // }
+    },
+    handleEdit(index) {
+      let id = this.dataArrAssignedWork[index].id
+      this.$router.push(`/themcongviec/${id}`);
+    },
     custom_label_persion({ text }) {
       return `${text}`;
     },

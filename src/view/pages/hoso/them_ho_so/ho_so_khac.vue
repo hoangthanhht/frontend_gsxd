@@ -249,6 +249,7 @@ export default {
       var data = {
         duAn: this.selectedProject,
         loaiHoSo: this.selectedKindFile.text,
+        kyHieuHoSo: 'hsk',
         tenHoSo: this.fileName,
         soLuong: this.quantity,
         ngayNhan: dateReceive,

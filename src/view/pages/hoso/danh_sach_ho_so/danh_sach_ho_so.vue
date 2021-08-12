@@ -144,7 +144,9 @@
 
                   <td>
                     <span class="nguon text-muted font-weight-bold">
-                      <i class="menu-icon cursor-pointer flaticon2-edit"></i>
+                      <i 
+                       @click="handleEdit(index)"
+                      class="menu-icon cursor-pointer flaticon2-edit"></i>
                     </span>
                   </td>
  
@@ -209,6 +211,10 @@ export default {
       "storeqlda/getListFileHasPaging",
       "storeqlda/getListDataUser",
     ]),
+     handleEdit(index) {
+      let id = this.dataArrFile[index].id
+      this.$router.push(`/themhoso/${id}`);
+    },
     custom_label_persion({ text }) {
       return `${text}`;
     },

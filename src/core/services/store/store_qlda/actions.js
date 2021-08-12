@@ -944,7 +944,7 @@ export default {
 
 
     /* ACTION CHO TAO TASK */
-    async ActionCreateTask(context, { Ten = '', keHoach = '', thucHien = '', nguoiDeXuat = '',
+    async ActionCreateTask(context, { Ten = '', keHoach = '', thucHien = '', nguoiDeXuat = '',duanLienQuan='',
         nguoiPhoiHop = '', moTaTask = '', mucDo = '', ketQua = '', tinhTrang = '', luuY = '' }) {
 
         let data = {
@@ -958,6 +958,7 @@ export default {
             ketQua: ketQua,
             tinhTrang: tinhTrang,
             luuY: luuY,
+            duanLienQuan:duanLienQuan
 
         }
         try {
@@ -985,6 +986,49 @@ export default {
             }
         }
     },
+
+    async ActionUpdateTask(context, { Ten = '', keHoach = '', thucHien = '', nguoiDeXuat = '',duanLienQuan='',
+    nguoiPhoiHop = '', moTaTask = '', mucDo = '', ketQua = '', tinhTrang = '', luuY = '',idTask='' }) {
+
+    let data = {
+        Ten: Ten,
+        keHoach: keHoach ? keHoach : null,
+        thucHien: thucHien ? thucHien : null,
+        nguoiDeXuat: nguoiDeXuat,
+        nguoiPhoiHop: nguoiPhoiHop,
+        moTaTask: moTaTask,
+        mucDo: mucDo,
+        ketQua: ketQua,
+        tinhTrang: tinhTrang,
+        luuY: luuY,
+        duanLienQuan:duanLienQuan
+
+    }
+    try {
+
+        var result = await axiosInstance.post(`update/${idTask}`, data);
+
+        if (result.status === 200) {
+            //commit('SET_USER_INFO', result.data.user);
+            return {
+                ok: true,
+                data: result.data.msg,
+                error: null
+            }
+
+        }
+        return {
+            ok: false,
+            error: result.data.message
+        }
+    } catch (error) {
+
+        return {
+            ok: false,
+            error: error.message
+        }
+    }
+},
     async getListTaskHasPaging(context, page) {
 
         var config = {
@@ -1005,6 +1049,19 @@ export default {
         }
     },
 
+    async getTaskWithId(context, task_id) {
+
+        try {
+
+            var result = await axiosInstance.get(`/getTaskById/${task_id}`);
+            // context.commit('SET_LIST_POST', result.data.data);
+            return result
+            //console.log("error",result.data.data);
+        } catch (error) {
+            console.log("error", error);
+        }
+    },
+    
     /* BAO CÁO */
     async getTimeBaoCao(context, { kind = '',site='' }) {
 
@@ -1132,6 +1189,7 @@ export default {
     async ActionCreateFile(context, { 
         duAn ='',
         loaiHoSo ='',
+        kyHieuHoSo='',
         tenHoSo ='',
         soLuong ='',
         ngayNhan ='',
@@ -1159,7 +1217,8 @@ export default {
             nguyenNhanThayDoiTk:nguyenNhanThayDoiTk,                            
             nguoiPheDuyet:nguoiPheDuyet,                           
             yKienTVGS:yKienTVGS,                       
-
+            kyHieuHoSo:kyHieuHoSo,                       
+            
         }
         try {
 
@@ -1356,4 +1415,131 @@ export default {
             console.log("error", error);
         }
     },
+
+     /* ACTION CHO TAO DỰ ÁN */
+     async ActionCreateInfomationEmploy(context, { 
+        codeEmploy ='',
+        userNameEmploy ='',
+        nameEmploy ='',
+        teleEmploy ='',
+        emailEmploy ='',
+        genderEmploy ='',
+        birthdayEmploy ='',
+        placeOfBirthEmploy ='',
+        homeTownEmploy ='',
+        permanentResidenceEmploy ='',
+        currentAccommodationEmploy ='',
+        majorsEmploy ='',
+        trainingPlacesEmploy ='',
+        nationEmploy ='',
+        religionEmploy ='',
+        qualificationEmploy ='',
+        graduationYearEmploy ='',
+        IDCardEmploy ='',
+        dateRangeEmploy ='',
+        issuedByEmploy ='',
+        accountNumberEmploy ='',
+        bankEmploy ='',
+        branchBankEmploy ='',
+        practicingCertificateTVGS ='',
+        practicingCertificateTVGSEffectiveDate ='',
+        practicingCertificateATLD ='',  
+        practicingCertificateTVTK ='',
+        practicingCertificateOther ='',
+        DateOfReceivingTheJob ='',
+        Department ='',
+        Position ='',
+        socialInsurance ='',
+        typeOfContract ='',
+        workStatus ='',
+        socialInsuranceNumber ='',
+        dayOff ='',
+        socialInsurancePremium ='',
+        descriptionEmploy ='',
+    }) {
+
+        let data = {
+            codeEmploy:codeEmploy,                           
+            userNameEmploy:userNameEmploy,                           
+            nameEmploy:nameEmploy,                         
+            teleEmploy:teleEmploy,                           
+            emailEmploy:emailEmploy,                           
+            genderEmploy:genderEmploy,                           
+            birthdayEmploy:birthdayEmploy,                           
+            placeOfBirthEmploy:placeOfBirthEmploy,                            
+            homeTownEmploy:homeTownEmploy,                            
+            permanentResidenceEmploy:permanentResidenceEmploy,                            
+            currentAccommodationEmploy:currentAccommodationEmploy,                            
+            majorsEmploy:majorsEmploy,                            
+            trainingPlacesEmploy:trainingPlacesEmploy,
+            nationEmploy:nationEmploy,                           
+            religionEmploy:religionEmploy,                           
+            qualificationEmploy:qualificationEmploy,                         
+            graduationYearEmploy:graduationYearEmploy,                           
+            IDCardEmploy:IDCardEmploy,                           
+            dateRangeEmploy:dateRangeEmploy,                           
+            issuedByEmploy:issuedByEmploy,                           
+            accountNumberEmploy:accountNumberEmploy,                            
+            bankEmploy:bankEmploy,                            
+            branchBankEmploy:branchBankEmploy,                            
+            practicingCertificateTVGS:practicingCertificateTVGS,                            
+            practicingCertificateTVGSEffectiveDate:practicingCertificateTVGSEffectiveDate,                            
+            practicingCertificateATLD:practicingCertificateATLD, 
+            practicingCertificateTVTK:practicingCertificateTVTK,                           
+            practicingCertificateOther:practicingCertificateOther,                           
+            DateOfReceivingTheJob:DateOfReceivingTheJob,                         
+            Department:Department,                           
+            Position:Position,                           
+            socialInsurance:socialInsurance,                           
+            typeOfContract:typeOfContract,                           
+            workStatus:workStatus,                            
+            socialInsuranceNumber:socialInsuranceNumber,                            
+            dayOff:dayOff,                            
+            socialInsurancePremium:socialInsurancePremium,                            
+            descriptionEmploy:descriptionEmploy,                            
+        }
+        try {
+
+            var result = await axiosInstance.post(`createinfomationEmploy`, data);
+
+            if (result.status === 200) {
+                //commit('SET_USER_INFO', result.data.user);
+                return {
+                    ok: true,
+                    data: result.data.msg,
+                    error: null
+                }
+
+            }
+            return {
+                ok: false,
+                error: result.data.message
+            }
+        } catch (error) {
+
+            return {
+                ok: false,
+                error: error.message
+            }
+        }
+    },
+    async getListInfomationEmployHasPaging(context, page) {
+
+        var config = {
+            headers: {
+                'Accept': 'application/json',
+                //'Authorization' :'Bearer ' + token,
+            }
+        }
+
+        try {
+
+            var result = await axiosInstance.get('/showinfomationEmploy?page=' + page, config);
+            return result
+            //console.log("error",result.data.data);
+        } catch (error) {
+            console.log("error", error);
+        }
+    },
+
 }

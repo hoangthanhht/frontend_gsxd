@@ -71,7 +71,7 @@ export default new Router({
 					}
 				},
 				{
-					path: "/themcongviec",
+					path: "/themcongviec/:id?",
 					name: "themcongviec",
 					component: () => import("@/view/pages/Themcongviec.vue"),
 					beforeEnter: (to, from, next) =>  {
@@ -393,7 +393,7 @@ export default new Router({
 					}
 				},
 				{
-					path: "/themhoso",
+					path: "/themhoso/:id?",
 					name: "themhoso",
 					component: () => import("@/view/pages/hoso/them_ho_so/ho_so_ngthu.vue"),
 					beforeEnter: (to, from, next) =>  {
@@ -406,7 +406,7 @@ export default new Router({
 					}
 				},
 				{
-					path: "/hosokhac",
+					path: "/hosokhac/:id?",
 					name: "hosokhac",
 					component: () => import("@/view/pages/hoso/them_ho_so/ho_so_khac.vue"),
 					beforeEnter: (to, from, next) =>  {
@@ -419,7 +419,7 @@ export default new Router({
 					}
 				},
 				{
-					path: "/hosotke",
+					path: "/hosotke/:id?",
 					name: "hosotke",
 					component: () => import("@/view/pages/hoso/them_ho_so/ho_so_tke.vue"),
 					beforeEnter: (to, from, next) =>  {
@@ -433,7 +433,7 @@ export default new Router({
 				},
 				/* route cho hop dong */
 				{
-					path: "/themhopdong",
+					path: "/themhopdong//:id?",
 					name: "themhopdong",
 					component: () => import("@/view/pages/hopdong/them_hop_dong/them_hop_dong.vue"),
 					beforeEnter: (to, from, next) =>  {
@@ -566,7 +566,7 @@ export default new Router({
 					}
 				},
 				{
-					path: "/themnhansu",
+					path: "/themnhansu/:id?",
 					name: "themnhansu",
 					component: () => import("@/view/pages/nhansu/them_nhan_su.vue"),
 					beforeEnter: (to, from, next) =>  {

@@ -4,208 +4,599 @@
     <div class="add-gr1">
       <h5 class="mb-3 header-title">Thêm nhân sự</h5>
       <b-form>
-        <div class="grid grid-flow-col grid-cols-7 grid-rows-3 gap-2">
-        <b-form-group
-          class="col-span-5"
-          id="input-group-1"
-          label="Tên dự án"
-          label-for="input-1"
-        >
-          <b-form-input
-            v-model="nameProject"
-            id="input-1"
-            type="text"
-            placeholder="Nhập dự án"
-            required
-          ></b-form-input>
-        </b-form-group>
+        <div class="grid grid-flow-col grid-cols-7 grid-rows-3">
+          <b-form-group
+            class="col-span-5"
+            id="input-group-1"
+            label="Mã nhân viên"
+            label-for="input-1"
+          >
+            <b-form-input
+              v-model="codeEmploy"
+              id="input-1"
+              type="text"
+              placeholder="Mã nhân viên"
+              required
+            ></b-form-input>
+          </b-form-group>
 
-        <b-form-group
-         class="col-span-5"
-          id="input-group-1"
-          label="Mẫ dự án"
-          label-for="input-1"
-        >
-          <b-form-input
-            v-model="codeProject"
-            id="input-1"
-            type="text"
-            placeholder="Nhập mã dự án"
-            required
-          ></b-form-input>
-        </b-form-group>
+          <b-form-group
+            class="col-span-5"
+            id="input-group-1"
+            label="Tài khoản"
+            label-for="input-1"
+          >
+            <b-form-input
+              v-model="userNameEmploy"
+              id="input-1"
+              type="text"
+              placeholder="Tài khoản"
+              required
+            ></b-form-input>
+          </b-form-group>
 
-        <b-form-group
-         class="col-span-5"
-          id="input-group-1"
-          label="Mẫ dự án"
-          label-for="input-1"
-        >
-          <b-form-input
-            v-model="codeProject"
-            id="input-1"
-            type="text"
-            placeholder="Nhập mã dự án"
-            required
-          ></b-form-input>
-        </b-form-group>
+          <b-form-group
+            class="col-span-5"
+            id="input-group-1"
+            label="Nhập tên nhân viên"
+            label-for="input-1"
+          >
+            <b-form-input
+              v-model="nameEmploy"
+              id="input-1"
+              type="text"
+              placeholder="Nhập tên nhân viên"
+              required
+            ></b-form-input>
+          </b-form-group>
 
-       <div class="bg-green-400  col-span-2 row-span-3 mt-10 mb-10">
-         ảnh
-       </div>
-
-        </div>
-
-         <b-form-group
-          id="input-group-1"
-          label="Tên chủ đầu tư"
-          label-for="input-1"
-        >
-          <b-form-input
-            v-model="nameInvestor"
-            id="input-1"
-            type="text"
-            placeholder="Nhập tên chủ đầu tư"
-            required
-          ></b-form-input>
-        </b-form-group>
-
-
-        <b-form-group
-          id="input-group-2"
-          label="Mô tả, ghi chú về dự án"
-          label-for="input-2"
-        >
-          <b-form-textarea
-            id="textarea"
-            v-model="descriptionProject"
-            placeholder="Mô tả, ghi chú về dự án"
-            rows="3"
-            max-rows="6"
-          ></b-form-textarea>
-        </b-form-group>
-
-        <div class="add-gr11">
-          <div class="add-gr111">
-            <b-form-group
-              id="input-group-1"
-              label="Ngày bắt đầu tiếp nhận:"
-              label-for="input-1"
-            >
-              <b-form-input
-                v-model="timeStart"
-                id="input-1"
-                type="date"
-                required
-              ></b-form-input>
-            </b-form-group>
-          </div>
-
-          <div class="add-gr111">
-            <b-form-group
-              id="input-group-1"
-              label="Thời gian kết thúc dự kiến:"
-              label-for="input-1"
-            >
-              <b-form-input
-                v-model="timeExpect"
-                id="input-1"
-                type="date"
-                required
-              ></b-form-input>
-            </b-form-group>
+          <div class="bg-green-400 col-span-2 row-span-3 mt-10 mb-10 ml-5 mr-5">
+            ảnh
           </div>
         </div>
-        <!-- input -->
-        <div class="add-gr11">
+        <div class="grid gap-3 grid-cols-2">
+          <b-form-group
+            id="input-group-1"
+            label="Điện thoại liên hệ"
+            label-for="input-1"
+          >
+            <b-form-input
+              v-model="teleEmploy"
+              id="input-1"
+              type="text"
+              placeholder="Điện thoại liên hệ"
+              required
+            ></b-form-input>
+          </b-form-group>
 
-           <div class="add-gr111">
-              <b-form-group
-              id="input-group-1"
-              label="Thời gian kết thúc thực tế:"
-              label-for="input-1"
-            >
-              <b-form-input
-                v-model="timeReal"
-                id="input-1"
-                type="date"
-                required
-              ></b-form-input>
-            </b-form-group>
-          </div>
+          <b-form-group id="input-group-1" label="Email" label-for="input-1">
+            <b-form-input
+              v-model="emailEmploy"
+              id="input-1"
+              type="text"
+              placeholder="Email"
+              required
+            ></b-form-input>
+          </b-form-group>
+        </div>
 
-          <div class="add-gr111">
-            <b-form-group
-              id="input-group-1"
-              label="Trạng thái dự án::"
-              label-for="input-1"
-            >
-              <b-form-select
-                v-model="selectedStatusProject"
-                :options="status_project"
-              >
-                <template #first>
-                  <b-form-select-option :value="null" disabled
-                    >-- Trạng thái dự án: --</b-form-select-option
-                  >
-                </template>
-              </b-form-select>
-            </b-form-group>
-          </div>
+        <div class="grid gap-3 grid-cols-4">
+          <b-form-group
+            class="col-span-1"
+            id="input-group-1"
+            label="Giới tinh"
+            label-for="input-1"
+          >
+            <b-form-input
+              v-model="genderEmploy"
+              id="input-1"
+              type="text"
+              placeholder="Giới tinh"
+              required
+            ></b-form-input>
+          </b-form-group>
 
-         
+          <b-form-group
+            class="col-span-1"
+            id="input-group-1"
+            label="Ngày sinh"
+            label-for="input-1"
+          >
+            <b-form-input
+              v-model="birthdayEmploy"
+              id="input-1"
+              type="text"
+              placeholder="Ngày sinh"
+              required
+            ></b-form-input>
+          </b-form-group>
+
+          <b-form-group
+            class="col-span-2"
+            id="input-group-1"
+            label="Nơi sinh"
+            label-for="input-1"
+          >
+            <b-form-input
+              v-model="placeOfBirthEmploy"
+              id="input-1"
+              type="text"
+              placeholder="Nơi sinh"
+              required
+            ></b-form-input>
+          </b-form-group>
+        </div>
+
+        <div>
+          <b-form-group
+            id="input-group-1"
+            label="Nguyên quán"
+            label-for="input-1"
+          >
+            <b-form-input
+              v-model="homeTownEmploy"
+              id="input-1"
+              type="text"
+              placeholder="Nguyên quán"
+              required
+            ></b-form-input>
+          </b-form-group>
+        </div>
+
+        <div>
+          <b-form-group
+            id="input-group-1"
+            label="Hộ khẩu thường trú"
+            label-for="input-1"
+          >
+            <b-form-input
+              v-model="permanentResidenceEmploy"
+              id="input-1"
+              type="text"
+              placeholder="Hộ khẩu thường trú"
+              required
+            ></b-form-input>
+          </b-form-group>
+        </div>
+
+        <div>
+          <b-form-group
+            id="input-group-1"
+            label="Chỗ ở hiện nay"
+            label-for="input-1"
+          >
+            <b-form-input
+              v-model="currentAccommodationEmploy"
+              id="input-1"
+              type="text"
+              placeholder="Chỗ ở hiện nay"
+              required
+            ></b-form-input>
+          </b-form-group>
+        </div>
+
+        <div class="grid gap-3 grid-cols-2">
+          <b-form-group
+            id="input-group-1"
+            label="Nghành học"
+            label-for="input-1"
+          >
+            <b-form-input
+              v-model="majorsEmploy"
+              id="input-1"
+              type="text"
+              placeholder="Nghành học"
+              required
+            ></b-form-input>
+          </b-form-group>
+
+          <b-form-group
+            id="input-group-1"
+            label="Nơi đào tạo"
+            label-for="input-1"
+          >
+            <b-form-input
+              v-model="trainingPlacesEmploy"
+              id="input-1"
+              type="text"
+              placeholder="Nơi đào tạo"
+              required
+            ></b-form-input>
+          </b-form-group>
+        </div>
+
+        <div class="grid gap-3 grid-cols-2">
+          <b-form-group id="input-group-1" label="Dân tộc" label-for="input-1">
+            <b-form-input
+              v-model="nationEmploy"
+              id="input-1"
+              type="text"
+              placeholder="Dân tộc"
+              required
+            ></b-form-input>
+          </b-form-group>
+
+          <b-form-group id="input-group-1" label="Tôn giáo" label-for="input-1">
+            <b-form-input
+              v-model="religionEmploy"
+              id="input-1"
+              type="text"
+              placeholder="Tôn giáo"
+              required
+            ></b-form-input>
+          </b-form-group>
+        </div>
+
+        <div class="grid gap-3 grid-cols-2">
+          <b-form-group
+            id="input-group-1"
+            label="Trình độ chuyên môn"
+            label-for="input-1"
+          >
+            <b-form-input
+              v-model="qualificationEmploy"
+              id="input-1"
+              type="text"
+              placeholder="Trình độ chuyên môn"
+              required
+            ></b-form-input>
+          </b-form-group>
+
+          <b-form-group
+            id="input-group-1"
+            label="Năm tôt nghiệp"
+            label-for="input-1"
+          >
+            <b-form-input
+              v-model="graduationYearEmploy"
+              id="input-1"
+              type="text"
+              placeholder="Năm tôt nghiệp"
+              required
+            ></b-form-input>
+          </b-form-group>
+        </div>
+
+        <div class="grid gap-3 grid-cols-4">
+          <b-form-group
+            class="col-span-2"
+            id="input-group-1"
+            label="Chứng minh thư/căn cước"
+            label-for="input-1"
+          >
+            <b-form-input
+              v-model="IDCardEmploy"
+              id="input-1"
+              type="text"
+              placeholder="Chứng minh thư/căn cước"
+              required
+            ></b-form-input>
+          </b-form-group>
+
+          <b-form-group
+            class="col-span-1"
+            id="input-group-1"
+            label="Ngày cấp"
+            label-for="input-1"
+          >
+            <b-form-input
+              v-model="dateRangeEmploy"
+              id="input-1"
+              type="text"
+              placeholder="Ngày cấp"
+              required
+            ></b-form-input>
+          </b-form-group>
+
+          <b-form-group
+            class="col-span-1"
+            id="input-group-1"
+            label="Nơi cấp"
+            label-for="input-1"
+          >
+            <b-form-input
+              v-model="issuedByEmploy"
+              id="input-1"
+              type="text"
+              placeholder="Nơi cấp"
+              required
+            ></b-form-input>
+          </b-form-group>
+        </div>
+
+        <div class="grid gap-3 grid-cols-4">
+          <b-form-group
+            class="col-span-2"
+            id="input-group-1"
+            label="Số tài khoản"
+            label-for="input-1"
+          >
+            <b-form-input
+              v-model="accountNumberEmploy"
+              id="input-1"
+              type="text"
+              placeholder="Số tài khoản"
+              required
+            ></b-form-input>
+          </b-form-group>
+
+          <b-form-group
+            class="col-span-1"
+            id="input-group-1"
+            label="Ngân hàng"
+            label-for="input-1"
+          >
+            <b-form-input
+              v-model="bankEmploy"
+              id="input-1"
+              type="text"
+              placeholder="Ngân hàng"
+              required
+            ></b-form-input>
+          </b-form-group>
+
+          <b-form-group
+            class="col-span-1"
+            id="input-group-1"
+            label="Chi nhánh"
+            label-for="input-1"
+          >
+            <b-form-input
+              v-model="branchBankEmploy"
+              id="input-1"
+              type="text"
+              placeholder="Chi nhánh"
+              required
+            ></b-form-input>
+          </b-form-group>
+        </div>
+
+        <div class="grid gap-3 grid-cols-4">
+          <b-form-group
+            class="col-span-2"
+            id="input-group-1"
+            label="CCHN TVGS:"
+            label-for="input-1"
+          >
+            <b-form-input
+              v-model="practicingCertificateTVGS"
+              id="input-1"
+              type="text"
+              placeholder="CCHN TVGS:"
+              required
+            ></b-form-input>
+          </b-form-group>
+
+          <b-form-group
+            class="col-span-1"
+            id="input-group-1"
+            label="Ngày hiệu lực:"
+            label-for="input-1"
+          >
+            <b-form-input
+              v-model="practicingCertificateTVGSEffectiveDate"
+              id="input-1"
+              type="text"
+              placeholder="Ngày hiệu lực:"
+              required
+            ></b-form-input>
+          </b-form-group>
+
+          <b-form-group
+            class="col-span-1"
+            id="input-group-1"
+            label="CC ATLD:"
+            label-for="input-1"
+          >
+            <b-form-input
+              v-model="practicingCertificateATLD"
+              id="input-1"
+              type="text"
+              placeholder="CC ATLD:"
+              required
+            ></b-form-input>
+          </b-form-group>
+        </div>
+
+        <div class="grid gap-3 grid-cols-2">
+          <b-form-group
+            id="input-group-1"
+            label="CCHN TVTK:"
+            label-for="input-1"
+          >
+            <b-form-input
+              v-model="practicingCertificateTVTK"
+              id="input-1"
+              type="text"
+              placeholder="CCHN TVTK:"
+              required
+            ></b-form-input>
+          </b-form-group>
+
+          <b-form-group
+            id="input-group-1"
+            label="Chứng chỉ khác:"
+            label-for="input-1"
+          >
+            <b-form-input
+              v-model="practicingCertificateOther"
+              id="input-1"
+              type="text"
+              placeholder="Chứng chỉ khác:"
+              required
+            ></b-form-input>
+          </b-form-group>
+        </div>
+
+        <div class="grid gap-3 grid-cols-4">
+          <b-form-group
+            class="col-span-2"
+            id="input-group-1"
+            label="Ngày nhận công tác:"
+            label-for="input-1"
+          >
+            <b-form-input
+              v-model="DateOfReceivingTheJob"
+              id="input-1"
+              type="text"
+              placeholder="Ngày nhận công tác:"
+              required
+            ></b-form-input>
+          </b-form-group>
+
+          <b-form-group
+            class="col-span-1"
+            id="input-group-1"
+            label="Phòng ban:"
+            label-for="input-1"
+          >
+            <b-form-input
+              v-model="Department"
+              id="input-1"
+              type="text"
+              placeholder="Phòng ban:"
+              required
+            ></b-form-input>
+          </b-form-group>
+
+          <b-form-group
+            class="col-span-1"
+            id="input-group-1"
+            label="Chức danh (*):"
+            label-for="input-1"
+          >
+            <b-form-input
+              v-model="Position"
+              id="input-1"
+              type="text"
+              placeholder="Chức danh (*):"
+              required
+            ></b-form-input>
+          </b-form-group>
+        </div>
+
+        <div class="grid gap-3 grid-cols-4">
+          <b-form-group
+            class="col-span-2"
+            id="input-group-1"
+            label="Ngày đóng bảo hiểm xã hội:"
+            label-for="input-1"
+          >
+            <b-form-input
+              v-model="socialInsurance"
+              id="input-1"
+              type="text"
+              placeholder="Ngày đóng bảo hiểm xã hội:"
+              required
+            ></b-form-input>
+          </b-form-group>
+
+          <b-form-group
+            class="col-span-1"
+            id="input-group-1"
+            label="Loại hợp đồng:"
+            label-for="input-1"
+          >
+            <b-form-input
+              v-model="typeOfContract"
+              id="input-1"
+              type="text"
+              placeholder="Loại hợp đồng:"
+              required
+            ></b-form-input>
+          </b-form-group>
+
+          <b-form-group
+            class="col-span-1"
+            id="input-group-1"
+            label="Trạng thái công việc:"
+            label-for="input-1"
+          >
+            <b-form-input
+              v-model="workStatus"
+              id="input-1"
+              type="text"
+              placeholder="Trạng thái công việc:"
+              required
+            ></b-form-input>
+          </b-form-group>
+        </div>
+
+        <div class="grid gap-3 grid-cols-4">
+          <b-form-group
+            class="col-span-2"
+            id="input-group-1"
+            label="Số sổ bảo hiểm xã hội:"
+            label-for="input-1"
+          >
+            <b-form-input
+              v-model="socialInsuranceNumber"
+              id="input-1"
+              type="text"
+              placeholder="Số sổ bảo hiểm xã hội:"
+              required
+            ></b-form-input>
+          </b-form-group>
+
+          <b-form-group
+            class="col-span-1"
+            id="input-group-1"
+            label="Ngày nghỉ việc:"
+            label-for="input-1"
+          >
+            <b-form-input
+              v-model="dayOff"
+              id="input-1"
+              type="text"
+              placeholder="Ngày nghỉ việc:"
+              required
+            ></b-form-input>
+          </b-form-group>
+
+          <b-form-group
+            class="col-span-1"
+            id="input-group-1"
+            label="Mức đóng BHXH:"
+            label-for="input-1"
+          >
+            <b-form-input
+              v-model="socialInsurancePremium"
+              id="input-1"
+              type="text"
+              placeholder="Mức đóng BHXH:"
+              required
+            ></b-form-input>
+          </b-form-group>
+        </div>
+
+        <div>
+          <b-form-group
+            id="input-group-2"
+            label="Mô tả về nhân viên:"
+            label-for="input-2"
+          >
+            <b-form-textarea
+              id="textarea"
+              v-model="descriptionEmploy"
+              placeholder="Mô tả về nhân viên:"
+              rows="3"
+              max-rows="6"
+            ></b-form-textarea>
+          </b-form-group>
         </div>
       </b-form>
     </div>
     <!-- group 2 -->
-    <div class="add-gr2">
-      <h5 class="mb-3 header-title">Nhân viên tham gia dự án</h5>
-      <b-form>
-        <b-form-group
-          id="input-group-1"
-          label="Nhân sự phụ trách chính:"
-          label-for="input-1"
-        >
-          <multiselect
-            v-model="selectedPersionMain"
-            multiple
-            :custom-label="custom_label"
-            label="name"
-            track-by="id"
-            selectLabel="Ấn enter để chọn"
-            deselectLabel="Ấn enter để bỏ chọn"
-            :options="persion_main"
-          >
-          </multiselect>
-        </b-form-group>
-      </b-form>
-
-      <b-form>
-        <b-form-group
-          id="input-group-1"
-          label="Nhân sự liên quan:"
-          label-for="input-1"
-        >
-          <multiselect
-            v-model="selectedInvolve"
-            multiple
-            :custom-label="custom_label"
-            label="name"
-            track-by="id"
-            selectLabel="Ấn enter để chọn"
-            deselectLabel="Ấn enter để bỏ chọn"
-            :options="project_involve"
-          >
-          </multiselect>
-        </b-form-group>
-      </b-form>
-    </div>
 
     <!-- group 3 -->
     <div class="add-gr3">
       <h5>File và tài liệu liên quan</h5>
 
-      <b-form-file class="z-0 cursor-pointer" id="file-small" size="sm"></b-form-file>
+      <b-form-file
+        class="z-0 cursor-pointer"
+        id="file-small"
+        size="sm"
+      ></b-form-file>
     </div>
 
     <div class="add-gr4">
@@ -252,54 +643,68 @@
 </template>
 
 <script>
-import Multiselect from "vue-multiselect";
+//import Multiselect from "vue-multiselect";
 import { mapActions, mapGetters } from "vuex";
 export default {
   name: "add_task",
-  components: { Multiselect },
+  components: {},
   data() {
     return {
       text: "", // cần khai báo data này không sẽ gặp wraning text is not define trong hàm custom_label
       currentTab: 0,
 
-      nameProject:'',
-      codeProject:'',
-      nameInvestor:'',
-      descriptionProject:'',
-      timeStart:'',
-      timeExpect:'',
-      timeReal:'',
+	codeEmploy:'',
+	userNameEmploy:'',
+	nameEmploy:'',
+	teleEmploy:'',
+	emailEmploy:'',
+	genderEmploy:'',
+	birthdayEmploy:'',
+	placeOfBirthEmploy:'',
+	homeTownEmploy:'',
+	permanentResidenceEmploy:'',
+	currentAccommodationEmploy:'',
+	majorsEmploy:'',
+	trainingPlacesEmploy:'',
+	nationEmploy:'',
+	religionEmploy:'',
+	qualificationEmploy:'',
+	graduationYearEmploy:'',
+	IDCardEmploy:'',
+	dateRangeEmploy:'',
+	issuedByEmploy:'',
+	accountNumberEmploy:'',
+	bankEmploy:'',
+	branchBankEmploy:'',
+	practicingCertificateTVGS:'',
+	practicingCertificateTVGSEffectiveDate:'',
+	practicingCertificateATLD:'',
+	practicingCertificateTVTK:'',
+	practicingCertificateOther:'',
+	DateOfReceivingTheJob:'',
+	Department:'',
+	Position:'',
+	socialInsurance:'',
+	typeOfContract:'',
+	workStatus:'',
+	socialInsuranceNumber:'',
+	dayOff:'',
+	socialInsurancePremium:'',
+	descriptionEmploy:'',					
 
       selectedStatusProject: null, // Array reference
       status_project: [
         { value: "Dự án mới", text: "Dự án mới" },
         { value: "Chưa hoàn thành", text: "Chưa hoàn thành" },
         { value: "Đã hoàn thành", text: "Đã hoàn thành" },
-
       ],
       selectedPersionMain: null, // Array reference
-      persion_main: [
-
-      ],
+      persion_main: [],
       selectedInvolve: null, // Array reference
-      project_involve: [
-
-      ],
+      project_involve: [],
     };
   },
-  created() {
-    this["storeqlda/getListDataUser"]().then(() => {
-      let arrTemp = this["storeqlda/getListDataUserGTer"];
-      for (var i in arrTemp) {
-        let data = {
-          id: arrTemp[i].id,
-          text: arrTemp[i].name,
-        };
-        this.persion_main.push(data);
-        this.project_involve.push(data);
-      }
-    });
-  },
+
   mounted() {},
   computed: {
     ...mapGetters([
@@ -309,83 +714,60 @@ export default {
     ]),
   },
   methods: {
-    ...mapActions(["storeqlda/ActionCreateProject", "storeqlda/getListDataUser"]),
+    ...mapActions([
+      "storeqlda/ActionCreateInfomationEmploy",
+      "storeqlda/getListDataUser",
+    ]),
     custom_label({ text }) {
       return `${text}`;
     },
-    handleSave() {
-      let dateStart = "";
-      let datePlan = "";
-      let dateReal = "";
-      if (this.timeStart) {
-        let arrTimeStartKh = this.timeStart.split("-");
-        dateStart =
-          arrTimeStartKh[2] +
-          "/" +
-          arrTimeStartKh[1] +
-          "/" +
-          arrTimeStartKh[0]
-      }
-         if (this.timeExpect) {
-        let arrtimeExpect = this.timeExpect.split("-");
-        datePlan =
-          arrtimeExpect[2] +
-          "/" +
-          arrtimeExpect[1] +
-          "/" +
-          arrtimeExpect[0]
-      }
-         if (this.timeReal) {
-        let arrtimeReal = this.timeReal.split("-");
-        dateReal =
-          arrtimeReal[2] +
-          "/" +
-          arrtimeReal[1] +
-          "/" +
-          arrtimeReal[0]
-      }
-      let nguoiChinh = "";
-      for (var i in this.selectedPersionMain) {
-        if (!nguoiChinh) {
-          nguoiChinh = this.selectedPersionMain[i].text;
-        } else {
-          nguoiChinh = nguoiChinh + "," + this.selectedPersionMain[i].text;
-        }
-      }
-         let nguoiLienQuan = "";
-      for (var j in this.selectedInvolve) {
-        if (!nguoiLienQuan) {
-          nguoiLienQuan = this.selectedInvolve[j].text;
-        } else {
-          nguoiLienQuan = nguoiLienQuan + "," + this.selectedInvolve[j].text;
-        }
-      }
+    handleSave() {					
       var data = {
-        tenDuAn: this.nameProject,
-        maDuAn: this.codeProject,
-        tenCdt: this.nameInvestor,
-        moTaDuAn: this.descriptionProject,
-        ngayBatDau: dateStart,
-        ngayKetThuc: datePlan,
-        ngayKetThucThucTe: dateReal,
-        trangThai: this.selectedStatusProject,
-        nhanSuChinh: nguoiChinh,
-        nhanSuLienQuan: nguoiLienQuan,
+        codeEmploy:this.codeEmploy,                                 
+        userNameEmploy:this.userNameEmploy,                                  
+        nameEmploy:this.nameEmploy,                                  
+        teleEmploy:this.teleEmploy,                                 
+        emailEmploy:this.emailEmploy,                                   
+        genderEmploy:this.genderEmploy,                                                                                                         
+        homeTownEmploy:this.homeTownEmploy,                                   
+        permanentResidenceEmploy:this.permanentResidenceEmploy,                                 
+        currentAccommodationEmploy:this.currentAccommodationEmploy,                                  
+        majorsEmploy:this.majorsEmploy,                                   
+        trainingPlacesEmploy:this.trainingPlacesEmploy,                                 
+		nationEmploy:this.nationEmploy,                                  
+        religionEmploy:this.religionEmploy,                                  
+        qualificationEmploy:this.qualificationEmploy,                                  
+        graduationYearEmploy:this.graduationYearEmploy,                                   
+        IDCardEmploy:this.IDCardEmploy,                                   
+        dateRangeEmploy:this.dateRangeEmploy,                                                                                                                  
+        bankEmploy:this.bankEmploy,                                  
+        branchBankEmploy:this.branchBankEmploy,                                 
+        practicingCertificateTVGS:this.practicingCertificateTVGS,                                  
+        practicingCertificateTVGSEffectiveDate:this.practicingCertificateTVGSEffectiveDate,                                  
+        practicingCertificateATLD:this.practicingCertificateATLD,                                  
+		practicingCertificateTVTK:this.practicingCertificateTVTK,                               
+        practicingCertificateOther:this.practicingCertificateOther,                                 
+        DateOfReceivingTheJob:this.DateOfReceivingTheJob,                                 
+        Department:this.Department,                                  
+        Position:this.Position,                                   
+        socialInsurance:this.socialInsurance,                                                           
+        socialInsuranceNumber:this.socialInsuranceNumber,                                   
+        dayOff:this.dayOff,                                   
+        socialInsurancePremium:this.socialInsurancePremium,                                   
+        descriptionEmploy:this.descriptionEmploy,                                   
       };
-      this["storeqlda/ActionCreateProject"](data).then((res) => {
+      this["storeqlda/ActionCreateInfomationEmploy"](data).then((res) => {
         alert(res.data);
       });
     },
   },
-  watch: {
-
-  },
+  watch: {},
 };
 </script>
 
 <style scoped>
 .custom-file-label {
-    cursor: pointer;
+  cursor: pointer;
 }
 .add-gr {
   position: relative;
