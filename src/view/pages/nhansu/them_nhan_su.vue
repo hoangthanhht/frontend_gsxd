@@ -633,9 +633,15 @@
           <b-icon icon="x-octagon-fill" aria-hidden="true"></b-icon> Bỏ qua
         </b-button>
       </div>
-      <div class="add-gr51 add-gr52">
+         <div v-if="idCurrentEmploy" class="add-gr51 add-gr52">
+      <b-button @click="handleUpdate" size="sm" class="mb-2 tao-cv">
+        <b-icon icon="check2" aria-hidden="true"></b-icon> Cập nhật
+      </b-button>
+      </div>
+
+      <div v-else class="add-gr51 add-gr52">
         <b-button @click="handleSave" size="sm" class="mb-2 tao-cv">
-          <b-icon icon="check2" aria-hidden="true"></b-icon> Cập nhật
+          <b-icon icon="check2" aria-hidden="true"></b-icon> Tạo thông tin nhân sự
         </b-button>
       </div>
     </div>
@@ -652,45 +658,45 @@ export default {
     return {
       text: "", // cần khai báo data này không sẽ gặp wraning text is not define trong hàm custom_label
       currentTab: 0,
-
-	codeEmploy:'',
-	userNameEmploy:'',
-	nameEmploy:'',
-	teleEmploy:'',
-	emailEmploy:'',
-	genderEmploy:'',
-	birthdayEmploy:'',
-	placeOfBirthEmploy:'',
-	homeTownEmploy:'',
-	permanentResidenceEmploy:'',
-	currentAccommodationEmploy:'',
-	majorsEmploy:'',
-	trainingPlacesEmploy:'',
-	nationEmploy:'',
-	religionEmploy:'',
-	qualificationEmploy:'',
-	graduationYearEmploy:'',
-	IDCardEmploy:'',
-	dateRangeEmploy:'',
-	issuedByEmploy:'',
-	accountNumberEmploy:'',
-	bankEmploy:'',
-	branchBankEmploy:'',
-	practicingCertificateTVGS:'',
-	practicingCertificateTVGSEffectiveDate:'',
-	practicingCertificateATLD:'',
-	practicingCertificateTVTK:'',
-	practicingCertificateOther:'',
-	DateOfReceivingTheJob:'',
-	Department:'',
-	Position:'',
-	socialInsurance:'',
-	typeOfContract:'',
-	workStatus:'',
-	socialInsuranceNumber:'',
-	dayOff:'',
-	socialInsurancePremium:'',
-	descriptionEmploy:'',					
+      idCurrentEmploy:null,
+      codeEmploy:'',
+      userNameEmploy:'',
+      nameEmploy:'',
+      teleEmploy:'',
+      emailEmploy:'',
+      genderEmploy:'',
+      birthdayEmploy:'',
+      placeOfBirthEmploy:'',
+      homeTownEmploy:'',
+      permanentResidenceEmploy:'',
+      currentAccommodationEmploy:'',
+      majorsEmploy:'',
+      trainingPlacesEmploy:'',
+      nationEmploy:'',
+      religionEmploy:'',
+      qualificationEmploy:'',
+      graduationYearEmploy:'',
+      IDCardEmploy:'',
+      dateRangeEmploy:'',
+      issuedByEmploy:'',
+      accountNumberEmploy:'',
+      bankEmploy:'',
+      branchBankEmploy:'',
+      practicingCertificateTVGS:'',
+      practicingCertificateTVGSEffectiveDate:'',
+      practicingCertificateATLD:'',
+      practicingCertificateTVTK:'',
+      practicingCertificateOther:'',
+      DateOfReceivingTheJob:'',
+      Department:'',
+      Position:'',
+      socialInsurance:'',
+      typeOfContract:'',
+      workStatus:'',
+      socialInsuranceNumber:'',
+      dayOff:'',
+      socialInsurancePremium:'',
+      descriptionEmploy:'',					
 
       selectedStatusProject: null, // Array reference
       status_project: [
@@ -706,6 +712,46 @@ export default {
   },
 
   mounted() {},
+    created() {
+      this.idCurrentEmploy = this.$route.params.id;
+     if(this.idCurrentEmploy!== undefined){
+        this["storeqlda/getEmployWithId"](this.idCurrentEmploy).then((res)=>{
+        this.codeEmploy = res.data.codeEmploy;                                 
+        this.userNameEmploy = res.data.userNameEmploy;                                  
+        this.nameEmploy = res.data.nameEmploy;                                  
+        this.teleEmploy = res.data.teleEmploy;                                 
+        this.emailEmploy = res.data.emailEmploy;                                   
+        this.genderEmploy = res.data.genderEmploy;                                                                                                         
+        this.homeTownEmploy = res.data.homeTownEmploy;                                   
+        this.permanentResidenceEmploy = res.data.permanentResidenceEmploy;                                 
+        this.currentAccommodationEmploy = res.data.currentAccommodationEmploy;                                  
+        this.majorsEmploy = res.data.majorsEmploy;                                   
+        this.trainingPlacesEmploy = res.data.trainingPlacesEmploy;                                 
+		    this.nationEmploy = res.data.nationEmploy;                                  
+        this.religionEmploy = res.data.religionEmploy;                                  
+        this.qualificationEmploy = res.data.qualificationEmploy;                                  
+        this.graduationYearEmploy = res.data.graduationYearEmploy;                                   
+        this.IDCardEmploy = res.data.IDCardEmploy;                                   
+        this.dateRangeEmploy = res.data.dateRangeEmploy;                                                                                                                  
+        this.bankEmploy = res.data.bankEmploy;                                  
+        this.branchBankEmploy = res.data.branchBankEmploy;                                 
+        this.practicingCertificateTVGS = res.data.practicingCertificateTVGS;                                  
+        this.practicingCertificateTVGSEffectiveDate = res.data.practicingCertificateTVGSEffectiveDate;                                  
+        this.practicingCertificateATLD = res.data.practicingCertificateATLD;                                  
+	    	this.practicingCertificateTVTK = res.data.practicingCertificateTVTK;                               
+        this.practicingCertificateOther = res.data.practicingCertificateOther;                                 
+        this.DateOfReceivingTheJob = res.data.DateOfReceivingTheJob;                                 
+        this.Department = res.data.Department;                                  
+        this.Position = res.data.Position;                                   
+        this.socialInsurance = res.data.socialInsurance;                                                           
+        this.socialInsuranceNumber = res.data.socialInsuranceNumber;                                   
+        this.dayOff = res.data.dayOff;                                   
+        this.socialInsurancePremium = res.data.socialInsurancePremium;                                   
+        this.descriptionEmploy = res.data.descriptionEmploy;
+        })
+
+     }
+    },
   computed: {
     ...mapGetters([
       "storeqlda/getListDataUserGTer",
@@ -717,43 +763,98 @@ export default {
     ...mapActions([
       "storeqlda/ActionCreateInfomationEmploy",
       "storeqlda/getListDataUser",
+      "storeqlda/ActionUpdateInfomationEmploy",
+      "storeqlda/getEmployWithId",
     ]),
     custom_label({ text }) {
       return `${text}`;
     },
+     handleUpdate() {					
+      var data = {
+        codeEmploy:this.codeEmploy,
+        userNameEmploy:this.userNameEmploy,
+        nameEmploy:this.nameEmploy,
+        teleEmploy:this.teleEmploy,
+        emailEmploy:this.emailEmploy,
+        genderEmploy:this.genderEmploy,
+        birthdayEmploy:this.birthdayEmploy,
+        placeOfBirthEmploy:this.placeOfBirthEmploy,
+        homeTownEmploy:this.homeTownEmploy,
+        permanentResidenceEmploy:this.permanentResidenceEmploy,
+        currentAccommodationEmploy:this.currentAccommodationEmploy,
+        majorsEmploy:this.majorsEmploy,
+        trainingPlacesEmploy:this.trainingPlacesEmploy,
+        nationEmploy:this.nationEmploy,
+        religionEmploy:this.religionEmploy,
+        qualificationEmploy:this.qualificationEmploy,
+        graduationYearEmploy:this.graduationYearEmploy,
+        IDCardEmploy:this.IDCardEmploy,
+        dateRangeEmploy:this.dateRangeEmploy,
+        issuedByEmploy:this.issuedByEmploy,
+        accountNumberEmploy:this.accountNumberEmploy,
+        bankEmploy:this.bankEmploy,
+        branchBankEmploy:this.branchBankEmploy,
+        practicingCertificateTVGS:this.practicingCertificateTVGS,
+        practicingCertificateTVGSEffectiveDate:this.practicingCertificateTVGSEffectiveDate,
+        practicingCertificateATLD:this.practicingCertificateATLD,
+        practicingCertificateTVTK:this.practicingCertificateTVTK,
+        practicingCertificateOther:this.practicingCertificateOther,
+        DateOfReceivingTheJob:this.DateOfReceivingTheJob,
+        Department:this.Department,
+        Position:this.Position,
+        socialInsurance:this.socialInsurance,
+        typeOfContract:this.typeOfContract,
+        workStatus:this.workStatus,
+        socialInsuranceNumber:this.socialInsuranceNumber,
+        dayOff:this.dayOff,
+        socialInsurancePremium:this.socialInsurancePremium,
+        descriptionEmploy:this.descriptionEmploy,  
+        idEmploy:this.idCurrentEmploy                                  
+      };
+      this["storeqlda/ActionUpdateInfomationEmploy"](data).then((res) => {
+        alert(res.data);
+      });
+    },
+
     handleSave() {					
       var data = {
-        codeEmploy:this.codeEmploy,                                 
-        userNameEmploy:this.userNameEmploy,                                  
-        nameEmploy:this.nameEmploy,                                  
-        teleEmploy:this.teleEmploy,                                 
-        emailEmploy:this.emailEmploy,                                   
-        genderEmploy:this.genderEmploy,                                                                                                         
-        homeTownEmploy:this.homeTownEmploy,                                   
-        permanentResidenceEmploy:this.permanentResidenceEmploy,                                 
-        currentAccommodationEmploy:this.currentAccommodationEmploy,                                  
-        majorsEmploy:this.majorsEmploy,                                   
-        trainingPlacesEmploy:this.trainingPlacesEmploy,                                 
-		nationEmploy:this.nationEmploy,                                  
-        religionEmploy:this.religionEmploy,                                  
-        qualificationEmploy:this.qualificationEmploy,                                  
-        graduationYearEmploy:this.graduationYearEmploy,                                   
-        IDCardEmploy:this.IDCardEmploy,                                   
-        dateRangeEmploy:this.dateRangeEmploy,                                                                                                                  
-        bankEmploy:this.bankEmploy,                                  
-        branchBankEmploy:this.branchBankEmploy,                                 
-        practicingCertificateTVGS:this.practicingCertificateTVGS,                                  
-        practicingCertificateTVGSEffectiveDate:this.practicingCertificateTVGSEffectiveDate,                                  
-        practicingCertificateATLD:this.practicingCertificateATLD,                                  
-		practicingCertificateTVTK:this.practicingCertificateTVTK,                               
-        practicingCertificateOther:this.practicingCertificateOther,                                 
-        DateOfReceivingTheJob:this.DateOfReceivingTheJob,                                 
-        Department:this.Department,                                  
-        Position:this.Position,                                   
-        socialInsurance:this.socialInsurance,                                                           
-        socialInsuranceNumber:this.socialInsuranceNumber,                                   
-        dayOff:this.dayOff,                                   
-        socialInsurancePremium:this.socialInsurancePremium,                                   
+        codeEmploy:this.codeEmploy,
+        userNameEmploy:this.userNameEmploy,
+        nameEmploy:this.nameEmploy,
+        teleEmploy:this.teleEmploy,
+        emailEmploy:this.emailEmploy,
+        genderEmploy:this.genderEmploy,
+        birthdayEmploy:this.birthdayEmploy,
+        placeOfBirthEmploy:this.placeOfBirthEmploy,
+        homeTownEmploy:this.homeTownEmploy,
+        permanentResidenceEmploy:this.permanentResidenceEmploy,
+        currentAccommodationEmploy:this.currentAccommodationEmploy,
+        majorsEmploy:this.majorsEmploy,
+        trainingPlacesEmploy:this.trainingPlacesEmploy,
+        nationEmploy:this.nationEmploy,
+        religionEmploy:this.religionEmploy,
+        qualificationEmploy:this.qualificationEmploy,
+        graduationYearEmploy:this.graduationYearEmploy,
+        IDCardEmploy:this.IDCardEmploy,
+        dateRangeEmploy:this.dateRangeEmploy,
+        issuedByEmploy:this.issuedByEmploy,
+        accountNumberEmploy:this.accountNumberEmploy,
+        bankEmploy:this.bankEmploy,
+        branchBankEmploy:this.branchBankEmploy,
+        practicingCertificateTVGS:this.practicingCertificateTVGS,
+        practicingCertificateTVGSEffectiveDate:this.practicingCertificateTVGSEffectiveDate,
+        practicingCertificateATLD:this.practicingCertificateATLD,
+        practicingCertificateTVTK:this.practicingCertificateTVTK,
+        practicingCertificateOther:this.practicingCertificateOther,
+        DateOfReceivingTheJob:this.DateOfReceivingTheJob,
+        Department:this.Department,
+        Position:this.Position,
+        socialInsurance:this.socialInsurance,
+        typeOfContract:this.typeOfContract,
+        workStatus:this.workStatus,
+        socialInsuranceNumber:this.socialInsuranceNumber,
+        dayOff:this.dayOff,
+        socialInsurancePremium:this.socialInsurancePremium,
         descriptionEmploy:this.descriptionEmploy,                                   
       };
       this["storeqlda/ActionCreateInfomationEmploy"](data).then((res) => {

@@ -119,9 +119,15 @@
           <b-icon icon="x-octagon-fill" aria-hidden="true"></b-icon> Bỏ qua
         </b-button>
       </div>
-      <div class="add-gr51 add-gr52">
+             <div v-if="idCurrentFile" class="add-gr51 add-gr52">
+      <b-button @click="handleUpdate" size="sm" class="mb-2 tao-cv">
+        <b-icon icon="check2" aria-hidden="true"></b-icon> Cập nhật
+      </b-button>
+      </div>
+
+      <div v-else class="add-gr51 add-gr52">
         <b-button @click="handleSave" size="sm" class="mb-2 tao-cv">
-          <b-icon icon="check2" aria-hidden="true"></b-icon> Cập nhật
+          <b-icon icon="check2" aria-hidden="true"></b-icon> Tạo hồ sơ
         </b-button>
       </div>
     </div>
@@ -135,6 +141,7 @@ import Multiselect from "vue-multiselect";
 export default {
   data() {
     return {
+      idCurrentFile:null,
       comment:'',
       approver:'',
       reason:'',
@@ -151,6 +158,21 @@ export default {
     Multiselect
   },
    created() {
+          this.idCurrentFile = this.$route.params.id;
+     if(this.idCurrentFile!== undefined){
+        this["storeqlda/getFileWithId"](this.idCurrentFile).then((res)=>{
+         this.comment = res.data.yKienTVGS ;
+         this.approver = res.data.nguoiPheDuyet ;
+         this.reason = res.data.nguyenNhanThayDoiTk ;
+        this.contentChange= res.data.noiDungThayDoiTk ;
+        this.timeReceive=res.data.ngayNhan ;
+        this.fileName=res.data.tenHoSo ;
+        this.selectedProject = JSON.parse(res.data.duAn);
+        })
+
+     }
+
+
      this["storeqlda/getListProjectName"]().then((res) => {
        let arrTemp = res.data;
       for (var i in arrTemp) {
@@ -175,29 +197,41 @@ export default {
      ...mapActions(["storeqlda/ActionCreateFile",
             "storeqlda/getListDataUser",
             "storeqlda/getListProjectName",
+            "storeqlda/getFileWithId",
+            "storeqlda/ActionUpdateFile",
       ]),
      custom_label({ text }) {
       return `${text}`;
     },
-       handleSave() {
-      let dateReceive = "";
-      if (this.timeReceive ) {
-        let arrtimeReceive = this.timeReceive.split("-");
-      dateReceive =
-          arrtimeReceive[2] +
-          "/" +
-          arrtimeReceive[1] +
-          "/" +
-          arrtimeReceive[0]
-
-      }
+       handleUpdate(){
       var data = {
-        duAn: this.selectedProject,
+        duAn: JSON.stringify(this.selectedProject),
         loaiHoSo: 'hồ sơ thiết kế',
         kyHieuHoSo: 'hstk',
         tenHoSo: this.fileName,
         soLuong: null,
-        ngayNhan: dateReceive,
+        ngayNhan: this.timeReceive,
+        ngayTra: null,
+        lanKiemTra: null,
+        ketQua: null,
+        lyDoKhongDat: null,
+        noiDungThayDoiTk: this.contentChange,
+        nguyenNhanThayDoiTk: this.reason,
+        nguoiPheDuyet: this.approver,
+        yKienTVGS: this.comment,
+      };
+      this["storeqlda/ActionUpdateFile"](data).then((res) => {
+        alert(res.data);
+      });
+    },
+       handleSave() {
+      var data = {
+        duAn: JSON.stringify(this.selectedProject),
+        loaiHoSo: 'hồ sơ thiết kế',
+        kyHieuHoSo: 'hstk',
+        tenHoSo: this.fileName,
+        soLuong: null,
+        ngayNhan: this.timeReceive,
         ngayTra: null,
         lanKiemTra: null,
         ketQua: null,

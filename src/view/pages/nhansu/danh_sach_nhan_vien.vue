@@ -118,7 +118,9 @@
 
                   <td>
                     <span class="nguon text-muted font-weight-bold">
-                      <i class="menu-icon cursor-pointer flaticon2-edit"></i>
+                      <i 
+                      @click="handleEdit(index)"
+                      class="menu-icon cursor-pointer flaticon2-edit"></i>
                     </span>
                   </td>
  
@@ -183,6 +185,10 @@ export default {
       "storeqlda/getListInfomationEmployHasPaging",
       "storeqlda/getListDataUser",
     ]),
+       handleEdit(index) {
+      let id = this.dataArrInfoEmploy[index].id
+      this.$router.push(`/themnhansu/${id}`);
+    },
     dataArr(page) {
       var data = {
         page: page,

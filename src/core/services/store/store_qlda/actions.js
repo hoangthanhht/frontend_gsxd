@@ -1245,6 +1245,67 @@ export default {
             }
         }
     },
+
+    async ActionUpdateFile(context, { 
+        duAn ='',
+        loaiHoSo ='',
+        kyHieuHoSo='',
+        tenHoSo ='',
+        soLuong ='',
+        ngayNhan ='',
+        ngayTra ='',
+        lanKiemTra ='',
+        ketQua ='',
+        lyDoKhongDat ='',
+        noiDungThayDoiTk ='',
+        nguyenNhanThayDoiTk ='',
+        nguoiPheDuyet ='',
+        yKienTVGS ='',
+        idFile = ''
+    }) {
+
+        let data = {
+            duAn:duAn,                           
+            loaiHoSo:loaiHoSo,                           
+            tenHoSo:tenHoSo,                         
+            soLuong:soLuong,                           
+            ngayNhan:ngayNhan,                           
+            ngayTra:ngayTra,                           
+            lanKiemTra:lanKiemTra,                           
+            ketQua:ketQua,                            
+            lyDoKhongDat:lyDoKhongDat,                           
+            noiDungThayDoiTk:noiDungThayDoiTk,                         
+            nguyenNhanThayDoiTk:nguyenNhanThayDoiTk,                            
+            nguoiPheDuyet:nguoiPheDuyet,                           
+            yKienTVGS:yKienTVGS,                       
+            kyHieuHoSo:kyHieuHoSo,                       
+            idFile:idFile
+        }
+        try {
+
+            var result = await axiosInstance.post(`update/${idFile}`, data);
+
+            if (result.status === 200) {
+                //commit('SET_USER_INFO', result.data.user);
+                return {
+                    ok: true,
+                    data: result.data.msg,
+                    error: null
+                }
+
+            }
+            return {
+                ok: false,
+                error: result.data.message
+            }
+        } catch (error) {
+
+            return {
+                ok: false,
+                error: error.message
+            }
+        }
+    },
     async getListFileHasPaging(context, page) {
 
         var config = {
@@ -1257,6 +1318,19 @@ export default {
         try {
 
             var result = await axiosInstance.get('/showFile?page=' + page, config);
+            return result
+            //console.log("error",result.data.data);
+        } catch (error) {
+            console.log("error", error);
+        }
+    },
+
+    async getFileWithId(context, file_id) {
+
+        try {
+
+            var result = await axiosInstance.get(`/getFileById/${file_id}`);
+            // context.commit('SET_LIST_POST', result.data.data);
             return result
             //console.log("error",result.data.data);
         } catch (error) {
@@ -1314,6 +1388,54 @@ export default {
             }
         }
     },
+
+    async ActionUpdateContract(context, { 
+        tenHopDong ='',
+        duAn ='',
+        giaTriHD ='',
+        nhanSuLienQuan ='',
+        batDau ='',
+        ketThuc ='',
+        donVi ='',
+        khoiLuong ='',
+        idContract =''
+    }) {
+
+        let data = {
+            tenHopDong:tenHopDong,                           
+            duAn:duAn,                           
+            giaTriHD:giaTriHD,                         
+            nhanSuLienQuan:nhanSuLienQuan,                           
+            batDau:batDau,                           
+            ketThuc:ketThuc,                           
+            donVi:donVi,                           
+            khoiLuong:khoiLuong,                            
+        }
+        try {
+
+            var result = await axiosInstance.post(`update/${idContract}`, data);
+
+            if (result.status === 200) {
+                //commit('SET_USER_INFO', result.data.user);
+                return {
+                    ok: true,
+                    data: result.data.msg,
+                    error: null
+                }
+
+            }
+            return {
+                ok: false,
+                error: result.data.message
+            }
+        } catch (error) {
+
+            return {
+                ok: false,
+                error: error.message
+            }
+        }
+    },
     async getListContractHasPaging(context, page) {
 
         var config = {
@@ -1332,7 +1454,18 @@ export default {
             console.log("error", error);
         }
     },
+    async getContractWithId(context, Contract_id) {
 
+        try {
+
+            var result = await axiosInstance.get(`/getContractById/${Contract_id}`);
+            // context.commit('SET_LIST_POST', result.data.data);
+            return result
+            //console.log("error",result.data.data);
+        } catch (error) {
+            console.log("error", error);
+        }
+    },
      /* ACTION CHO TAO DỰ ÁN */
      async ActionCreateProject(context, { 
         tenDuAn ='',
@@ -1385,6 +1518,58 @@ export default {
             }
         }
     },
+
+    async ActionUpdateProject(context, { 
+        tenDuAn ='',
+        maDuAn ='',
+        tenCdt ='',
+        moTaDuAn ='',
+        ngayBatDau ='',
+        ngayKetThuc ='',
+        ngayKetThucThucTe ='',
+        trangThai ='',
+        nhanSuChinh ='',
+        nhanSuLienQuan ='',
+        idProj =''
+    }) {
+
+        let data = {
+            tenDuAn:tenDuAn,                           
+            maDuAn:maDuAn,                           
+            tenCdt:tenCdt,                         
+            moTaDuAn:moTaDuAn,                           
+            ngayBatDau:ngayBatDau,                           
+            ngayKetThuc:ngayKetThuc,                           
+            ngayKetThucThucTe:ngayKetThucThucTe,                           
+            trangThai:trangThai,                            
+            nhanSuChinh:nhanSuChinh,                            
+            nhanSuLienQuan:nhanSuLienQuan,                            
+        }
+        try {
+
+            var result = await axiosInstance.post(`update/${idProj}`, data);
+
+            if (result.status === 200) {
+                //commit('SET_USER_INFO', result.data.user);
+                return {
+                    ok: true,
+                    data: result.data.msg,
+                    error: null
+                }
+
+            }
+            return {
+                ok: false,
+                error: result.data.message
+            }
+        } catch (error) {
+
+            return {
+                ok: false,
+                error: error.message
+            }
+        }
+    },
     async getListProjectHasPaging(context, page) {
 
         var config = {
@@ -1415,8 +1600,19 @@ export default {
             console.log("error", error);
         }
     },
+    async getProjectWithId(context, Project_id) {
 
-     /* ACTION CHO TAO DỰ ÁN */
+        try {
+
+            var result = await axiosInstance.get(`/getProjectById/${Project_id}`);
+            // context.commit('SET_LIST_POST', result.data.data);
+            return result
+            //console.log("error",result.data.data);
+        } catch (error) {
+            console.log("error", error);
+        }
+    },
+     /* ACTION CHO TAO NHAN SU */
      async ActionCreateInfomationEmploy(context, { 
         codeEmploy ='',
         userNameEmploy ='',
@@ -1523,6 +1719,113 @@ export default {
             }
         }
     },
+    async ActionUpdateInfomationEmploy(context, { 
+        codeEmploy ='',
+        userNameEmploy ='',
+        nameEmploy ='',
+        teleEmploy ='',
+        emailEmploy ='',
+        genderEmploy ='',
+        birthdayEmploy ='',
+        placeOfBirthEmploy ='',
+        homeTownEmploy ='',
+        permanentResidenceEmploy ='',
+        currentAccommodationEmploy ='',
+        majorsEmploy ='',
+        trainingPlacesEmploy ='',
+        nationEmploy ='',
+        religionEmploy ='',
+        qualificationEmploy ='',
+        graduationYearEmploy ='',
+        IDCardEmploy ='',
+        dateRangeEmploy ='',
+        issuedByEmploy ='',
+        accountNumberEmploy ='',
+        bankEmploy ='',
+        branchBankEmploy ='',
+        practicingCertificateTVGS ='',
+        practicingCertificateTVGSEffectiveDate ='',
+        practicingCertificateATLD ='',  
+        practicingCertificateTVTK ='',
+        practicingCertificateOther ='',
+        DateOfReceivingTheJob ='',
+        Department ='',
+        Position ='',
+        socialInsurance ='',
+        typeOfContract ='',
+        workStatus ='',
+        socialInsuranceNumber ='',
+        dayOff ='',
+        socialInsurancePremium ='',
+        descriptionEmploy ='',
+        idEmploy=''
+    }) {
+
+        let data = {
+            codeEmploy:codeEmploy,                           
+            userNameEmploy:userNameEmploy,                           
+            nameEmploy:nameEmploy,                         
+            teleEmploy:teleEmploy,                           
+            emailEmploy:emailEmploy,                           
+            genderEmploy:genderEmploy,                           
+            birthdayEmploy:birthdayEmploy,                           
+            placeOfBirthEmploy:placeOfBirthEmploy,                            
+            homeTownEmploy:homeTownEmploy,                            
+            permanentResidenceEmploy:permanentResidenceEmploy,                            
+            currentAccommodationEmploy:currentAccommodationEmploy,                            
+            majorsEmploy:majorsEmploy,                            
+            trainingPlacesEmploy:trainingPlacesEmploy,
+            nationEmploy:nationEmploy,                           
+            religionEmploy:religionEmploy,                           
+            qualificationEmploy:qualificationEmploy,                         
+            graduationYearEmploy:graduationYearEmploy,                           
+            IDCardEmploy:IDCardEmploy,                           
+            dateRangeEmploy:dateRangeEmploy,                           
+            issuedByEmploy:issuedByEmploy,                           
+            accountNumberEmploy:accountNumberEmploy,                            
+            bankEmploy:bankEmploy,                            
+            branchBankEmploy:branchBankEmploy,                            
+            practicingCertificateTVGS:practicingCertificateTVGS,                            
+            practicingCertificateTVGSEffectiveDate:practicingCertificateTVGSEffectiveDate,                            
+            practicingCertificateATLD:practicingCertificateATLD, 
+            practicingCertificateTVTK:practicingCertificateTVTK,                           
+            practicingCertificateOther:practicingCertificateOther,                           
+            DateOfReceivingTheJob:DateOfReceivingTheJob,                         
+            Department:Department,                           
+            Position:Position,                           
+            socialInsurance:socialInsurance,                           
+            typeOfContract:typeOfContract,                           
+            workStatus:workStatus,                            
+            socialInsuranceNumber:socialInsuranceNumber,                            
+            dayOff:dayOff,                            
+            socialInsurancePremium:socialInsurancePremium,                            
+            descriptionEmploy:descriptionEmploy,                            
+        }
+        try {
+
+            var result = await axiosInstance.post(`update/${idEmploy}`, data);
+
+            if (result.status === 200) {
+                //commit('SET_USER_INFO', result.data.user);
+                return {
+                    ok: true,
+                    data: result.data.msg,
+                    error: null
+                }
+
+            }
+            return {
+                ok: false,
+                error: result.data.message
+            }
+        } catch (error) {
+
+            return {
+                ok: false,
+                error: error.message
+            }
+        }
+    },
     async getListInfomationEmployHasPaging(context, page) {
 
         var config = {
@@ -1541,5 +1844,51 @@ export default {
             console.log("error", error);
         }
     },
+    async getEmployWithId(context, Employ_id) {
 
+        try {
+
+            var result = await axiosInstance.get(`/getInfomationEmployById/${Employ_id}`);
+            // context.commit('SET_LIST_POST', result.data.data);
+            return result
+            //console.log("error",result.data.data);
+        } catch (error) {
+            console.log("error", error);
+        }
+    },
+
+     /* BACKUP DỮ LIỆU */
+     async getListFileBKHasPaging(context, page) {
+
+        try {
+
+            var result = await axiosInstance.get('/getListFile?page=' + page);
+            return result
+            //console.log("error",result.data.data);
+        } catch (error) {
+            console.log("error", error);
+        }
+    },
+    async deleteFile(context, file='') {
+
+        try {
+
+            var result = await axiosInstance.get(`/deleteFile/${file}`);
+            return result
+            //console.log("error",result.data.data);
+        } catch (error) {
+            console.log("error", error);
+        }
+    },
+    async downFile(context, file = '') {
+
+        try {
+
+            var result = await axiosInstance.get(`/downLoadFile/${file}`);
+            return result
+            //console.log("error",result.data.data);
+        } catch (error) {
+            console.log("error", error);
+        }
+    },
 }

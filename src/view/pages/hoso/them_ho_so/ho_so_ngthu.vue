@@ -25,6 +25,7 @@
 
         <div class="theodoi-thicong">
           <multiselect
+            multiple
             v-model="selectedProject"
             :custom-label="custom_label"
             label="name"
@@ -140,9 +141,15 @@
           <b-icon icon="x-octagon-fill" aria-hidden="true"></b-icon> Bỏ qua
         </b-button>
       </div>
-      <div class="add-gr51 add-gr52">
+        <div v-if="idCurrentFile" class="add-gr51 add-gr52">
+      <b-button @click="handleUpdate" size="sm" class="mb-2 tao-cv">
+        <b-icon icon="check2" aria-hidden="true"></b-icon> Cập nhật
+      </b-button>
+      </div>
+
+      <div v-else class="add-gr51 add-gr52">
         <b-button @click="handleSave" size="sm" class="mb-2 tao-cv">
-          <b-icon icon="check2" aria-hidden="true"></b-icon> Cập nhật
+          <b-icon icon="check2" aria-hidden="true"></b-icon> Tạo hồ sơ
         </b-button>
       </div>
     </div>
@@ -156,6 +163,7 @@ import CompThemHs from "./comp_them_hs/muc_them_ho_so";
 export default {
   data() {
     return {
+    idCurrentFile:null,
 	  fileName:'',
 	  quantity:0,
 	  timeReceive:'',
@@ -190,6 +198,23 @@ export default {
     ]),
   },
      created() {
+         this.idCurrentFile = this.$route.params.id;
+     if(this.idCurrentFile!== undefined){
+        this["storeqlda/getFileWithId"](this.idCurrentFile).then((res)=>{
+         this.fileName = res.data.tenHoSo ;
+         this.quantity = res.data.soLuong ;
+         this.timeReceive = res.data.ngayNhan ;
+        this.timeReturn= res.data.ngayTra ;
+        this.timeTest=res.data.lanKiemTra ;
+        this.reason=res.data.lyDoKhongDat ;
+        this.selectedResult=res.data.ketQua ;
+        this.selectedKindFile =JSON.parse(res.data.loaiHoSo);
+        this.selectedProject = JSON.parse(res.data.duAn);
+        })
+
+     }
+
+
      this["storeqlda/getListProjectName"]().then((res) => {
        let arrTemp = res.data;
       for (var i in arrTemp) {
@@ -206,39 +231,44 @@ export default {
      ...mapActions(["storeqlda/ActionCreateFile",
              "storeqlda/getListDataUser",
              "storeqlda/getListProjectName",
+             "storeqlda/getFileWithId",
+             "storeqlda/ActionUpdateFile",
+             
              ]),
     custom_label({ text }) {
       return `${text}`;
     },
-     handleSave() {
-
-      let dateReceive = "";let timeReturn = "";
-      if (this.timeReceive && this.timeReturn) {
-        let arrtimeReceive = this.timeReceive.split("-");
-        let arrtimeReturn = this.timeReturn.split("-");
-      dateReceive =
-          arrtimeReceive[2] +
-          "/" +
-          arrtimeReceive[1] +
-          "/" +
-          arrtimeReceive[0]
-      timeReturn =
-          arrtimeReturn[2] +
-          "/" +
-          arrtimeReturn[1] +
-          "/" +
-          arrtimeReturn[0];
-      }
-
-
+    handleUpdate(){
       var data = {
-        duAn: this.selectedProject,
-        loaiHoSo: this.selectedKindFile.text,
+        duAn: JSON.stringify(this.selectedProject),
+        loaiHoSo: JSON.stringify(this.selectedKindFile),
+        kyHieuHoS: 'hsnt',
+        tenHoSo:this.fileName,
+        soLuong:this.quantity,
+        ngayNhan:this.timeReceive,
+        ngayTra: this.timeReturn,
+        lanKiemTra: this.timeTest,
+        ketQua: this.result,
+        lyDoKhongDat: this.reason,
+        noiDungThayDoiTk: null,
+        nguyenNhanThayDoiTk:null,
+        nguoiPheDuyet:null,
+        yKienTVGS:null,
+        idFile:this.idCurrentFile,
+      };
+      this["storeqlda/ActionUpdateFile"](data).then((res) => {
+        alert(res.data);
+      });
+    },
+     handleSave() {
+      var data = {
+        duAn: JSON.stringify(this.selectedProject),
+        loaiHoSo: JSON.stringify(this.selectedKindFile),
         kyHieuHoSo: 'hsnt',
         tenHoSo: this.fileName,
         soLuong: this.quantity,
-        ngayNhan: dateReceive,
-        ngayTra: timeReturn,
+        ngayNhan: this.timeReceive,
+        ngayTra: this.timeReturn,
         lanKiemTra: this.timeTest,
         ketQua: this.selectedResult,
         lyDoKhongDat: this.reason,

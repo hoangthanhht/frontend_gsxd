@@ -145,9 +145,15 @@
           <b-icon icon="x-octagon-fill" aria-hidden="true"></b-icon> Bỏ qua
         </b-button>
       </div>
-      <div class="add-gr51 add-gr52">
+         <div v-if="idCurrentContract" class="add-gr51 add-gr52">
+      <b-button @click="handleUpdate" size="sm" class="mb-2 tao-cv">
+        <b-icon icon="check2" aria-hidden="true"></b-icon> Cập nhật
+      </b-button>
+      </div>
+
+      <div v-else class="add-gr51 add-gr52">
         <b-button @click="handleSave" size="sm" class="mb-2 tao-cv">
-          <b-icon icon="check2" aria-hidden="true"></b-icon> Cập nhật
+          <b-icon icon="check2" aria-hidden="true"></b-icon> Tạo hợp đồng
         </b-button>
       </div>
     </div>
@@ -161,6 +167,7 @@ export default {
    components: { Multiselect },
   data() {
     return {
+       idCurrentContract:null,
       nameContract:'',
       valueContract:'',
       timeStart:'',
@@ -189,6 +196,23 @@ export default {
     ]),
   },
    created() {
+       this.idCurrentContract = this.$route.params.id;
+     if(this.idCurrentContract!== undefined){
+        this["storeqlda/getContractWithId"](this.idCurrentContract).then((res)=>{
+         this.nameContract = res.data.tenHopDong ;
+         this.valueContract = res.data.giaTriHD ;
+         this.timeStart = res.data.batDau ;
+        this.timeFinish= res.data.ketThuc ;
+        this.mass=res.data.khoiLuong ;
+
+        this.selectedKindContract =JSON.parse(res.data.loaiHopDong);
+        this.selectedPersionDo = JSON.parse(res.data.nhanSuLienQuan);
+        this.selectedProject = JSON.parse(res.data.duAn);
+        this.selectedUnit = JSON.parse(res.data.donVi);
+        })
+
+     }
+
     this["storeqlda/getListDataUser"]().then(() => {
       let arrTemp = this["storeqlda/getListDataUserGTer"];
       for (var i in arrTemp) {
@@ -199,50 +223,58 @@ export default {
         this.persion_do.push(data);
       }
     });
+
+       this["storeqlda/getListProjectName"]().then((res) => {
+       let arrTemp = res.data;
+      for (var i in arrTemp) {
+        let data = {
+          id: arrTemp[i].id,
+          text: arrTemp[i].tenDuAn,
+        };
+        this.project.push(data);
+      }
+    });
   },
   methods: {
-       ...mapActions(["storeqlda/ActionCreateContract", "storeqlda/getListDataUser"]),
+       ...mapActions(["storeqlda/ActionCreateContract", 
+                      "storeqlda/getListDataUser",
+                      "storeqlda/getListProjectName",
+                      "storeqlda/getContractWithId",
+                      "storeqlda/ActionUpdateContract",
+                      
+                      ]),
     custom_label({ text }) {
       return `${text}`;
     },
+      handleUpdate(){
+      var data = {
+         tenHopDong: this.nameContract,
+        loaiHopDong: JSON.stringify(this.selectedKindContract),
+        duAn: JSON.stringify(this.selectedProject),
+        giaTriHD: this.valueContract,
+        nhanSuLienQuan: JSON.stringify(this.selectedPersionDo),
+        batDau: this.timeStart,
+        ketThuc: this.timeFinish,
+        donVi: JSON.stringify(this.selectedUnit),
+        khoiLuong: this.mass,
+         idContract:this.idCurrentContract
+      };
+      this["storeqlda/ActionUpdateContract"](data).then((res) => {
+        alert(res.data);
+      });
+    },
+
     handleSave() {
-      let dateStart = "";
-      let dateFinish = "";
-      if (this.timeStart ) {
-        let arrTimeStart = this.timeStart.split("-");
-        dateStart =
-          arrTimeStart[2] +
-          "/" +
-          arrTimeStart[1] +
-          "/" +
-          arrTimeStart[0]
-      }
-      if (this.timeFinish) {
-        let arrTimeFinish = this.timeFinish.split("-");
-        dateFinish =
-          arrTimeFinish[2] +
-          "/" +
-          arrTimeFinish[1] +
-          "/" +
-          arrTimeFinish[0];
-      }
-         let nguoiDo = "";
-      for (var j in this.selectedPersionDo) {
-        if (!nguoiDo) {
-          nguoiDo = this.selectedPersionDo[j].text;
-        } else {
-          nguoiDo = nguoiDo + "," + this.selectedPersionDo[j].text;
-        }
-      }
+
       var data = {
         tenHopDong: this.nameContract,
-        loaiHopDong: this.selectedKindContract,
-        duAn: this.selectedProject,
+        loaiHopDong: JSON.stringify(this.selectedKindContract),
+        duAn: JSON.stringify(this.selectedProject),
         giaTriHD: this.valueContract,
-        nhanSuLienQuan: nguoiDo,
-        batDau: dateStart,
-        ketThuc: dateFinish,
-        donVi: this.selectedUnit,
+        nhanSuLienQuan: JSON.stringify(this.selectedPersionDo),
+        batDau: this.timeStart,
+        ketThuc: this.timeFinish,
+        donVi: JSON.stringify(this.selectedUnit),
         khoiLuong: this.mass,
 
       };

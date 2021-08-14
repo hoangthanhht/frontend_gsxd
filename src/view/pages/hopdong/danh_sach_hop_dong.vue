@@ -1,20 +1,18 @@
 <template>
   <div class="danh-sach-ho-so">
     <div class="div-fillter">
-     <div class="btn-add-cv">
-       <router-link 
-       to="/themhoso"
-       tag="b-button"
-       class="mb-2 add-cv icon-tvgs pt-3 pb-3">
+      <div class="btn-add-cv">
+        <router-link
+          to="/themhopdong"
+          tag="b-button"
+          class="mb-2 add-cv icon-tvgs pt-3 pb-3"
+        >
           <b-icon icon="plus" aria-hidden="true"></b-icon> Thêm
-       </router-link>
+        </router-link>
       </div>
 
       <div class="select-cbb">
-        <b-form-select
-          v-model="selectedTimeCreate"
-          :options="time_create"
-        >
+        <b-form-select v-model="selectedTimeCreate" :options="time_create">
           <template #first>
             <b-form-select-option :value="null" disabled
               >-- Thời gian tạo hợp đồng --</b-form-select-option
@@ -64,7 +62,7 @@
       </div>
     </div>
 
-     <div class="card-body pt-0 pb-3">
+    <div class="card-body pt-0 pb-3">
       <div class="tab-content">
         <!--begin::Table-->
         <div class="table-responsive table-striped">
@@ -75,7 +73,6 @@
               table-vertical-center
               table-head-bg
               table-borderless
-              
             "
           >
             <thead>
@@ -114,7 +111,7 @@
                     }}</span>
                   </td>
 
-                    <td>
+                  <td>
                     <span class="ma_vat_tu text-muted font-weight-bold">{{
                       item.loaiHopDong !== null ? item.loaiHopDong : "null"
                     }}</span>
@@ -122,7 +119,7 @@
 
                   <td>
                     <span class="ten_vat_tu text-muted font-weight-bold">{{
-                      item.duAn !== null ? item.duAn : "null"
+                      handleGetPersion(index)[0] !== null ? handleGetPersion(index)[0] : ""
                     }}</span>
                   </td>
                   <td>
@@ -131,25 +128,28 @@
                     }}</span>
                   </td>
                   <td>
-                    <span class="gia_vat_tu text-muted font-weight-bold">{{
-                      item.nhanSuLienQuan !== null ? item.nhanSuLienQuan : "null"
-                    }} 
+                    <span class="gia_vat_tu text-muted font-weight-bold"
+                      >{{
+                         handleGetPersion(index)[1] !== null
+                          ?  handleGetPersion(index)[1]
+                          : ""
+                      }}
                     </span>
                   </td>
 
                   <td>
                     <span class="khu_vuc text-muted font-weight-bold">{{
-                      item.batDau !== null ? item.batDau : "null"
+                      handleGetDate(index)[0] !== null ? handleGetDate(index)[0] : ""
                     }}</span>
                   </td>
 
                   <td>
                     <span class="thoi_diem text-muted font-weight-bold">{{
-                      item.ketThuc !== null ? item.ketThuc : "null"
+                      handleGetDate(index)[1] !== null ? handleGetDate(index)[1] : ""
                     }}</span>
                   </td>
 
-                       <td>
+                  <td>
                     <span class="thoi_diem text-muted font-weight-bold">{{
                       item.donVi !== null ? item.donVi : "null"
                     }}</span>
@@ -161,14 +161,14 @@
                     }}</span>
                   </td>
 
-
                   <td>
                     <span class="nguon text-muted font-weight-bold">
-                      <i class="menu-icon cursor-pointer flaticon2-edit"></i>
+                      <i
+                        @click="handleEdit(index)"
+                        class="menu-icon cursor-pointer flaticon2-edit"
+                      ></i>
                     </span>
                   </td>
- 
-            
                 </tr>
               </template>
             </tbody>
@@ -202,11 +202,11 @@ export default {
       rows: 100,
       dataArrContract: [],
       selectedKindContract: null, // Array reference
-      kindcontract: [ 
-         { id: "1", text: "Hợp đồng trọn gói" },
+      kindcontract: [
+        { id: "1", text: "Hợp đồng trọn gói" },
         { id: "2", text: "Hợp đồng đơn giá cố định" },
         { id: "3", text: "Hợp đồng đơn giá thay đổi" },
-        ],
+      ],
       selectedPriorityLevel: null, // Array reference
       priority_level: [
         { value: "1", text: "Đã ký" },
@@ -229,6 +229,60 @@ export default {
       "storeqlda/getListContractHasPaging",
       "storeqlda/getListDataUser",
     ]),
+     handleGetPersion(index){
+       let arrTemp =[];
+        let persionProj = "";
+      let persionDo = "";
+       if (this.dataArrContract[index].duAn) {
+          arrTemp = JSON.parse(this.dataArrContract[index].duAn);
+          persionProj= arrTemp.text
+       }
+       if (this.dataArrContract[index].nhanSuLienQuan) {
+          arrTemp = JSON.parse(this.dataArrContract[index].nhanSuLienQuan);
+         for (var j in arrTemp) {
+            if(persionDo=='') {
+              persionDo = arrTemp[j].text
+            }else{
+              persionDo = persionDo + ',' + arrTemp[j].text
+            }
+         }
+       }
+        arrTemp =[];
+      if(persionProj){
+        arrTemp.push(persionProj);
+      }
+       if(persionDo){
+         arrTemp.push(persionDo);
+       }
+      return arrTemp;
+    },
+    handleGetDate(index) {
+      let dateStart = "";
+      let dateFinish = "";
+      let arrTemp = [];
+      if (this.dataArrContract[index].batDau) {
+        let arrTimeStart = this.dataArrContract[index].batDau.split("-");
+        dateStart =
+          arrTimeStart[2] + "/" + arrTimeStart[1] + "/" + arrTimeStart[0];
+      }
+      if (this.dataArrContract[index].ketThuc) {
+        let arrTimeFinish = this.dataArrContract[index].ketThuc.split("-");
+        dateFinish =
+          arrTimeFinish[2] + "/" + arrTimeFinish[1] + "/" + arrTimeFinish[0];
+      }
+        arrTemp =[];
+      if(dateStart){
+        arrTemp.push(dateStart);
+      }
+       if(dateFinish){
+         arrTemp.push(dateFinish);
+       }
+      return arrTemp;
+    },
+    handleEdit(index) {
+      let id = this.dataArrContract[index].id;
+      this.$router.push(`/themhopdong/${id}`);
+    },
     custom_label_persion({ text }) {
       return `${text}`;
     },
@@ -243,14 +297,13 @@ export default {
       });
     },
   },
-
 };
 </script>
 <style src="vue-multiselect/dist/vue-multiselect.min.css"></style>
 <style scoped>
-.danh-sach-ho-so{
-    margin-left: 10px;
-    margin-right: 10px;
+.danh-sach-ho-so {
+  margin-left: 10px;
+  margin-right: 10px;
 }
 /* .table-cv {
   text-align: center !important;
@@ -277,20 +330,22 @@ export default {
   top: auto;
 }
 .select-duan {
-	width: 200px;
-	background-color: #fff;
+  width: 200px;
+  background-color: #fff;
 }
-.select-cbb .custom-select{
-	height: 43px;
+.select-cbb .custom-select {
+  height: 43px;
 }
 .card-body {
- background-color: #fff;
+  background-color: #fff;
 }
-.multiselect, .multiselect__input, .multiselect__single {
-    font-size: 1rem !important;
+.multiselect,
+.multiselect__input,
+.multiselect__single {
+  font-size: 1rem !important;
 }
 
 .multiselect__placeholder {
-    font-size: 1rem;
+  font-size: 1rem;
 }
 </style>

@@ -72,29 +72,28 @@
 
                   <td>
                     <span class="ten_vat_tu text-muted font-weight-bold">{{
-                      item.ngayBatDau !== null ? item.ngayBatDau : "null"
+                      handleGetDate(index)[0] !== null ? handleGetDate(index)[0] : "null"
                     }}</span>
                   </td>
 
                   <td>
                     <span class="ten_vat_tu text-muted font-weight-bold">{{
-                      item.ngayKetThuc !== null ? item.ngayKetThuc : "null"
+                      handleGetDate(index)[1] !== null ? handleGetDate(index)[1] : ""
                     }}</span>
                   </td>  
 
                   <td>
-                    <span class="ten_vat_tu text-muted font-weight-bold">Nhân sự chính: {{
-                      item.nhanSuChinh !== null ? item.nhanSuChinh : "null"
-                    }} ,
-                    Nhân sự liên quan: {{
-                      item.nhanSuLienQuan !== null ? item.nhanSuLienQuan : "null"
+                    <span class="ten_vat_tu text-muted font-weight-bold">{{
+                       handleGetPersion(index)[0] !== null ?  handleGetPersion(index)[0] : ""
                     }}
                     </span>
                   </td>
 
                   <td>
                     <span class="nguon text-muted font-weight-bold">
-                      <i class="menu-icon cursor-pointer flaticon2-edit"></i>
+                      <i 
+                       @click="handleEdit(index)"
+                      class="menu-icon cursor-pointer flaticon2-edit"></i>
                     </span>
                   </td>
  
@@ -159,6 +158,54 @@ export default {
       "storeqlda/getListProjectHasPaging",
       "storeqlda/getListDataUser",
     ]),
+     handleGetPersion(index){
+       let arrTemp =[];
+      let persionDo = "";
+      console.log('123')
+       if (this.dataArrProject[index].nhanSuLienQuan) {
+          arrTemp = JSON.parse(this.dataArrProject[index].nhanSuLienQuan);
+         for (var j in arrTemp) {
+            if(persionDo=='') {
+              persionDo = arrTemp[j].text
+            }else{
+              persionDo = persionDo + ',' + arrTemp[j].text
+            }
+         }
+       }
+        arrTemp =[];
+
+       if(persionDo){
+         arrTemp.push(persionDo);
+       }
+      return arrTemp;
+    },
+    handleGetDate(index) {
+      let dateStart = "";
+      let dateFinish = "";
+      let arrTemp = [];
+      if (this.dataArrProject[index].ngayBatDau) {
+        let arrTimeStart = this.dataArrProject[index].ngayBatDau.split("-");
+        dateStart =
+          arrTimeStart[2] + "/" + arrTimeStart[1] + "/" + arrTimeStart[0];
+      }
+      if (this.dataArrProject[index].ngayKetThuc) {
+        let arrTimeFinish = this.dataArrProject[index].ngayKetThuc.split("-");
+        dateFinish =
+          arrTimeFinish[2] + "/" + arrTimeFinish[1] + "/" + arrTimeFinish[0];
+      }
+        arrTemp =[];
+      if(dateStart){
+        arrTemp.push(dateStart);
+      }
+       if(dateFinish){
+         arrTemp.push(dateFinish);
+       }
+      return arrTemp;
+    },
+        handleEdit(index) {
+      let id = this.dataArrProject[index].id
+      this.$router.push(`/themduan/${id}`);
+    },
     custom_label_persion({ text }) {
       return `${text}`;
     },

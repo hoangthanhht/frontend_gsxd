@@ -224,9 +224,15 @@
           <b-icon icon="x-octagon-fill" aria-hidden="true"></b-icon> Bỏ qua
         </b-button>
       </div>
-      <div class="add-gr51 add-gr52">
+        <div v-if="idCurrentProj" class="add-gr51 add-gr52">
+      <b-button @click="handleUpdate" size="sm" class="mb-2 tao-cv">
+        <b-icon icon="check2" aria-hidden="true"></b-icon> Cập nhật
+      </b-button>
+      </div>
+
+      <div v-else class="add-gr51 add-gr52">
         <b-button @click="handleSave" size="sm" class="mb-2 tao-cv">
-          <b-icon icon="check2" aria-hidden="true"></b-icon> Cập nhật
+          <b-icon icon="check2" aria-hidden="true"></b-icon> Tạo dự án
         </b-button>
       </div>
     </div>
@@ -241,9 +247,9 @@ export default {
   components: { Multiselect },
   data() {
     return {
+      idCurrentProj:null,
       text: "", // cần khai báo data này không sẽ gặp wraning text is not define trong hàm custom_label
       currentTab: 0,
-
       nameProject:'',
       codeProject:'',
       nameInvestor:'',
@@ -270,6 +276,25 @@ export default {
     };
   },
   created() {
+          this.idCurrentProj = this.$route.params.id;
+     if(this.idCurrentProj!== undefined){
+        this["storeqlda/getProjectWithId"](this.idCurrentProj).then((res)=>{
+         this.nameProject = res.data.tenDuAn ;
+         this.codeProject = res.data.maDuAn ;
+         this.nameInvestor = res.data.tenCdt ;
+        this.descriptionProject= res.data.moTaDuAn ;
+        this.timeStart=res.data.ngayBatDau;
+        this.timeExpect=res.data.ngayKetThuc ;
+        this.timeReal=res.data.ngayKetThucThucTe ;
+        this.selectedStatusProject= res.data.trangThai;
+        this.selectedPersionMain = JSON.parse(res.data.nhanSuChinh);
+        this.selectedInvolve = JSON.parse(res.data.nhanSuLienQuan);
+
+        })
+
+     }
+
+
     this["storeqlda/getListDataUser"]().then(() => {
       let arrTemp = this["storeqlda/getListDataUserGTer"];
       for (var i in arrTemp) {
@@ -291,68 +316,46 @@ export default {
     ]),
   },
   methods: {
-    ...mapActions(["storeqlda/ActionCreateProject", "storeqlda/getListDataUser"]),
+    ...mapActions(["storeqlda/ActionCreateProject",
+                  "storeqlda/getListDataUser",
+                  "storeqlda/getProjectWithId",
+                  "storeqlda/ActionUpdateProject",
+                  
+     ]),
     custom_label({ text }) {
       return `${text}`;
     },
-    handleSave() {
-      let dateStart = "";
-      let datePlan = "";
-      let dateReal = "";
-      if (this.timeStart) {
-        let arrTimeStartKh = this.timeStart.split("-");
-        dateStart =
-          arrTimeStartKh[2] +
-          "/" +
-          arrTimeStartKh[1] +
-          "/" +
-          arrTimeStartKh[0]
-      }
-         if (this.timeExpect) {
-        let arrtimeExpect = this.timeExpect.split("-");
-        datePlan =
-          arrtimeExpect[2] +
-          "/" +
-          arrtimeExpect[1] +
-          "/" +
-          arrtimeExpect[0]
-      }
-         if (this.timeReal) {
-        let arrtimeReal = this.timeReal.split("-");
-        dateReal =
-          arrtimeReal[2] +
-          "/" +
-          arrtimeReal[1] +
-          "/" +
-          arrtimeReal[0]
-      }
-      let nguoiChinh = "";
-      for (var i in this.selectedPersionMain) {
-        if (!nguoiChinh) {
-          nguoiChinh = this.selectedPersionMain[i].text;
-        } else {
-          nguoiChinh = nguoiChinh + "," + this.selectedPersionMain[i].text;
-        }
-      }
-         let nguoiLienQuan = "";
-      for (var j in this.selectedInvolve) {
-        if (!nguoiLienQuan) {
-          nguoiLienQuan = this.selectedInvolve[j].text;
-        } else {
-          nguoiLienQuan = nguoiLienQuan + "," + this.selectedInvolve[j].text;
-        }
-      }
+      handleUpdate(){
       var data = {
         tenDuAn: this.nameProject,
         maDuAn: this.codeProject,
         tenCdt: this.nameInvestor,
         moTaDuAn: this.descriptionProject,
-        ngayBatDau: dateStart,
-        ngayKetThuc: datePlan,
-        ngayKetThucThucTe: dateReal,
-        trangThai: this.selectedStatusProject,
-        nhanSuChinh: nguoiChinh,
-        nhanSuLienQuan: nguoiLienQuan,
+        ngayBatDau: this.timeStart,
+        ngayKetThuc: this.timeExpect,
+        ngayKetThucThucTe: this.timeReal,
+        trangThai:this.selectedStatusProject,
+        nhanSuChinh: JSON.stringify(this.selectedPersionMain),
+        nhanSuLienQuan: JSON.stringify(this.selectedInvolve),
+        idProj:this.idCurrentProj
+      };
+      this["storeqlda/ActionUpdateProject"](data).then((res) => {
+        alert(res.data);
+      });
+    },
+    handleSave() {
+     
+      var data = {
+        tenDuAn: this.nameProject,
+        maDuAn: this.codeProject,
+        tenCdt: this.nameInvestor,
+        moTaDuAn: this.descriptionProject,
+        ngayBatDau: this.timeStart,
+        ngayKetThuc: this.timeExpect,
+        ngayKetThucThucTe: this.timeReal,
+        trangThai:this.selectedStatusProject,
+        nhanSuChinh: JSON.stringify(this.selectedPersionMain),
+        nhanSuLienQuan: JSON.stringify(this.selectedInvolve),
       };
       this["storeqlda/ActionCreateProject"](data).then((res) => {
         alert(res.data);

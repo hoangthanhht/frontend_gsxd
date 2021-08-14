@@ -433,7 +433,7 @@ export default new Router({
 				},
 				/* route cho hop dong */
 				{
-					path: "/themhopdong//:id?",
+					path: "/themhopdong/:id?",
 					name: "themhopdong",
 					component: () => import("@/view/pages/hopdong/them_hop_dong/them_hop_dong.vue"),
 					beforeEnter: (to, from, next) =>  {
@@ -461,7 +461,7 @@ export default new Router({
 
 				/* route cho du an */
 				{
-					path: "/themduan",
+					path: "/themduan/:id?",
 					name: "themduan",
 					component: () => import("@/view/pages/duan/them_du_an"),
 					beforeEnter: (to, from, next) =>  {
@@ -748,6 +748,60 @@ export default new Router({
 					path: "/cauhinhhethong",
 					name: "cauhinhhethong",
 					component: () => import("@/view/pages/admin/Cauhinhhethong.vue"),
+					beforeEnter: (to, from, next) =>  {
+						let userSlug = (store.getters.currentUserPersonalInfo.slug)
+						if(userSlug) {
+							let check = false;
+							for(var i in userSlug)
+							{
+								//slugUser.push(userSlug[i]);
+								if(to.meta.requiredRoles.includes(userSlug[i])){
+									check = true;
+									break;
+								}
+							}
+	
+							if (check === true) {
+								next()
+							} else {
+								
+								next({
+									path: "/custom-error/page_error"
+								})
+							}
+						}else {
+							store.dispatch('storeqlda/checkLogin',null,{ root: true }).then(()=>{// cái này để dispatch 1 action có mudul dặt name space true
+								// sử lý khi reload lại trang tại đúng route này
+								let check = false;
+								let userSlug = (store.getters.currentUserPersonalInfo.slug)
+								for(var i in userSlug)
+								{
+									//slugUser.push(userSlug[i]);
+									if(to.meta.requiredRoles.includes(userSlug[i])){
+										check = true;
+										break;
+									}
+								}
+		
+								if (check === true) {
+									next()
+								} else {
+									
+									next({
+										path: "/custom-error/page_error"
+									})
+								}
+							});
+						}
+					},
+					meta: {
+						requiredRoles: ['SuperAdmin']
+					}
+				},
+				{
+					path: "/backupdata",
+					name: "backupdata",
+					component: () => import("@/view/pages/admin/Backupdata.vue"),
 					beforeEnter: (to, from, next) =>  {
 						let userSlug = (store.getters.currentUserPersonalInfo.slug)
 						if(userSlug) {

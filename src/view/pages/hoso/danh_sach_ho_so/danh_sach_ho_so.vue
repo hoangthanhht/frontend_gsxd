@@ -121,11 +121,8 @@
                     }}</span>
                   </td>
                   <td>
-                    <span class="gia_vat_tu text-muted font-weight-bold">Nhận : {{
-                      item.ngayNhan !== null ? item.ngayNhan : "null"
-                    }} , 
-                    Trả : {{
-                      item.ngayTra !== null ? item.ngayTra : "null"
+                    <span class="gia_vat_tu text-muted font-weight-bold">{{
+                       handleGetDate(index) !== null ?  handleGetDate(index) : ""
                     }}
                     </span>
                   </td>
@@ -211,9 +208,59 @@ export default {
       "storeqlda/getListFileHasPaging",
       "storeqlda/getListDataUser",
     ]),
+  handleGetDate(index){
+       let date = "";
+      let arrTemp =[];
+      if (this.dataArrFile[index].ngayNhan && this.dataArrFile[index].ngayTra) {
+       arrTemp.push((this.dataArrFile[index].ngayNhan));
+       arrTemp.push((this.dataArrFile[index].ngayTra));
+        let arrTimeReceive = arrTemp[0].split("-");
+        let arrTimeReturn = arrTemp[1].split("-");
+        date =
+          "Nhận : " +
+          arrTimeReceive[2] +
+          "/" +
+          arrTimeReceive[1] +
+          "/" +
+          arrTimeReceive[0] +
+          "," +
+          "Trả: " +
+          arrTimeReturn[2] +
+          "/" +
+          arrTimeReturn[1] +
+          "/" +
+          arrTimeReturn[0];
+      }
+      if (this.dataArrFile[index].ngayNhan && !this.dataArrFile[index].ngayTra) {
+       arrTemp.push((this.dataArrFile[index].ngayNhan));
+        let arrTimeReceive = arrTemp[0].split("-");
+        date =
+          "Nhận : " +
+          arrTimeReceive[2] +
+          "/" +
+          arrTimeReceive[1] +
+          "/" +
+          arrTimeReceive[0] +
+          "," +
+          "Trả: " 
+      }
+      return date;
+
+    },
+
      handleEdit(index) {
       let id = this.dataArrFile[index].id
-      this.$router.push(`/themhoso/${id}`);
+      let khhs = this.dataArrFile[index].kyHieuHoSo
+      if(khhs==='hsnt'){
+        this.$router.push(`/themhoso/${id}`);
+      }
+      if(khhs==='hstk'){
+        this.$router.push(`/hosotke/${id}`);
+      }
+       if(khhs==='hsk'){
+        this.$router.push(`/hosokhac/${id}`);
+      }
+      
     },
     custom_label_persion({ text }) {
       return `${text}`;
