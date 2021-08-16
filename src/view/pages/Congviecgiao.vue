@@ -188,10 +188,32 @@
                   </td>
 
                    <td>
-                    <span class="nguon text-muted font-weight-bold">
-                      <i 
-                       @click="handleEdit(index)"
-                       class="menu-icon cursor-pointer flaticon2-edit"></i>
+                   <span class="nguon text-muted font-weight-bold">
+                      <i
+                        @click="handleEdit(index)"
+                        class="
+                          menu-icon
+                          cursor-pointer
+                          flaticon2-edit
+                          text-white
+                          pl-2
+                          pr-2
+                          mr-5
+                          bg-green-400
+                        "
+                      ></i>
+                      <i
+                        @click="handleDelete(index)"
+                        class="
+                          menu-icon
+                          cursor-pointer
+                          flaticon2-rubbish-bin
+                          text-white
+                          pl-2
+                          pr-2
+                          bg-red-600
+                        "
+                      ></i>
                     </span>
                   </td>
                 </tr>
@@ -274,6 +296,8 @@ export default {
     ...mapActions([
       "storeqlda/getListTaskHasPaging",
       "storeqlda/getListDataUser",
+      "storeqlda/destroyTaskWithId",
+      
     ]),
     handleGetPersion(index){
        let arrTemp =[];
@@ -375,6 +399,21 @@ export default {
       //   }
       // }
     },
+      handleDelete(index) {
+         if (
+        confirm(
+          "Bạn có chắc chắn muốn xóa dữ liệu này không?"
+        )
+      ){
+
+        this["storeqlda/destroyTaskWithId"](this.dataArrAssignedWork[index].id).
+        then((res)=>
+        {
+          this.dataArr(this.currentPage);
+          alert(res.data.msg)
+        })
+      }
+  },
     handleEdit(index) {
       let id = this.dataArrAssignedWork[index].id
       this.$router.push(`/themcongviec/${id}`);

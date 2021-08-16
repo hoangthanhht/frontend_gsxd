@@ -117,10 +117,32 @@
                   </td>
 
                   <td>
-                    <span class="nguon text-muted font-weight-bold">
-                      <i 
-                      @click="handleEdit(index)"
-                      class="menu-icon cursor-pointer flaticon2-edit"></i>
+                <span class="nguon text-muted font-weight-bold">
+                      <i
+                        @click="handleEdit(index)"
+                        class="
+                          menu-icon
+                          cursor-pointer
+                          flaticon2-edit
+                          text-white
+                          pl-2
+                          pr-2
+                          mr-5
+                          bg-green-400
+                        "
+                      ></i>
+                      <i
+                        @click="handleDelete(index)"
+                        class="
+                          menu-icon
+                          cursor-pointer
+                          flaticon2-rubbish-bin
+                          text-white
+                          pl-2
+                          pr-2
+                          bg-red-600
+                        "
+                      ></i>
                     </span>
                   </td>
  
@@ -184,6 +206,8 @@ export default {
     ...mapActions([
       "storeqlda/getListInfomationEmployHasPaging",
       "storeqlda/getListDataUser",
+      "storeqlda/destroyEmployWithId",
+      
     ]),
        handleEdit(index) {
       let id = this.dataArrInfoEmploy[index].id
@@ -199,6 +223,21 @@ export default {
         this.rows = response.data.total;
       });
     },
+      handleDelete(index) {
+         if (
+        confirm(
+          "Bạn có chắc chắn muốn xóa dữ liệu này không?"
+        )
+      ){
+
+        this["storeqlda/destroyEmployWithId"](this.dataArrInfoEmploy[index].id).
+        then((res)=>
+        {
+          this.dataArr(this.currentPage);
+          alert(res.data.msg)
+        })
+      }
+  },
   },
 };
 </script>

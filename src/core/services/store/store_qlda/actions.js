@@ -1061,7 +1061,16 @@ export default {
             console.log("error", error);
         }
     },
-    
+    async destroyTaskWithId(context, Task_id) {
+        try {
+            var result = await axiosInstance.post(`/destroyTask/${Task_id}`);
+            // context.commit('SET_LIST_POST', result.data.data);
+            return result
+            //console.log("error",result.data.data);
+        } catch (error) {
+            console.log("error", error);
+        }
+    },
     /* BAO CÁO */
     async getTimeBaoCao(context, { kind = '',site='' }) {
 
@@ -1184,7 +1193,7 @@ export default {
             console.log("error", error);
         }
     },
-    
+ 
     /* ACTION CHO TAO HO SƠ */
     async ActionCreateFile(context, { 
         duAn ='',
@@ -1337,7 +1346,16 @@ export default {
             console.log("error", error);
         }
     },
-
+    async destroyFileWithId(context, File_id) {
+        try {
+            var result = await axiosInstance.post(`/destroyFile/${File_id}`);
+            // context.commit('SET_LIST_POST', result.data.data);
+            return result
+            //console.log("error",result.data.data);
+        } catch (error) {
+            console.log("error", error);
+        }
+    },
      /* ACTION CHO TAO HỢP ĐỒNG */
      async ActionCreateContract(context, { 
         tenHopDong ='',
@@ -1459,6 +1477,16 @@ export default {
         try {
 
             var result = await axiosInstance.get(`/getContractById/${Contract_id}`);
+            // context.commit('SET_LIST_POST', result.data.data);
+            return result
+            //console.log("error",result.data.data);
+        } catch (error) {
+            console.log("error", error);
+        }
+    },
+    async destroyContractWithId(context, Contract_id) {
+        try {
+            var result = await axiosInstance.post(`/destroyContract/${Contract_id}`);
             // context.commit('SET_LIST_POST', result.data.data);
             return result
             //console.log("error",result.data.data);
@@ -1605,6 +1633,16 @@ export default {
         try {
 
             var result = await axiosInstance.get(`/getProjectById/${Project_id}`);
+            // context.commit('SET_LIST_POST', result.data.data);
+            return result
+            //console.log("error",result.data.data);
+        } catch (error) {
+            console.log("error", error);
+        }
+    },
+    async destroyProjectWithId(context, Project_id) {
+        try {
+            var result = await axiosInstance.post(`/destroyProject/${Project_id}`);
             // context.commit('SET_LIST_POST', result.data.data);
             return result
             //console.log("error",result.data.data);
@@ -1856,7 +1894,16 @@ export default {
             console.log("error", error);
         }
     },
-
+    async destroyEmployWithId(context, Employ_id) {
+        try {
+            var result = await axiosInstance.post(`/destroyInfomationEmploy/${Employ_id}`);
+            // context.commit('SET_LIST_POST', result.data.data);
+            return result
+            //console.log("error",result.data.data);
+        } catch (error) {
+            console.log("error", error);
+        }
+    },
      /* BACKUP DỮ LIỆU */
      async getListFileBKHasPaging(context, page) {
 
@@ -1874,7 +1921,7 @@ export default {
         try {
 
             var result = await axiosInstance.get(`/deleteFile/${file}`);
-            return result
+            return result 
             //console.log("error",result.data.data);
         } catch (error) {
             console.log("error", error);
@@ -1885,6 +1932,114 @@ export default {
         try {
 
             var result = await axiosInstance.get(`/downLoadFile/${file}`);
+            return result
+            //console.log("error",result.data.data);
+        } catch (error) {
+            console.log("error", error);
+        }
+    },
+
+     /* ACTION CHO TAO CHỨC DANH */
+     async ActionCreatePosition(context, { 
+        chucDanh ='',
+        ghiChu ='',
+        maChucDanh=''
+    }) {
+
+        let data = {
+            chucDanh:chucDanh,                           
+            ghiChu:ghiChu,                           
+            maChucDanh:maChucDanh,                           
+        }
+        try {
+
+            var result = await axiosInstance.post(`createPosition`, data);
+
+            if (result.status === 200) {
+                //commit('SET_USER_INFO', result.data.user);
+                return {
+                    ok: true,
+                    data: result.data.msg,
+                    error: null
+                }
+
+            }
+            return {
+                ok: false,
+                error: result.data.message
+            }
+        } catch (error) {
+
+            return {
+                ok: false,
+                error: error.message
+            }
+        }
+    },
+
+    async ActionUpdatePosition(context, { 
+        chucDanh ='',
+        ghiChu ='',
+        maChucDanh='',
+        idPosition =''
+    }) {
+
+        let data = {
+            chucDanh:chucDanh,                           
+            ghiChu:ghiChu,   
+            maChucDanh:maChucDanh,                         
+        }
+        try {
+
+            var result = await axiosInstance.post(`update/${idPosition}`, data);
+
+            if (result.status === 200) {
+                //commit('SET_USER_INFO', result.data.user);
+                return {
+                    ok: true,
+                    data: result.data.msg,
+                    error: null
+                }
+
+            }
+            return {
+                ok: false,
+                error: result.data.message
+            }
+        } catch (error) {
+
+            return {
+                ok: false,
+                error: error.message
+            }
+        }
+    },
+    async getListPositionHasPaging(context, page) {
+
+        try {
+
+            var result = await axiosInstance.get('/showPosition?page=' + page);
+            return result
+            //console.log("error",result.data.data);
+        } catch (error) {
+            console.log("error", error);
+        }
+    },
+
+    async getPositionWithId(context, Position_id) {
+        try {
+            var result = await axiosInstance.get(`/getPositionById/${Position_id}`);
+            // context.commit('SET_LIST_POST', result.data.data);
+            return result
+            //console.log("error",result.data.data);
+        } catch (error) {
+            console.log("error", error);
+        }
+    },
+    async destroyPositionWithId(context, Position_id) {
+        try {
+            var result = await axiosInstance.post(`/destroyPosition/${Position_id}`);
+            // context.commit('SET_LIST_POST', result.data.data);
             return result
             //console.log("error",result.data.data);
         } catch (error) {

@@ -162,10 +162,31 @@
                   </td>
 
                   <td>
-                    <span class="nguon text-muted font-weight-bold">
+                  <span class="nguon text-muted font-weight-bold">
                       <i
                         @click="handleEdit(index)"
-                        class="menu-icon cursor-pointer flaticon2-edit"
+                        class="
+                          menu-icon
+                          cursor-pointer
+                          flaticon2-edit
+                          text-white
+                          pl-2
+                          pr-2
+                          mr-5
+                          bg-green-400
+                        "
+                      ></i>
+                      <i
+                        @click="handleDelete(index)"
+                        class="
+                          menu-icon
+                          cursor-pointer
+                          flaticon2-rubbish-bin
+                          text-white
+                          pl-2
+                          pr-2
+                          bg-red-600
+                        "
                       ></i>
                     </span>
                   </td>
@@ -228,6 +249,8 @@ export default {
     ...mapActions([
       "storeqlda/getListContractHasPaging",
       "storeqlda/getListDataUser",
+      "storeqlda/destroyContractWithId",
+      
     ]),
      handleGetPersion(index){
        let arrTemp =[];
@@ -283,6 +306,21 @@ export default {
       let id = this.dataArrContract[index].id;
       this.$router.push(`/themhopdong/${id}`);
     },
+      handleDelete(index) {
+         if (
+        confirm(
+          "Bạn có chắc chắn muốn xóa dữ liệu này không?"
+        )
+      ){
+
+        this["storeqlda/destroyContractWithId"](this.dataArrContract[index].id).
+        then((res)=>
+        {
+          this.dataArr(this.currentPage);
+          alert(res.data.msg)
+        })
+      }
+  },
     custom_label_persion({ text }) {
       return `${text}`;
     },

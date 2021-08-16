@@ -540,6 +540,19 @@ export default new Router({
 					}
 				},
 				{
+					path: "/themchucdanh/:id?",
+					name: "themchucdanh",
+					component: () => import("@/view/pages/nhansu/themchucdanh.vue"),
+					beforeEnter: (to, from, next) =>  {
+						let userSlug = (store.getters.currentUserPersonalInfo.slug)
+						if(!userSlug) {
+							store.dispatch('storeqlda/checkLogin',null,{ root: true }).then(()=>next())
+						}else{
+							next();
+						}
+					}
+				},
+				{
 					path: "/danhsachnhanvien",
 					name: "danhsachnhanvien",
 					component: () => import("@/view/pages/nhansu/danh_sach_nhan_vien.vue"),
@@ -565,6 +578,8 @@ export default new Router({
 						}
 					}
 				},
+			
+				
 				{
 					path: "/themnhansu/:id?",
 					name: "themnhansu",

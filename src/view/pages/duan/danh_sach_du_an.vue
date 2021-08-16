@@ -90,10 +90,32 @@
                   </td>
 
                   <td>
-                    <span class="nguon text-muted font-weight-bold">
-                      <i 
-                       @click="handleEdit(index)"
-                      class="menu-icon cursor-pointer flaticon2-edit"></i>
+                 <span class="nguon text-muted font-weight-bold">
+                      <i
+                        @click="handleEdit(index)"
+                        class="
+                          menu-icon
+                          cursor-pointer
+                          flaticon2-edit
+                          text-white
+                          pl-2
+                          pr-2
+                          mr-5
+                          bg-green-400
+                        "
+                      ></i>
+                      <i
+                        @click="handleDelete(index)"
+                        class="
+                          menu-icon
+                          cursor-pointer
+                          flaticon2-rubbish-bin
+                          text-white
+                          pl-2
+                          pr-2
+                          bg-red-600
+                        "
+                      ></i>
                     </span>
                   </td>
  
@@ -157,11 +179,12 @@ export default {
     ...mapActions([
       "storeqlda/getListProjectHasPaging",
       "storeqlda/getListDataUser",
+      "storeqlda/destroyProjectWithId",
+      
     ]),
      handleGetPersion(index){
        let arrTemp =[];
       let persionDo = "";
-      console.log('123')
        if (this.dataArrProject[index].nhanSuLienQuan) {
           arrTemp = JSON.parse(this.dataArrProject[index].nhanSuLienQuan);
          for (var j in arrTemp) {
@@ -202,10 +225,25 @@ export default {
        }
       return arrTemp;
     },
-        handleEdit(index) {
+    handleEdit(index) {
       let id = this.dataArrProject[index].id
       this.$router.push(`/themduan/${id}`);
     },
+      handleDelete(index) {
+         if (
+        confirm(
+          "Bạn có chắc chắn muốn xóa dữ liệu này không?"
+        )
+      ){
+
+        this["storeqlda/destroyProjectWithId"](this.dataArrProject[index].id).
+        then((res)=>
+        {
+          this.dataArr(this.currentPage);
+          alert(res.data.msg)
+        })
+      }
+  },
     custom_label_persion({ text }) {
       return `${text}`;
     },
