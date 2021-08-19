@@ -384,22 +384,7 @@ export default {
          arrTemp.push(dateReal);
        }
       return arrTemp;
-      // let nguoiDeXuat = "";
-      // for (var i in this.selectedPersionAssign) {
-      //   if (!nguoiDeXuat) {
-      //     nguoiDeXuat = this.selectedPersionAssign[i].text;
-      //   } else {
-      //     nguoiDeXuat = nguoiDeXuat + "," + this.selectedPersionAssign[i].text;
-      //   }
-      // }
-      //    let nguoiPhoiHop = "";
-      // for (var j in this.selectedPersionDo) {
-      //   if (!nguoiPhoiHop) {
-      //     nguoiPhoiHop = this.selectedPersionDo[j].text;
-      //   } else {
-      //     nguoiPhoiHop = nguoiPhoiHop + "," + this.selectedPersionDo[j].text;
-      //   }
-      // }
+
     },
       handleDelete(index) {
          if (

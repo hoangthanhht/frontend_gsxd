@@ -1,8 +1,8 @@
 <template>
   <div class="container-chamcongcanhan">
-    <h4>Bảng chấm công</h4>
+    <h4  ref="block-color">Bảng chấm công</h4>
     <div
-     ref="block-color"
+    
      class="block1 pt-5 pb-5">
       <div class="flex">
         <span for="">Từ ngày :</span>
@@ -45,10 +45,10 @@
       </div>
 
       <div class="block1__search">
-        <b-input-group size="sm" class="mb-2 add-cv icon-tvgs">
+        <b-input-group size="sm" class="mb-2 add-cv icon-tvgs cursor-pointer">
           <b-form-input type="search" placeholder="Search terms"></b-form-input>
-          <b-input-group-prepend is-text>
-            <b-icon icon="search"></b-icon>
+          <b-input-group-prepend class="" is-text>
+            <b-icon @click="handleSearch" icon="search"></b-icon>
           </b-input-group-prepend>
 
           <b-input-group-prepend is-text>
@@ -94,70 +94,81 @@
         </div>
       </div>
     </div>
+
+
     <div 
       ref="table-header"
       class="table-header"
       >
-          <table style="background-color:white" class="table table-bordered table-vertical-center">
+          <table style="background-color:#fff" class="table table-bordered table-vertical-center">
         <thead>
           <tr>
             <th width="1" rowspan="2" style="width: 26px"></th>
             <th rowspan="2" width="200" style="width: 200px">Họ tên</th>
             <th width="1">Ngày</th>
             <th rowspan="2">Tổng</th>
-            <th class="th-day">11-08</th>
-
-           
+           <template v-for="(item,idx) in dateOfMonth">
+            <th
+             v-bind:key="idx"
+             class="th-day"
+            >{{item}}</th>
+            </template>
           </tr>
-          <tr>
+          <tr ref="row-tb-top2">
             <th>Buổi</th>
-            <th class="th-day">Wed</th>
-
+              <template v-for="(item,idx) in dayOfWeek">
+            <th
+             v-bind:key="idx"
+             class="th-day"
+            >{{item}}</th>
+            </template>
            
           </tr>
         </thead>
-        <tbody>
-          <tr>
-            <td class="" rowspan="3">1</td>
+         <tbody>
+           <template v-for="(item, index) in dataArrTimekeeping">
+            <tr v-bind:key="index">
+            <td class="" rowspan="3">{{index}}</td>
             <td class="table-user" rowspan="3" width="200" style="width: 200px">
               <a
               >
-                Nguyễn Như Tùng</a
+                {{item.name}}</a
               >
             </td>
             <td class="">Sáng</td>
             <td class="tong-di-lam text-center">0</td>
-
+            
+            <template v-for="(item,idx) in dateOfMonth">
             <td
-              onclick="_SHOW_FORM_REMOTE('https://vpdt.beacons.vn/staff/popup-cham-cong?obj[staff][id]=5cb054c65675a40115148d9a&amp;obj[date]=11/08/2021&amp;obj[time_work]=ca-sang')"
-              class="bg-danger text-center"
-            ></td>
+             v-bind:key="idx"
+             class="bg-danger text-center"
+            >{{item}}</td>
+            </template>
+            </tr>
 
-           
-          </tr>
-
-          <tr>
+          <tr v-bind:key="'ch' + index">
             <td class="">Chiều</td>
             <td class="tong-di-lam text-center">0</td>
 
+               <template v-for="(item,idx) in dateOfMonth">
             <td
-              onclick="_SHOW_FORM_REMOTE('https://vpdt.beacons.vn/staff/popup-cham-cong?obj[staff][id]=5cb054c65675a40115148d9a&amp;obj[date]=11/08/2021&amp;obj[time_work]=ca-chieu')"
-              class="bg-danger text-center"
-            ></td>
-
-           
+             v-bind:key="idx"
+             class="bg-danger text-center"
+            >{{item}}</td>
+            </template>
           </tr>
-          <tr>
+          <tr v-bind:key="'t' + index">
             <td class="">Tối</td>
             <td class="tong-di-lam text-center">0</td>
 
+                <template v-for="(item,idx) in dateOfMonth">
             <td
-              onclick="_SHOW_FORM_REMOTE('https://vpdt.beacons.vn/staff/popup-cham-cong?obj[staff][id]=5cb054c65675a40115148d9a&amp;obj[date]=11/08/2021&amp;obj[time_work]=ca-toi')"
-              class="bg-danger text-center"
-            ></td>
-
-            
+             v-bind:key="idx"
+             class="bg-danger text-center"
+            >{{item}}</td>
+            </template> 
           </tr>
+           </template>
         </tbody>
       </table>
       </div>
@@ -168,66 +179,75 @@
     <div 
     class="top-tb" 
     ref="top-tb">
-        <table style="background-color:white" class="table table-bordered table-vertical-center">
+        <table style="background-color:#fff" class="table table-bordered table-vertical-center">
         <thead>
           <tr ref="row-tb-top1">
             <th ref="row-tb-top-stt" width="1" rowspan="2" style="width: 26px"></th>
             <th ref="row-tb-top-name" rowspan="2" width="200" style="width: 200px">Họ tên</th>
             <th ref="row-tb-top-date" width="1">Ngày</th>
             <th ref="row-tb-top-sum" rowspan="2">Tổng</th>
-            <th class="th-day">11-08</th>
-
-            
+            <template v-for="(item,idx) in dateOfMonth">
+            <th
+             v-bind:key="idx"
+             class="th-day"
+            >{{item}}</th>
+            </template>
           </tr>
           <tr ref="row-tb-top2">
             <th>Buổi</th>
-            <th class="th-day">Wed</th>
-
-           
+              <template v-for="(item,idx) in dayOfWeek">
+            <th
+             v-bind:key="idx"
+             class="th-day"
+            >{{item}}</th>
+            </template>
           </tr>
+          
         </thead>
         <tbody>
-          <tr>
-            <td class="" rowspan="3">1</td>
+           <template v-for="(item, index) in dataArrTimekeeping">
+            <tr v-bind:key="index">
+            <td class="" rowspan="3">{{index}}</td>
             <td class="table-user" rowspan="3" width="200" style="width: 200px">
               <a
               >
-                Nguyễn Như Tùng</a
+                {{item.name}}</a
               >
             </td>
             <td class="">Sáng</td>
             <td class="tong-di-lam text-center">0</td>
-
+            
+            <template v-for="(item,idx) in dateOfMonth">
             <td
-              onclick="_SHOW_FORM_REMOTE('https://vpdt.beacons.vn/staff/popup-cham-cong?obj[staff][id]=5cb054c65675a40115148d9a&amp;obj[date]=11/08/2021&amp;obj[time_work]=ca-sang')"
-              class="bg-danger text-center"
-            ></td>
+             v-bind:key="idx"
+             class="bg-danger text-center"
+            >{{item}}</td>
+            </template>
+            </tr>
 
-           
-          </tr>
-
-          <tr>
+          <tr v-bind:key="'ch' + index">
             <td class="">Chiều</td>
             <td class="tong-di-lam text-center">0</td>
 
+               <template v-for="(item,idx) in dateOfMonth">
             <td
-              onclick="_SHOW_FORM_REMOTE('https://vpdt.beacons.vn/staff/popup-cham-cong?obj[staff][id]=5cb054c65675a40115148d9a&amp;obj[date]=11/08/2021&amp;obj[time_work]=ca-chieu')"
-              class="bg-danger text-center"
-            ></td>
-
-           
+             v-bind:key="idx"
+             class="bg-danger text-center"
+            >{{item}}</td>
+            </template>
           </tr>
-          <tr>
+          <tr v-bind:key="'t' + index">
             <td class="">Tối</td>
             <td class="tong-di-lam text-center">0</td>
 
+                <template v-for="(item,idx) in dateOfMonth">
             <td
-              onclick="_SHOW_FORM_REMOTE('https://vpdt.beacons.vn/staff/popup-cham-cong?obj[staff][id]=5cb054c65675a40115148d9a&amp;obj[date]=11/08/2021&amp;obj[time_work]=ca-toi')"
-              class="bg-danger text-center"
-            ></td>
-
-           
+             v-bind:key="idx"
+             class="bg-danger text-center"
+            >{{item}}</td>
+            </template> 
           </tr>
+           </template>
         </tbody>
       </table>
     </div>
@@ -236,65 +256,74 @@
       ref="table-middle"
       class="table-middle"
       >
-          <table style="background-color:white" class="table table-bordered">
+          <table style="background-color:#fff" class="table table-bordered table-vertical-center">
         <thead>
           <tr>
-            <th width="1" rowspan="2"></th>
+            <th width="1" rowspan="2" style="width: 26px"></th>
             <th rowspan="2" width="200" style="width: 200px">Họ tên</th>
             <th width="1">Ngày</th>
             <th rowspan="2">Tổng</th>
-            <th class="th-day">11-08</th>
-
-           
+           <template v-for="(item,idx) in dateOfMonth">
+            <th
+             v-bind:key="idx"
+             class="th-day"
+            >{{item}}</th>
+            </template>
           </tr>
-          <tr>
+          <tr ref="row-tb-top2">
             <th>Buổi</th>
-            <th class="th-day">Wed</th>
+              <template v-for="(item,idx) in dayOfWeek">
+            <th
+             v-bind:key="idx"
+             class="th-day"
+            >{{item}}</th>
+            </template>
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td class="" rowspan="3">1</td>
+           <template v-for="(item, index) in dataArrTimekeeping">
+            <tr v-bind:key="index">
+            <td class="" rowspan="3">{{index}}</td>
             <td class="table-user" rowspan="3" width="200" style="width: 200px">
               <a
-          
               >
-                Nguyễn Như Tùng</a
+                {{item.name}}</a
               >
             </td>
             <td class="">Sáng</td>
             <td class="tong-di-lam text-center">0</td>
-
+            
+            <template v-for="(item,idx) in dateOfMonth">
             <td
-              onclick="_SHOW_FORM_REMOTE('https://vpdt.beacons.vn/staff/popup-cham-cong?obj[staff][id]=5cb054c65675a40115148d9a&amp;obj[date]=11/08/2021&amp;obj[time_work]=ca-sang')"
-              class="bg-danger text-center"
-            ></td>
+             v-bind:key="idx"
+             class="bg-danger text-center"
+            >{{item}}</td>
+            </template>
+            </tr>
 
-           
-          </tr>
-
-          <tr>
+          <tr v-bind:key="'ch' + index">
             <td class="">Chiều</td>
             <td class="tong-di-lam text-center">0</td>
 
+               <template v-for="(item,idx) in dateOfMonth">
             <td
-              onclick="_SHOW_FORM_REMOTE('https://vpdt.beacons.vn/staff/popup-cham-cong?obj[staff][id]=5cb054c65675a40115148d9a&amp;obj[date]=11/08/2021&amp;obj[time_work]=ca-chieu')"
-              class="bg-danger text-center"
-            ></td>
-
-            
+             v-bind:key="idx"
+             class="bg-danger text-center"
+            >{{item}}</td>
+            </template>
           </tr>
-          <tr>
+          <tr v-bind:key="'t' + index">
             <td class="">Tối</td>
             <td class="tong-di-lam text-center">0</td>
 
+                <template v-for="(item,idx) in dateOfMonth">
             <td
-              onclick="_SHOW_FORM_REMOTE('https://vpdt.beacons.vn/staff/popup-cham-cong?obj[staff][id]=5cb054c65675a40115148d9a&amp;obj[date]=11/08/2021&amp;obj[time_work]=ca-toi')"
-              class="bg-danger text-center"
-            ></td>
-
-            
+             v-bind:key="idx"
+             class="bg-danger text-center"
+            >{{item}}</td>
+            </template> 
           </tr>
+           </template>
         </tbody>
       </table>
       </div>
@@ -303,68 +332,103 @@
       ref="table-bottom"
       class="table-bottom"
       >
-          <table style="background-color:#fff" class="table table-bordered">
+          <table style="background-color:#fff" class="table table-bordered table-vertical-center">
         <thead>
           <tr>
-            <th width="1" rowspan="2"></th>
+            <th width="1" rowspan="2" style="width: 26px"></th>
             <th rowspan="2" width="200" style="width: 200px">Họ tên</th>
             <th width="1">Ngày</th>
             <th rowspan="2">Tổng</th>
-            <th class="th-day">11-08</th>
-
-            
+            <template v-for="(item,idx) in dateOfMonth">
+            <th
+             v-bind:key="idx"
+             class="th-day"
+            >{{item}}</th>
+            </template>
           </tr>
-          <tr>
+          <tr ref="row-tb-top2">
             <th>Buổi</th>
-            <th class="th-day">Wed</th>
-
-           
+              <template v-for="(item,idx) in dayOfWeek">
+            <th
+             v-bind:key="idx"
+             class="th-day"
+            >{{item}}</th>
+            </template>
           </tr>
         </thead>
-        <tbody>
-          <tr>
-            <td class="" rowspan="3">1</td>
+         <tbody>
+           <template v-for="(item, index) in dataArrTimekeeping">
+            <tr v-bind:key="index">
+            <td class="" rowspan="3">{{index}}</td>
             <td class="table-user" rowspan="3" width="200" style="width: 200px">
               <a
-   
               >
-                Nguyễn Như Tùng</a
+                {{item.name}}</a
               >
             </td>
             <td class="">Sáng</td>
             <td class="tong-di-lam text-center">0</td>
-
-            <td
-              onclick="_SHOW_FORM_REMOTE('https://vpdt.beacons.vn/staff/popup-cham-cong?obj[staff][id]=5cb054c65675a40115148d9a&amp;obj[date]=11/08/2021&amp;obj[time_work]=ca-sang')"
-              class="bg-danger text-center"
-            ></td>
-
             
-          </tr>
+            <template v-for="(item,idx) in dateOfMonth">
+            <td
+             v-bind:key="idx"
+             class="bg-danger text-center"
+            >{{item}}</td>
+            </template>
+            </tr>
 
-          <tr>
+          <tr v-bind:key="'ch' + index">
             <td class="">Chiều</td>
             <td class="tong-di-lam text-center">0</td>
 
+               <template v-for="(item,idx) in dateOfMonth">
             <td
-              onclick="_SHOW_FORM_REMOTE('https://vpdt.beacons.vn/staff/popup-cham-cong?obj[staff][id]=5cb054c65675a40115148d9a&amp;obj[date]=11/08/2021&amp;obj[time_work]=ca-chieu')"
-              class="bg-danger text-center"
-            ></td>
-
-            
+             v-bind:key="idx"
+             class="bg-danger text-center"
+            >{{item}}</td>
+            </template>
           </tr>
+          <tr v-bind:key="'t' + index">
+            <td class="">Tối</td>
+            <td class="tong-di-lam text-center">0</td>
+
+                <template v-for="(item,idx) in dateOfMonth">
+            <td
+             v-bind:key="idx"
+             class="bg-danger text-center"
+            >{{item}}</td>
+            </template> 
+          </tr>
+           </template>
         </tbody>
       </table>
       </div>
     </div>
+    <PopupTimeKeeping/>
+        <!-- <b-pagination
+      v-model="currentPage"
+      align="right"
+      pills
+      @page-click="dataArr(currentPage)"
+      perPage="20"
+      :total-rows="rows"
+      size="lg"
+    >
+    </b-pagination> -->
   </div>
 </template>
 
 <script>
+import { mapActions, mapGetters } from "vuex";
 import { SET_BREADCRUMB } from "@/core/services/store/store_metronic/breadcrumbs.module";
+import PopupTimeKeeping from '../popup/popupchamcong.vue';
 export default {
+  components:{PopupTimeKeeping},
     data() {
     return {
+      currentPage: 1,
+      rows: 100,
+      dataArrTimekeeping: [],
       posScrollHz:0,
       posTbTop:0,
       posTop:0,
@@ -378,20 +442,131 @@ export default {
       selectedEmploy: null, // Array reference
       employ: [
       ],
+        dateOfMonth: ['13-05','14-05','15-05'
+      ],
+        dayOfWeek: ['hai','ba','tư'
+      ],
     }
     },
+     computed: {
+    ...mapGetters(["storeqlda/getListDataUserGTer"]),
+
+  },
+     created() {
+    this["storeqlda/getListDataUser"]().then(() => {
+      let arrTemp = this["storeqlda/getListDataUserGTer"];
+      this.dataArrTimekeeping = this["storeqlda/getListDataUserGTer"];
+      for (var i in arrTemp) {
+        let data = {
+          value: arrTemp[i].name,
+          text: arrTemp[i].name,
+        };
+        this.employ.push(data);
+        }
+    });
+  this.dateOfMonth = this.getDataDateOfMonth(null,null,7,true);
+  this.dayOfWeek = this.getDayOfWeek(this.dateOfMonth)
+  },
   mounted() {
     this.$store.dispatch(SET_BREADCRUMB, [{ title: "Chấm công" }]);
     window.addEventListener("scroll", this.onScroll);
+   // this.dataArr(this.currentPage);
   },
   beforeDestroy() {
     window.removeEventListener("scroll", this.onScroll);
   },
   methods: {
+     ...mapActions([
+      "storeqlda/getListTaskHasPaging",
+      "storeqlda/getListDataUser",
+      "storeqlda/destroyTaskWithId",
+      
+    ]), 
+    handleSearch(){
+     if(this.timeFrom && this.timeTo){
+       if(new Date(this.timeTo).getTime() > new Date(this.timeFrom).getTime()){
+         this.dateOfMonth = this.getDataDateOfMonth(this.timeFrom,this.timeTo,null,true)
+         this.dayOfWeek = this.getDayOfWeek(this.dateOfMonth)
+       }else{
+         alert('Khoảng thời gian chọn không hợp lý')
+       }
+     }
+    },
+    getDayOfWeek(arrDay){
+      let arrRs = [];
+      let temp='';
+      var days = ['CN','Thứ 2','Thứ 3','Thứ 4','Thứ 5','Thứ 6','Thứ 7'];
+      arrDay.forEach(element => {
+      temp =  element.split("/");
+        arrRs.push(days[ new Date(temp[2] + '-' + temp[1] + '-' + temp[0]).getDay()])
+      });
+      return arrRs;
+      
+    },
+    getDataDateOfMonth(strday1,strday2,distance,op){
+      let arrTemp = [];
+      if(strday1 && strday2){
+        if(new Date(strday2).getTime() > new Date(strday1).getTime()){
+            let j = 0;
+            arrTemp = [];
+            let strStart = strday1
+            while (new Date(strday2).getTime() > new Date(strday1).getTime()) {
+              let today = new Date(strStart);
+              let last = new Date(today.getTime() + (j * 24 * 60 * 60 * 1000));
+              let dd = String(last.getDate()).padStart(2, '0');
+              let mm = String(last.getMonth() + 1).padStart(2, '0'); //January is 0!
+              let yyyy = last.getFullYear();
+        
+              let rs = dd + '/' + mm + '/' + yyyy;
+              strday1 = yyyy + '-' + mm + '-' + dd
+              arrTemp.push(rs);
+              j++;
+            }
+         
+            return arrTemp;
+        }
+      }else{
+        if(op){
+          arrTemp = [];
+          for(let i = distance ; i >=0 ; i--){
+            let today = new Date();
+            let last = new Date(today.getTime() - (i * 24 * 60 * 60 * 1000));
+            let dd = String(last.getDate()).padStart(2, '0');
+            let mm = String(last.getMonth() + 1).padStart(2, '0'); //January is 0!
+            let yyyy = last.getFullYear();   
+            let rs = dd + '/' + mm + '/' + yyyy;
+            arrTemp.push(rs);
+          }
+            return arrTemp;
+        }else{
+          arrTemp = [];
+           for(let i = 1 ; i <=distance ; i++){
+            let today = new Date();
+            let last = new Date(today.getTime() + (i * 24 * 60 * 60 * 1000));
+            let dd = String(last.getDate()).padStart(2, '0');
+            let mm = String(last.getMonth() + 1).padStart(2, '0'); //January is 0!
+            let yyyy = last.getFullYear();     
+            let rs = dd + '/' + mm + '/' + yyyy;
+            arrTemp.push(rs);
+          }
+            return arrTemp;
+        }
+      }
+    },
+        dataArr(page) {
+      var data = {
+        page: page,
+      };
+      this["storeqlda/getListTaskHasPaging"](data).then((response) => {
+        this.dataArrTimekeeping = response.data.data;
+        this.pagination = response.data;
+        this.rows = response.data.total;
+      });
+    },
     /* tạo bảng cuộn cố định dòng đầu và cột
     ta sử dụng 4 bảng : bảng top là bảng sẽ hiển thị nội dung chấm công
     phần header của bảng này sẽ sử dụng 1 bảng khác để hiển thị sử dụng z-inđex
-    bảng middle sẻ hiển thị gó trên cùng bên trái của bảng tổng 
+    bảng middle sẻ hiển thị góc trên cùng bên trái của bảng tổng 
     bảng bottom sẽ đùng để hiển thị phần cố đinh bên trái
     sau đó lấy các thuộc tính scroll ngang dọc để lấy đặt vị trí cho các phần tử ở trên
     */
@@ -473,11 +648,7 @@ export default {
 
 <style scoped>
 .thanh {
- 
   overflow-x: scroll;
-}
-.top-tb{
-  /* background-color: #fff; */
 }
 
 .table-header {
