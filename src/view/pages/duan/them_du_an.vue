@@ -242,6 +242,7 @@
 <script>
 import Multiselect from "vue-multiselect";
 import { mapActions, mapGetters } from "vuex";
+import { SET_BREADCRUMB } from "@/core/services/store/store_metronic/breadcrumbs.module";
 export default {
   name: "add_task",
   components: { Multiselect },
@@ -307,7 +308,6 @@ export default {
       }
     });
   },
-  mounted() {},
   computed: {
     ...mapGetters([
       "storeqlda/getListDataUserGTer",
@@ -361,6 +361,10 @@ export default {
         alert(res.data);
       });
     },
+  },
+  mounted() {
+    this.$store.dispatch(SET_BREADCRUMB, [{ title: "Thêm dự án" }]);
+    this.dataArr(this.currentPage);
   },
   watch: {
 

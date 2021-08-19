@@ -134,7 +134,12 @@
 </template>
 
 <script>
-export default {};
+import { SET_BREADCRUMB } from "@/core/services/store/store_metronic/breadcrumbs.module";
+export default {
+  mounted() {
+     this.$store.dispatch(SET_BREADCRUMB, [{ title: "Chấm công của tôi" }]);
+  },
+};
 </script>
 
 <style scoped>

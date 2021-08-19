@@ -193,6 +193,7 @@
 </template>
 <script>
 import { mapGetters, mapActions } from "vuex";
+import { SET_BREADCRUMB } from "@/core/services/store/store_metronic/breadcrumbs.module";
 export default {
   name: "tvgs-header",
   data() {
@@ -218,6 +219,9 @@ export default {
       selectedSite: null, // Array reference
       site: [],
     };
+  },
+    mounted(){
+    this.$store.dispatch(SET_BREADCRUMB, [{ title: "Báo cáo tuần" }]);
   },
   created() {
     let data = {

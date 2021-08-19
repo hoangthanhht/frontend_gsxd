@@ -113,7 +113,7 @@ export default {
   mounted() {
     this.$store.dispatch(SET_BREADCRUMB, [
       { title: "Hệ thống", route: "cauhinhemail" },
-      { title: "Cấu hình email" }
+      { title: "Cấu hình email", route: "cauhinhemail"  }
     ]);
   },
 methods : {

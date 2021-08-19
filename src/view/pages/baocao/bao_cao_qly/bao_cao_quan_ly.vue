@@ -207,6 +207,7 @@
 <script>
 import Multiselect from "vue-multiselect";
 import { mapActions, mapGetters } from "vuex";
+import { SET_BREADCRUMB } from "@/core/services/store/store_metronic/breadcrumbs.module";
 export default {
   components: { Multiselect },
   data() {
@@ -255,6 +256,7 @@ export default {
     });
   },
   mounted() {
+    this.$store.dispatch(SET_BREADCRUMB, [{ title: "Báo cáo quản lý" }]);
     this.dataArr(this.currentPage);
   },
   methods: {

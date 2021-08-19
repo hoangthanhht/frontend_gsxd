@@ -174,6 +174,7 @@
 import Multiselect from "vue-multiselect";
 import { mapActions, mapGetters } from "vuex";
 import CompThemHs from "./comp_them_hs/muc_them_ho_so";
+import { SET_BREADCRUMB } from "@/core/services/store/store_metronic/breadcrumbs.module";
 export default {
   data() {
     return {
@@ -210,6 +211,9 @@ export default {
       "currentUserPersonalInfo",
       "storeqlda/currentUser",
     ]),
+  },
+    mounted(){
+    this.$store.dispatch(SET_BREADCRUMB, [{ title: "Hồ sơ khác" }]);
   },
        created() {
            this.idCurrentFile = this.$route.params.id;

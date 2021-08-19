@@ -143,7 +143,7 @@
 </template>
 
 <script>
-//import Multiselect from "vue-multiselect";
+import { SET_BREADCRUMB } from "@/core/services/store/store_metronic/breadcrumbs.module";
 import { mapActions } from "vuex";
 export default {
   components: {  },
@@ -173,6 +173,7 @@ export default {
     };
   },
   mounted() {
+    this.$store.dispatch(SET_BREADCRUMB, [{ title: "Danh sách dự án" }]);
     this.dataArr(this.currentPage);
   },
   methods: {

@@ -28,7 +28,7 @@ export default {
     UserTable,
   },
   mounted() {
-    this.$store.dispatch(SET_BREADCRUMB, [{ title: "Danh sách nhân viên" }]);
+    this.$store.dispatch(SET_BREADCRUMB, [{ title: "Quản lý phân quyền" }]);
   },
 
 };

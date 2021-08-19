@@ -121,7 +121,7 @@
 //import Excel from "exceljs/dist/es5/exceljs.browser";
 //import Pagination from "../../../pages/plugins/Pagination.vue";
 import { mapActions, mapGetters, mapState } from "vuex";
-//import Formfile from '@/view/pages/vue-bootstrap/FormFile.vue'
+import { SET_BREADCRUMB } from "@/core/services/store/store_metronic/breadcrumbs.module";
 export default {
   name: "gia_vat_tu",
   components: {
@@ -137,8 +137,7 @@ export default {
   created() {
   },
   mounted() {
-    //this.dataArr = this["storeqlda/getListDataDinhMuc"];
-    //this.dataArr(this.pagination.current_page);
+     this.$store.dispatch(SET_BREADCRUMB, [{ title: "Sao lưu dữ liệu" }]);
     this.dataArr(this.currentPage);
    
   },

@@ -1165,7 +1165,7 @@ export default {
             console.log("error", error);
         }
     },
-
+    /* api vừa gửi data vừa gửi tolen lêm serve. token dể sau cùng trong danh sách đối số */
     async updateReport(context, {contentJson = '',idReport = '',dateBaocao = ''
     ,tenDuan = '',diaDiem = '',chuDauTu = '',banQuanLy=''}) {
         let tokenLocal = localStorage.getItem(CONFIG_ACCESS_TOKEN);
@@ -1887,6 +1887,18 @@ export default {
         try {
 
             var result = await axiosInstance.get(`/getInfomationEmployById/${Employ_id}`);
+            // context.commit('SET_LIST_POST', result.data.data);
+            return result
+            //console.log("error",result.data.data);
+        } catch (error) {
+            console.log("error", error);
+        }
+    },
+    async getEmployWithAcount(context, acount) {
+
+        try {
+
+            var result = await axiosInstance.get(`/getInfomationEmployByAcount/${acount}`);
             // context.commit('SET_LIST_POST', result.data.data);
             return result
             //console.log("error",result.data.data);

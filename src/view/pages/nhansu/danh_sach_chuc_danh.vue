@@ -125,6 +125,7 @@
 
 <script>
 import { mapActions } from "vuex";
+import { SET_BREADCRUMB } from "@/core/services/store/store_metronic/breadcrumbs.module";
 export default {
   data() {
     return {
@@ -134,6 +135,7 @@ export default {
     };
   },
   mounted() {
+    this.$store.dispatch(SET_BREADCRUMB, [{ title: "Danh sách chức danh" }]);
     this.dataArr(this.currentPage);
   },
   methods: {
