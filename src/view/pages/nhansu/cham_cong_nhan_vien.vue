@@ -206,7 +206,7 @@
         </thead>
         <tbody>
            <template v-for="(item, index) in dataArrTimekeeping">
-            <tr v-bind:key="index">
+            <tr class="parentRow" v-bind:key="index">
             <td class="" rowspan="3">{{index}}</td>
             <td class="table-user" rowspan="3" width="200" style="width: 200px">
               <a
@@ -214,36 +214,43 @@
                 {{item.name}}</a
               >
             </td>
-            <td class="">Sáng</td>
+            <td class="elementTime">Sáng</td>
             <td class="tong-di-lam text-center">0</td>
             
             <template v-for="(item,idx) in dateOfMonth">
             <td
+            @click="handleTimekeeping($event,index,idx)"
              v-bind:key="idx"
-             class="bg-danger text-center"
+             class="bg-danger"
             >{{item}}</td>
             </template>
             </tr>
 
-          <tr v-bind:key="'ch' + index">
-            <td class="">Chiều</td>
+          <tr
+          class="parentRow" 
+          v-bind:key="'ch' + index">
+            <td class="elementTime">Chiều</td>
             <td class="tong-di-lam text-center">0</td>
 
                <template v-for="(item,idx) in dateOfMonth">
             <td
+             @click="handleTimekeeping($event,index,idx)"
              v-bind:key="idx"
-             class="bg-danger text-center"
+             class="bg-danger"
             >{{item}}</td>
             </template>
           </tr>
-          <tr v-bind:key="'t' + index">
-            <td class="">Tối</td>
+          <tr
+          class="parentRow"
+           v-bind:key="'t' + index">
+            <td class="elementTime">Tối</td>
             <td class="tong-di-lam text-center">0</td>
 
-                <template v-for="(item,idx) in dateOfMonth">
+            <template v-for="(item,idx) in dateOfMonth">
             <td
+             @click="handleTimekeeping($event,index,idx)"
              v-bind:key="idx"
-             class="bg-danger text-center"
+             class="bg-danger"
             >{{item}}</td>
             </template> 
           </tr>
@@ -404,7 +411,13 @@
       </table>
       </div>
     </div>
-    <PopupTimeKeeping/>
+    <PopupTimeKeeping
+     v-on:receiptData="receiptData"
+     v-bind:isOpenPopup="isOpenPopup"
+      v-bind:nameEmploy="nameEmploy" 
+       v-bind:timeWork="timeWork"
+       v-bind:dateWork="dateWork"
+    />
         <!-- <b-pagination
       v-model="currentPage"
       align="right"
@@ -426,6 +439,11 @@ export default {
   components:{PopupTimeKeeping},
     data() {
     return {
+      confirmTimekeeping:'',
+      nameEmploy:'',
+      timeWork:'',
+      dateWork:'',
+      isOpenPopup: false,
       currentPage: 1,
       rows: 100,
       dataArrTimekeeping: [],
@@ -442,10 +460,12 @@ export default {
       selectedEmploy: null, // Array reference
       employ: [
       ],
-        dateOfMonth: ['13-05','14-05','15-05'
+        dateOfMonth: [
       ],
-        dayOfWeek: ['hai','ba','tư'
+        dayOfWeek: [
       ],
+      selectElement:null,
+      classSelectElement:''
     }
     },
      computed: {
@@ -481,7 +501,37 @@ export default {
       "storeqlda/getListDataUser",
       "storeqlda/destroyTaskWithId",
       
-    ]), 
+    ]),
+        getParentSelect(el, select) {
+      while (el.parentElement) {
+        var pr = el.parentElement;
+        if (pr.matches(select)) {
+          return pr;
+        }
+        el = pr;
+      }
+    },
+    receiptData(data){
+      console.log('data',data)
+      this.isOpenPopup = false;
+      this.selectElement.classList.remove(`${this.classSelectElement}`);
+      this.selectElement.classList.add(`${data}`);
+
+    },
+    handleTimekeeping(e,index,idx){
+       let elParentLarge = this.getParentSelect(e.target, ".parentRow");
+      let elTime = elParentLarge.querySelector(".elementTime");
+      this.timeWork = elTime.innerText;
+      this.dateWork = this.dateOfMonth[idx];
+      this.nameEmploy = this.dataArrTimekeeping[index].name;
+
+      this.isOpenPopup = true;
+      this.selectElement = e.target;
+      this.classSelectElement = e.target.className
+      console.log('e',e.target)
+      console.log('this.classSelectElement',this.classSelectElement)
+      console.log('type',typeof(e.target.className))
+    },
     handleSearch(){
      if(this.timeFrom && this.timeTo){
        if(new Date(this.timeTo).getTime() > new Date(this.timeFrom).getTime()){
