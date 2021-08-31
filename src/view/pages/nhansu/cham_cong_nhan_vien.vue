@@ -46,13 +46,13 @@
 
       <div class="block1__search">
         <b-input-group size="sm" class="mb-2 add-cv icon-tvgs cursor-pointer">
-          <b-form-input type="search" placeholder="Search terms"></b-form-input>
+          <b-form-input v-model="search" type="search" placeholder="Search terms"></b-form-input>
           <b-input-group-prepend class="" is-text>
             <b-icon @click="handleSearch" icon="search"></b-icon>
           </b-input-group-prepend>
 
           <b-input-group-prepend is-text>
-            <b-icon icon="arrow-repeat"></b-icon>
+            <b-icon @click="handleReset" icon="arrow-repeat"></b-icon>
           </b-input-group-prepend>
         </b-input-group>
       </div>
@@ -439,6 +439,7 @@ export default {
   components:{PopupTimeKeeping},
     data() {
     return {
+      search:'',
       confirmTimekeeping:'',
       nameEmploy:'',
       timeWork:'',
@@ -512,10 +513,11 @@ export default {
       }
     },
     receiptData(data){
-      console.log('data',data)
       this.isOpenPopup = false;
-      this.selectElement.classList.remove(`${this.classSelectElement}`);
-      this.selectElement.classList.add(`${data}`);
+      if (data) {
+        this.selectElement.classList.remove(`${this.classSelectElement}`);
+        this.selectElement.classList.add(`${data}`);
+      }
 
     },
     handleTimekeeping(e,index,idx){
@@ -528,9 +530,9 @@ export default {
       this.isOpenPopup = true;
       this.selectElement = e.target;
       this.classSelectElement = e.target.className
-      console.log('e',e.target)
-      console.log('this.classSelectElement',this.classSelectElement)
-      console.log('type',typeof(e.target.className))
+    },
+    handleReset(){
+      this.search = ''
     },
     handleSearch(){
      if(this.timeFrom && this.timeTo){

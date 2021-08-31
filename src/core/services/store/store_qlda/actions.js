@@ -1048,7 +1048,24 @@ export default {
             console.log("error", error);
         }
     },
+    async getAllTask() {
 
+        var config = {
+            headers: {
+                'Accept': 'application/json',
+                //'Authorization' :'Bearer ' + token,
+            }
+        }
+
+        try {
+
+            var result = await axiosInstance.get('/getAllTask', config);
+            return result
+        } catch (error) {
+            console.log("error", error);
+        }
+    },
+    
     async getTaskWithId(context, task_id) {
 
         try {
@@ -1356,6 +1373,24 @@ export default {
             console.log("error", error);
         }
     },
+
+    async getAllFile() {
+
+        var config = {
+            headers: {
+                'Accept': 'application/json',
+                //'Authorization' :'Bearer ' + token,
+            }
+        }
+
+        try {
+
+            var result = await axiosInstance.get('/getAllFile', config);
+            return result
+        } catch (error) {
+            console.log("error", error);
+        }
+    },
      /* ACTION CHO TAO HỢP ĐỒNG */
      async ActionCreateContract(context, { 
         tenHopDong ='',
@@ -1490,6 +1525,24 @@ export default {
             // context.commit('SET_LIST_POST', result.data.data);
             return result
             //console.log("error",result.data.data);
+        } catch (error) {
+            console.log("error", error);
+        }
+    },
+
+    async getAllContract() {
+
+        var config = {
+            headers: {
+                'Accept': 'application/json',
+                //'Authorization' :'Bearer ' + token,
+            }
+        }
+
+        try {
+
+            var result = await axiosInstance.get('/getAllContract', config);
+            return result
         } catch (error) {
             console.log("error", error);
         }

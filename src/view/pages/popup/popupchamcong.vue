@@ -154,6 +154,7 @@ export default {
   opacity: 0;
   visibility: hidden;
   transition: all 0.3s ease;
+  z-index: 999;
 }
 .wrapper-popup.open-popup {
   opacity: 1;

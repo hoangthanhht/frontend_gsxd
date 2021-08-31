@@ -175,6 +175,9 @@ export default {
     breadcrumbs: Array,
     title: String
   },
+  mounted(){
+    console.log('subheaderClasses',this.subheaderClasses)
+  },
   computed: {
     ...mapGetters(["layoutConfig"]),
 

@@ -49,20 +49,158 @@
       </div>
 
       <div class="search-congv">
-        <b-input-group size="sm" class="mb-2 add-cv icon-tvgs">
-          <b-form-input type="search" placeholder="Search terms"></b-form-input>
+        <b-input-group size="sm" class="mb-2 add-cv icon-tvgs cursor-pointer">
+          <b-form-input v-model="search" type="search" placeholder="Search terms"></b-form-input>
           <b-input-group-prepend is-text>
-            <b-icon icon="search"></b-icon>
+            <b-icon @click="handleSearch" icon="search"></b-icon>
           </b-input-group-prepend>
 
           <b-input-group-prepend is-text>
-            <b-icon icon="arrow-repeat"></b-icon>
+            <b-icon @click="handleReset" icon="arrow-repeat"></b-icon>
           </b-input-group-prepend>
         </b-input-group>
       </div>
     </div>
 
-    <div class="card-body pt-0 pb-3">
+   <div v-if="search||selectedKindContract"
+    class="card-body pt-0 pb-3">
+      <div class="tab-content">
+        <!--begin::Table-->
+        <div class="table-responsive table-striped">
+          <table
+            class="
+              table
+              table-head-custom
+              table-vertical-center
+              table-head-bg
+              table-borderless
+            "
+          >
+            <thead>
+              <tr class="text-left">
+                <!-- <th style="max-width: 50px" class="pl-7">
+                  id
+                </th> -->
+                <th style="display: none">Id</th>
+                <th>Tên hợp đồng</th>
+                <th>loại hợp đồng</th>
+                <th>dự Án</th>
+                <th>giá trị hợp đồng</th>
+                <th>nhán sự</th>
+                <th>bắt đầu</th>
+                <th>kết thúc</th>
+                <th>đơn vị</th>
+                <th>khối lượng</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody v-if="dataArr.length !== 0">
+              <template v-for="(item, index) in handleSearch()">
+                <tr v-bind:key="index" class="row_table_note">
+                  <!-- <td contenteditable="true">
+						<span class="text-muted font-weight-bold">{{item.id}}
+                		</span>
+                  </td> -->
+                  <td style="display: none">
+                    <span class="id_vat_tu text-muted font-weight-bold">{{
+                      item.id !== null ? item.id : "null"
+                    }}</span>
+                  </td>
+                  <td>
+                    <span class="ma_vat_tu text-muted font-weight-bold">{{
+                      item.tenHopDong !== null ? item.tenHopDong : "null"
+                    }}</span>
+                  </td>
+
+                  <td>
+                    <span class="ma_vat_tu text-muted font-weight-bold">{{
+                      item.loaiHopDong !== null ? item.loaiHopDong : "null"
+                    }}</span>
+                  </td>
+
+                  <td>
+                    <span class="ten_vat_tu text-muted font-weight-bold">{{
+                      handleGetPersion(handleSearch(),index)[0] !== null ? handleGetPersion(handleSearch(),index)[0] : ""
+                    }}</span>
+                  </td>
+                  <td>
+                    <span class="don_vi text-muted font-weight-bold">{{
+                      item.giaTriHD !== null ? item.giaTriHD : "null"
+                    }}</span>
+                  </td>
+                  <td>
+                    <span class="gia_vat_tu text-muted font-weight-bold"
+                      >{{
+                         handleGetPersion(handleSearch(),index)[1] !== null
+                          ?  handleGetPersion(handleSearch(),index)[1]
+                          : ""
+                      }}
+                    </span>
+                  </td>
+
+                  <td>
+                    <span class="khu_vuc text-muted font-weight-bold">{{
+                      handleGetDate(handleSearch(),index)[0] !== null ? handleGetDate(handleSearch(),index)[0] : ""
+                    }}</span>
+                  </td>
+
+                  <td>
+                    <span class="thoi_diem text-muted font-weight-bold">{{
+                      handleGetDate(handleSearch(),index)[1] !== null ? handleGetDate(handleSearch(),index)[1] : ""
+                    }}</span>
+                  </td>
+
+                  <td>
+                    <span class="thoi_diem text-muted font-weight-bold">{{
+                      item.donVi !== null ? item.donVi : "null"
+                    }}</span>
+                  </td>
+
+                  <td>
+                    <span class="thoi_diem text-muted font-weight-bold">{{
+                      item.khoiLuong !== null ? item.khoiLuong : "null"
+                    }}</span>
+                  </td>
+
+                  <td>
+                  <span class="nguon text-muted font-weight-bold">
+                      <i
+                        @click="handleEdit(index)"
+                        class="
+                          menu-icon
+                          cursor-pointer
+                          flaticon2-edit
+                          text-white
+                          pl-2
+                          pr-2
+                          mr-5
+                          bg-green-400
+                        "
+                      ></i>
+                      <i
+                        @click="handleDelete(index)"
+                        class="
+                          menu-icon
+                          cursor-pointer
+                          flaticon2-rubbish-bin
+                          text-white
+                          pl-2
+                          pr-2
+                          bg-red-600
+                        "
+                      ></i>
+                    </span>
+                  </td>
+                </tr>
+              </template>
+            </tbody>
+          </table>
+        </div>
+        <!--end::Table-->
+      </div>
+    </div>
+
+    <div v-else class="card-body pt-0 pb-3">
       <div class="tab-content">
         <!--begin::Table-->
         <div class="table-responsive table-striped">
@@ -119,7 +257,7 @@
 
                   <td>
                     <span class="ten_vat_tu text-muted font-weight-bold">{{
-                      handleGetPersion(index)[0] !== null ? handleGetPersion(index)[0] : ""
+                      handleGetPersion(dataArrContract,index)[0] !== null ? handleGetPersion(dataArrContract,index)[0] : ""
                     }}</span>
                   </td>
                   <td>
@@ -130,8 +268,8 @@
                   <td>
                     <span class="gia_vat_tu text-muted font-weight-bold"
                       >{{
-                         handleGetPersion(index)[1] !== null
-                          ?  handleGetPersion(index)[1]
+                         handleGetPersion(dataArrContract,index)[1] !== null
+                          ?  handleGetPersion(dataArrContract,index)[1]
                           : ""
                       }}
                     </span>
@@ -139,13 +277,13 @@
 
                   <td>
                     <span class="khu_vuc text-muted font-weight-bold">{{
-                      handleGetDate(index)[0] !== null ? handleGetDate(index)[0] : ""
+                      handleGetDate(dataArrContract,index)[0] !== null ? handleGetDate(dataArrContract,index)[0] : ""
                     }}</span>
                   </td>
 
                   <td>
                     <span class="thoi_diem text-muted font-weight-bold">{{
-                      handleGetDate(index)[1] !== null ? handleGetDate(index)[1] : ""
+                      handleGetDate(dataArrContract,index)[1] !== null ? handleGetDate(dataArrContract,index)[1] : ""
                     }}</span>
                   </td>
 
@@ -220,9 +358,11 @@ export default {
   components: { Multiselect },
   data() {
     return {
+      search:'',
       currentPage: 1,
       rows: 100,
       dataArrContract: [],
+      dataArrAllContract:[],
       selectedKindContract: null, // Array reference
       kindcontract: [
         { id: "1", text: "Hợp đồng trọn gói" },
@@ -243,6 +383,11 @@ export default {
       ],
     };
   },
+   created() {
+   this['storeqlda/getAllContract']().then((res)=>{
+      this.dataArrAllContract = res.data
+   });
+   },
   mounted() {
     this.$store.dispatch(SET_BREADCRUMB, [{ title: "Danh sách hợp đồng" }]);
     this.dataArr(this.currentPage);
@@ -251,19 +396,86 @@ export default {
     ...mapActions([
       "storeqlda/getListContractHasPaging",
       "storeqlda/getListDataUser",
+      "storeqlda/getAllContract",
       "storeqlda/destroyContractWithId",
       
     ]),
-     handleGetPersion(index){
+  handleReset(){
+    this.search = '';
+    this.selectedTimeCreate = null;
+    this.selectedKindContract = null;
+    this.selectedPriorityLevel = null;
+    },
+      handleSearch(){
+       if(this.search){
+         let newArr = this.dataArrAllContract.filter(item => {
+            let rs = false;
+            if(item.tenHopDong && rs == false){
+                rs = item.tenHopDong.toLowerCase().includes(this.search.toLowerCase());
+            }
+            if(item.loaiHopDong && rs == false) {
+                rs = item.loaiHopDong.toLowerCase().includes(this.search.toLowerCase());
+            }
+            if(item.duAn && rs == false) {
+                rs = item.duAn.toLowerCase().includes(this.search.toLowerCase());
+            }
+            if(item.nhanSuLienQuan && rs == false) {
+                rs = item.nhanSuLienQuan.toLowerCase().includes(this.search.toLowerCase());
+            }
+               if(item.giaTriHD && rs == false) {
+                rs = item.giaTriHD.toLowerCase().includes(this.search.toLowerCase());
+            }
+            if(item.khoiLuong && rs == false) {
+                rs = item.khoiLuong.toLowerCase().includes(this.search.toLowerCase());
+            }
+            return rs;
+        });
+        return newArr;
+       }
+       else{
+         if(this.selectedPriorityLevel||this.selectedTimeCreate||this.selectedKindContract
+         ){
+           let newArr = this.dataArrAllContract.filter(item => {
+            if(this.selectedKindContract) {
+              if(this.selectedKindContract == item.loaiHopDong){
+                return item
+              }
+            }
+            //  if(this.selectedJobStatus) {
+            //   if(this.selectedJobStatus == item.tinhTrang){
+            //     return item
+            //   }
+            // }
+            //  if(this.selectedWorkResults) {
+            //   if(this.selectedWorkResults == item.ketQua){
+            //     return item
+            //   }
+            // }
+            //  if(this.selectedPersion) {
+
+            //    let rs = item.nguoiPhoiHop.toLowerCase().includes((JSON.stringify(this.selectedPersion)).toLowerCase());
+            //     if(rs){
+            //       console.log('item',item);
+            //       return item
+            //     }
+
+            // }
+           })
+        return newArr
+         }
+       }
+     },
+
+     handleGetPersion(arr,index){
        let arrTemp =[];
         let persionProj = "";
       let persionDo = "";
-       if (this.dataArrContract[index].duAn) {
-          arrTemp = JSON.parse(this.dataArrContract[index].duAn);
+       if (arr[index].duAn) {
+          arrTemp = JSON.parse(arr[index].duAn);
           persionProj= arrTemp.text
        }
-       if (this.dataArrContract[index].nhanSuLienQuan) {
-          arrTemp = JSON.parse(this.dataArrContract[index].nhanSuLienQuan);
+       if (arr[index].nhanSuLienQuan) {
+          arrTemp = JSON.parse(arr[index].nhanSuLienQuan);
          for (var j in arrTemp) {
             if(persionDo=='') {
               persionDo = arrTemp[j].text
@@ -281,17 +493,17 @@ export default {
        }
       return arrTemp;
     },
-    handleGetDate(index) {
+    handleGetDate(arr,index) {
       let dateStart = "";
       let dateFinish = "";
       let arrTemp = [];
-      if (this.dataArrContract[index].batDau) {
-        let arrTimeStart = this.dataArrContract[index].batDau.split("-");
+      if (arr[index].batDau) {
+        let arrTimeStart = arr[index].batDau.split("-");
         dateStart =
           arrTimeStart[2] + "/" + arrTimeStart[1] + "/" + arrTimeStart[0];
       }
-      if (this.dataArrContract[index].ketThuc) {
-        let arrTimeFinish = this.dataArrContract[index].ketThuc.split("-");
+      if (arr[index].ketThuc) {
+        let arrTimeFinish = arr[index].ketThuc.split("-");
         dateFinish =
           arrTimeFinish[2] + "/" + arrTimeFinish[1] + "/" + arrTimeFinish[0];
       }

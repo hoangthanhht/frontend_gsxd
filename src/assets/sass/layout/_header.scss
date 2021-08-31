@@ -5,8 +5,8 @@
 // Desktop Mode
 @include media-breakpoint-up(lg) {
 	.header {
-		display: flex;
-		justify-content: space-between;
+		//display: flex;
+		// justify-content: space-between;
 		height: get($header-config, desktop, default, height);
 		position: relative;
 		z-index: 2;

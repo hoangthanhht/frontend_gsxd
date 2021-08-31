@@ -1,11 +1,17 @@
 <template>
   <!-- begin:: Header -->
+  <div>
+  
   <div
     id="kt_header"
     ref="kt_header"
     class="header"
     v-bind:class="headerClasses"
   >
+     <div class="flex justify-end">
+            <KTTopbar></KTTopbar>
+
+      </div>
     <div
       class="container-fluid d-flex align-items-center justify-content-between"
     >
@@ -14,6 +20,7 @@
         class="header-menu-wrapper header-menu-wrapper-left"
         ref="kt_header_menu_wrapper"
       >
+        
         <div
           v-if="headerMenuEnabled"
           id="kt_header_menu"
@@ -22,19 +29,24 @@
           v-bind:class="headerMenuClasses"
         >
           <!-- example static menu here -->
-          <KTMenu></KTMenu>
+         <KTMenu></KTMenu>
         </div>
+       
+
+
       </div>
       <!-- end:: Header Menu -->
-      <KTTopbar></KTTopbar>
+      
     </div>
+  </div>
+ 
   </div>
   <!-- end:: Header -->
 </template>
 
 <script>
 import { mapGetters } from "vuex";
-import KTTopbar from "@/view/layout/header/Topbar.vue";
+ import KTTopbar from "@/view/layout/header/Topbar.vue";
 import KTLayoutHeader from "@/assets/js/layout/base/header.js";
 import KTLayoutHeaderMenu from "@/assets/js/layout/base/header-menu.js";
 import KTMenu from "@/view/layout/header/Menu.vue";
@@ -54,6 +66,7 @@ export default {
       this.$refs["kt_header_menu"],
       this.$refs["kt_header_menu_wrapper"]
     );
+        console.log('headerMenuClasses',this.headerMenuClasses)
   },
   computed: {
     ...mapGetters(["layoutConfig", "getClasses"]),
@@ -72,6 +85,8 @@ export default {
      */
     headerClasses() {
       const classes = this.getClasses("header");
+  
+
       if (typeof classes !== "undefined") {
         return classes.join(" ");
       }

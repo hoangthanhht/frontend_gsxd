@@ -5,13 +5,14 @@
     <!-- end:: Header Mobile -->
 
     <Loader v-if="loaderEnabled" v-bind:logo="loaderLogo"></Loader>
-
+ 
     <!-- begin::Body -->
     <div class="d-flex flex-row flex-column-fluid page">
       <!-- begin:: Aside Left -->
       <!-- <KTAside v-if="asideEnabled"></KTAside> -->
       <!-- end:: Aside Left -->
 
+      
       <div id="kt_wrapper" class="d-flex flex-column flex-row-fluid wrapper">
         <!-- begin:: Header -->
         <KTHeader></KTHeader>
@@ -59,6 +60,7 @@
 <script>
 import { mapGetters } from "vuex";
 //import KTAside from "@/view/layout/aside/Aside.vue";
+
 import KTHeader from "@/view/layout/header/Header.vue";
 import KTHeaderMobile from "@/view/layout/header/HeaderMobile.vue";
 import KTFooter from "@/view/layout/footer/Footer.vue";

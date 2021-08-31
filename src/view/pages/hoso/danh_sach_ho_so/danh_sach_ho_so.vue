@@ -50,21 +50,137 @@
         </multiselect>
       </div>
 
-      <div class="search-congv">
-        <b-input-group size="sm" class="mb-2 add-cv icon-tvgs">
-          <b-form-input type="search" placeholder="Search terms"></b-form-input>
+    <div class="search-congv">
+        <b-input-group size="sm" class="mb-2 add-cv icon-tvgs cursor-pointer">
+          <b-form-input v-model="search" type="search" placeholder="Search terms"></b-form-input>
           <b-input-group-prepend is-text>
-            <b-icon icon="search"></b-icon>
+            <b-icon @click="handleSearch" icon="search"></b-icon>
           </b-input-group-prepend>
 
           <b-input-group-prepend is-text>
-            <b-icon icon="arrow-repeat"></b-icon>
+            <b-icon @click="handleReset" icon="arrow-repeat"></b-icon>
           </b-input-group-prepend>
         </b-input-group>
       </div>
     </div>
 
-     <div class="card-body pt-0 pb-3">
+      <div v-if="search||selectedKindFile||selectedPriorityLevel"
+      class="card-body pt-0 pb-3">
+      <div class="tab-content">
+        <!--begin::Table-->
+        <div class="table-responsive table-striped">
+          <table
+            class="
+              table
+              table-head-custom
+              table-vertical-center
+              table-head-bg
+              table-borderless
+              
+            "
+          >
+            <thead>
+              <tr class="text-left">
+                <!-- <th style="max-width: 50px" class="pl-7">
+                  id
+                </th> -->
+                <th style="display: none">Id</th>
+                <th>Tên hồ sơ</th>
+                <th>Số lượng</th>
+                <th>Lần kiểm tra</th>
+                <th>Ngày</th>
+                <th>Kết quả</th>
+                <th>Người kiểm tra</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody v-if="dataArr.length !== 0">
+              <template v-for="(item, index) in handleSearch()">
+                <tr v-bind:key="index" class="row_table_note">
+                  <!-- <td contenteditable="true">
+						<span class="text-muted font-weight-bold">{{item.id}}
+                		</span>
+                  </td> -->
+                  <td style="display: none">
+                    <span class="id_vat_tu text-muted font-weight-bold">{{
+                      item.id !== null ? item.id : "null"
+                    }}</span>
+                  </td>
+                  <td>
+                    <span class="ma_vat_tu text-muted font-weight-bold">{{
+                      item.tenHoSo !== null ? item.tenHoSo : "null"
+                    }}</span>
+                  </td>
+                  <td>
+                    <span class="ten_vat_tu text-muted font-weight-bold">{{
+                      item.soLuong !== null ? item.soLuong : "null"
+                    }}</span>
+                  </td>
+                  <td>
+                    <span class="don_vi text-muted font-weight-bold">{{
+                      item.lanKiemTra !== null ? item.lanKiemTra : "null"
+                    }}</span>
+                  </td>
+                  <td>
+                    <span class="gia_vat_tu text-muted font-weight-bold">{{
+                       handleGetDate(handleSearch(),index) !== null ?  handleGetDate(handleSearch(),index) : ""
+                    }}
+                    </span>
+                  </td>
+
+                  <td>
+                    <span class="khu_vuc text-muted font-weight-bold">{{
+                      item.ketQua !== null ? item.ketQua : "null"
+                    }}</span>
+                  </td>
+
+                  <td>
+                    <span class="thoi_diem text-muted font-weight-bold">{{
+                      item.nguoiPheDuyet !== null ? item.nguoiPheDuyet : "null"
+                    }}</span>
+                  </td>
+
+                  <td>
+                 <span class="nguon text-muted font-weight-bold">
+                      <i
+                        @click="handleEdit(index)"
+                        class="
+                          menu-icon
+                          cursor-pointer
+                          flaticon2-edit
+                          text-white
+                          pl-2
+                          pr-2
+                          mr-5
+                          bg-green-400
+                        "
+                      ></i>
+                      <i
+                        @click="handleDelete(index)"
+                        class="
+                          menu-icon
+                          cursor-pointer
+                          flaticon2-rubbish-bin
+                          text-white
+                          pl-2
+                          pr-2
+                          bg-red-600
+                        "
+                      ></i>
+                    </span>
+                  </td>
+ 
+            
+                </tr>
+              </template>
+            </tbody>
+          </table>
+        </div>
+        <!--end::Table-->
+      </div>
+    </div>
+
+     <div v-else class="card-body pt-0 pb-3">
       <div class="tab-content">
         <!--begin::Table-->
         <div class="table-responsive table-striped">
@@ -122,7 +238,7 @@
                   </td>
                   <td>
                     <span class="gia_vat_tu text-muted font-weight-bold">{{
-                       handleGetDate(index) !== null ?  handleGetDate(index) : ""
+                       handleGetDate(dataArrFile,index) !== null ?  handleGetDate(dataArrFile,index) : ""
                     }}
                     </span>
                   </td>
@@ -200,29 +316,36 @@ export default {
   components: { Multiselect },
   data() {
     return {
+      search:'',
       currentPage: 1,
       rows: 100,
       dataArrFile: [],
+      dataArrAllFile: [],
       selectedKindFile: null, // Array reference
       kindfile: [ 
          { id: "1", text: "Hồ sơ nghiệm thu công việc" },
         { id: "2", text: "Hồ sơ nghiệm thu vật liệu" },
-        { id: "2", text: "Hồ sơ nghiệm thu thiết bị" },
+        { id: "3", text: "Hồ sơ nghiệm thu thiết bị" },
         ],
       selectedPriorityLevel: null, // Array reference
       priority_level: [
-        { value: "1", text: "Đã duyệt" },
-        { value: "2", text: "Chưa duyệt" },
+        { value: "Đạt", text: "Đạt" },
+        { value: "Không đạt", text: "Không đạt" },
       ],
       selectedTimeCreate: null, // Array reference
       time_create: [
         { value: "1", text: "Tất cả" },
         { value: "2", text: "3 ngày" },
-        { value: "2", text: "7 ngày" },
-        { value: "2", text: "Tự chọn" },
+        { value: "3", text: "7 ngày" },
+        { value: "4", text: "Tự chọn" },
       ],
     };
   },
+   created() {
+   this['storeqlda/getAllFile']().then((res)=>{
+      this.dataArrAllFile = res.data
+   });
+   },
   mounted() {
     this.$store.dispatch(SET_BREADCRUMB, [{ title: "Danh sách hồ sơ" }]);
     this.dataArr(this.currentPage);
@@ -231,15 +354,80 @@ export default {
     ...mapActions([
       "storeqlda/getListFileHasPaging",
       "storeqlda/getListDataUser",
+      "storeqlda/getAllFile",
       "storeqlda/destroyFileWithId",
       
     ]),
-  handleGetDate(index){
+
+ handleReset(){
+    this.search = '';
+    this.selectedTimeCreate = null;
+    this.selectedKindFile = null;
+    this.selectedPriorityLevel = null;
+    },
+      handleSearch(){
+       if(this.search){
+         let newArr = this.dataArrAllFile.filter(item => {
+            let rs = false;
+            if(item.tenHoSo && rs == false){
+                rs = item.tenHoSo.toLowerCase().includes(this.search.toLowerCase());
+            }
+            if(item.loaiHoSo && rs == false) {
+                rs = item.loaiHoSo.toLowerCase().includes(this.search.toLowerCase());
+            }
+            if(item.ketQua && rs == false) {
+                rs = item.ketQua.toLowerCase().includes(this.search.toLowerCase());
+            }
+            if(item.lyDoKhongDat && rs == false) {
+                rs = item.lyDoKhongDat.toLowerCase().includes(this.search.toLowerCase());
+            }
+               if(item.lanKiemTra && rs == false) {
+                rs = item.lanKiemTra.toLowerCase().includes(this.search.toLowerCase());
+            }
+            return rs;
+        });
+        return newArr;
+       }
+       else{
+         if(this.selectedPriorityLevel||this.selectedKindFile
+         ){
+           let newArr = this.dataArrAllFile.filter(item => {
+            if(this.selectedKindFile) {
+              if(JSON.stringify(this.selectedKindFile) == item.loaiHoSo){
+                return item
+              }
+            }
+             if(this.selectedPriorityLevel) {
+              if(this.selectedPriorityLevel == item.ketQua){
+                return item
+              }
+            }
+            //  if(this.selectedWorkResults) {
+            //   if(this.selectedWorkResults == item.ketQua){
+            //     return item
+            //   }
+            // }
+            //  if(this.selectedPersion) {
+
+            //    let rs = item.nguoiPhoiHop.toLowerCase().includes((JSON.stringify(this.selectedPersion)).toLowerCase());
+            //     if(rs){
+            //       console.log('item',item);
+            //       return item
+            //     }
+
+            // }
+           })
+        return newArr
+         }
+       }
+     },
+
+  handleGetDate(arr,index){
        let date = "";
       let arrTemp =[];
-      if (this.dataArrFile[index].ngayNhan && this.dataArrFile[index].ngayTra) {
-       arrTemp.push((this.dataArrFile[index].ngayNhan));
-       arrTemp.push((this.dataArrFile[index].ngayTra));
+      if (arr[index].ngayNhan && arr[index].ngayTra) {
+       arrTemp.push((arr[index].ngayNhan));
+       arrTemp.push((arr[index].ngayTra));
         let arrTimeReceive = arrTemp[0].split("-");
         let arrTimeReturn = arrTemp[1].split("-");
         date =
@@ -257,8 +445,8 @@ export default {
           "/" +
           arrTimeReturn[0];
       }
-      if (this.dataArrFile[index].ngayNhan && !this.dataArrFile[index].ngayTra) {
-       arrTemp.push((this.dataArrFile[index].ngayNhan));
+      if (arr[index].ngayNhan && !arr[index].ngayTra) {
+       arrTemp.push((arr[index].ngayNhan));
         let arrTimeReceive = arrTemp[0].split("-");
         date =
           "Nhận : " +

@@ -78,4 +78,22 @@ export default {
       max-width: 1330px;
   }
 }
+
+@media (min-width: 992px)
+{
+.header-fixed.subheader-fixed .subheader {
+  top: 85px;
+    }
+}
+@media (min-width: 992px)
+{
+.header.header-fixed {
+    height: 86px;
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
+    z-index: 97;
+}
+}
 </style>
