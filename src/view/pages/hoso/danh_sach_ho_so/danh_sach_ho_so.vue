@@ -143,7 +143,7 @@
                   <td>
                  <span class="nguon text-muted font-weight-bold">
                       <i
-                        @click="handleEdit(index)"
+                        @click="handleEdit(handleSearch(), index)"
                         class="
                           menu-icon
                           cursor-pointer
@@ -156,7 +156,7 @@
                         "
                       ></i>
                       <i
-                        @click="handleDelete(index)"
+                        @click="handleDelete(handleSearch(), index)"
                         class="
                           menu-icon
                           cursor-pointer
@@ -258,7 +258,7 @@
                   <td>
                  <span class="nguon text-muted font-weight-bold">
                       <i
-                        @click="handleEdit(index)"
+                        @click="handleEdit(dataArrFile, index)"
                         class="
                           menu-icon
                           cursor-pointer
@@ -271,7 +271,7 @@
                         "
                       ></i>
                       <i
-                        @click="handleDelete(index)"
+                        @click="handleDelete(dataArrFile, index)"
                         class="
                           menu-icon
                           cursor-pointer
@@ -461,24 +461,32 @@ export default {
       return date;
 
     },
-  handleDelete(index) {
+  handleDelete(arr,index) {
          if (
         confirm(
           "Bạn có chắc chắn muốn xóa dữ liệu này không?"
         )
       ){
 
-        this["storeqlda/destroyFileWithId"](this.dataArrFile[index].id).
+        this["storeqlda/destroyFileWithId"](arr[index].id).
         then((res)=>
         {
-          this.dataArr(this.currentPage);
-          alert(res.data.msg)
+          if (this.search) {
+           this['storeqlda/getAllFile']().then((res)=>{
+                this.dataArrAllFile = res.data
+            });
+            alert(res.data.msg)
+          }else{
+
+            this.dataArr(this.currentPage);
+            alert(res.data.msg)
+          }
         })
       }
   },
-     handleEdit(index) {
-      let id = this.dataArrFile[index].id
-      let khhs = this.dataArrFile[index].kyHieuHoSo
+     handleEdit(arr,index) {
+      let id = arr[index].id
+      let khhs = arr[index].kyHieuHoSo
       if(khhs==='hsnt'){
         this.$router.push(`/themhoso/${id}`);
       }

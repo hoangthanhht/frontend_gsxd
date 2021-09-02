@@ -165,7 +165,7 @@
                   <td>
                   <span class="nguon text-muted font-weight-bold">
                       <i
-                        @click="handleEdit(index)"
+                        @click="handleEdit(handleSearch(), index)"
                         class="
                           menu-icon
                           cursor-pointer
@@ -178,7 +178,7 @@
                         "
                       ></i>
                       <i
-                        @click="handleDelete(index)"
+                        @click="handleDelete(handleSearch(), index)"
                         class="
                           menu-icon
                           cursor-pointer
@@ -302,7 +302,7 @@
                   <td>
                   <span class="nguon text-muted font-weight-bold">
                       <i
-                        @click="handleEdit(index)"
+                        @click="handleEdit(dataArrContract, index)"
                         class="
                           menu-icon
                           cursor-pointer
@@ -315,7 +315,7 @@
                         "
                       ></i>
                       <i
-                        @click="handleDelete(index)"
+                        @click="handleDelete(dataArrContract, index)"
                         class="
                           menu-icon
                           cursor-pointer
@@ -516,22 +516,30 @@ export default {
        }
       return arrTemp;
     },
-    handleEdit(index) {
-      let id = this.dataArrContract[index].id;
+    handleEdit(arr,index) {
+      let id = arr[index].id;
       this.$router.push(`/themhopdong/${id}`);
     },
-      handleDelete(index) {
+      handleDelete(arr,index) {
          if (
         confirm(
           "Bạn có chắc chắn muốn xóa dữ liệu này không?"
         )
       ){
 
-        this["storeqlda/destroyContractWithId"](this.dataArrContract[index].id).
+        this["storeqlda/destroyContractWithId"](arr[index].id).
         then((res)=>
         {
-          this.dataArr(this.currentPage);
-          alert(res.data.msg)
+          if (this.search) {
+            this['storeqlda/getAllContract']().then((res)=>{
+                this.dataArrAllContract = res.data
+            });
+            alert(res.data.msg)
+          }else{
+
+            this.dataArr(this.currentPage);
+            alert(res.data.msg)
+          }
         })
       }
   },

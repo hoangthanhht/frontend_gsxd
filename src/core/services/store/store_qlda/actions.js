@@ -1703,6 +1703,24 @@ export default {
             console.log("error", error);
         }
     },
+    async getAllProjectMana() {
+
+        var config = {
+            headers: {
+                'Accept': 'application/json',
+                //'Authorization' :'Bearer ' + token,
+            }
+        }
+
+        try {
+
+            var result = await axiosInstance.get('/getAllProjectMana', config);
+            return result
+        } catch (error) {
+            console.log("error", error);
+        }
+    },
+    
      /* ACTION CHO TAO NHAN SU */
      async ActionCreateInfomationEmploy(context, { 
         codeEmploy ='',
@@ -1969,6 +1987,24 @@ export default {
             console.log("error", error);
         }
     },
+    async getAllInfomationEmploy() {
+
+        var config = {
+            headers: {
+                'Accept': 'application/json',
+                //'Authorization' :'Bearer ' + token,
+            }
+        }
+
+        try {
+
+            var result = await axiosInstance.get('/getAllInfomationEmploy', config);
+            return result
+        } catch (error) {
+            console.log("error", error);
+        }
+    },
+    
      /* BACKUP DỮ LIỆU */
      async getListFileBKHasPaging(context, page) {
 

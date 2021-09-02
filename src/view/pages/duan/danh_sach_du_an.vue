@@ -11,20 +11,125 @@
       </div>
 
       <div class="search-congv">
-        <b-input-group size="sm" class="mb-2 add-cv icon-tvgs">
-          <b-form-input type="search" placeholder="Search terms"></b-form-input>
+        <b-input-group size="sm" class="mb-2 add-cv icon-tvgs cursor-pointer">
+          <b-form-input v-model="search" type="search" placeholder="Search terms"></b-form-input>
           <b-input-group-prepend is-text>
-            <b-icon icon="search"></b-icon>
+            <b-icon @click="handleSearch" icon="search"></b-icon>
           </b-input-group-prepend>
 
           <b-input-group-prepend is-text>
-            <b-icon icon="arrow-repeat"></b-icon>
+            <b-icon @click="handleReset" icon="arrow-repeat"></b-icon>
           </b-input-group-prepend>
         </b-input-group>
       </div>
     </div>
 
-     <div class="card-body pt-0 pb-3">
+  <div v-if="search" class="card-body pt-0 pb-3">
+      <div class="tab-content">
+        <!--begin::Table-->
+        <div class="table-responsive table-striped">
+          <table
+            class="
+              table
+              table-head-custom
+              table-vertical-center
+              table-head-bg
+              table-borderless
+              
+            "
+          >
+            <thead>
+              <tr class="text-left">
+                <!-- <th style="max-width: 50px" class="pl-7">
+                  id
+                </th> -->
+                <th style="display: none">Id</th>
+                <th>Tên dự án</th>
+                <th>Ngày bắt đầu</th>
+                <th>Ngày kết thúc</th>
+                <th>Nhân sự liên quan</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody v-if="dataArr.length !== 0">
+              <template v-for="(item, index) in handleSearch()">
+                <tr v-bind:key="index" class="row_table_note">
+                  <!-- <td contenteditable="true">
+						<span class="text-muted font-weight-bold">{{item.id}}
+                		</span>
+                  </td> -->
+                  <td style="display: none">
+                    <span class="id_vat_tu text-muted font-weight-bold">{{
+                      item.id !== null ? item.id : "null"
+                    }}</span>
+                  </td>
+
+                  <td>
+                    <span class="ma_vat_tu text-muted font-weight-bold">{{
+                      item.tenDuAn !== null ? item.tenDuAn : "null"
+                    }}</span>
+                  </td>
+
+                  <td>
+                    <span class="ten_vat_tu text-muted font-weight-bold">{{
+                      handleGetDate(handleSearch(),index)[0] !== null ? handleGetDate(handleSearch(),index)[0] : "null"
+                    }}</span>
+                  </td>
+
+                  <td>
+                    <span class="ten_vat_tu text-muted font-weight-bold">{{
+                      handleGetDate(handleSearch(),index)[1] !== null ? handleGetDate(handleSearch(),index)[1] : ""
+                    }}</span>
+                  </td>  
+
+                  <td>
+                    <span class="ten_vat_tu text-muted font-weight-bold">{{
+                       handleGetPersion(handleSearch(),index)[0] !== null ?  handleGetPersion(handleSearch(),index)[0] : ""
+                    }}
+                    </span>
+                  </td>
+
+                  <td>
+                 <span class="nguon text-muted font-weight-bold">
+                      <i
+                        @click="handleEdit(handleSearch(), index)"
+                        class="
+                          menu-icon
+                          cursor-pointer
+                          flaticon2-edit
+                          text-white
+                          pl-2
+                          pr-2
+                          mr-5
+                          bg-green-400
+                        "
+                      ></i>
+                      <i
+                        @click="handleDelete(handleSearch(), index)"
+                        class="
+                          menu-icon
+                          cursor-pointer
+                          flaticon2-rubbish-bin
+                          text-white
+                          pl-2
+                          pr-2
+                          bg-red-600
+                        "
+                      ></i>
+                    </span>
+                  </td>
+ 
+            
+                </tr>
+              </template>
+            </tbody>
+          </table>
+        </div>
+        <!--end::Table-->
+      </div>
+    </div>
+
+     <div v-else class="card-body pt-0 pb-3">
       <div class="tab-content">
         <!--begin::Table-->
         <div class="table-responsive table-striped">
@@ -72,19 +177,19 @@
 
                   <td>
                     <span class="ten_vat_tu text-muted font-weight-bold">{{
-                      handleGetDate(index)[0] !== null ? handleGetDate(index)[0] : "null"
+                      handleGetDate(dataArrProject,index)[0] !== null ? handleGetDate(dataArrProject,index)[0] : "null"
                     }}</span>
                   </td>
 
                   <td>
                     <span class="ten_vat_tu text-muted font-weight-bold">{{
-                      handleGetDate(index)[1] !== null ? handleGetDate(index)[1] : ""
+                      handleGetDate(dataArrProject,index)[1] !== null ? handleGetDate(dataArrProject,index)[1] : ""
                     }}</span>
                   </td>  
 
                   <td>
                     <span class="ten_vat_tu text-muted font-weight-bold">{{
-                       handleGetPersion(index)[0] !== null ?  handleGetPersion(index)[0] : ""
+                       handleGetPersion(dataArrProject,index)[0] !== null ?  handleGetPersion(dataArrProject,index)[0] : ""
                     }}
                     </span>
                   </td>
@@ -92,7 +197,7 @@
                   <td>
                  <span class="nguon text-muted font-weight-bold">
                       <i
-                        @click="handleEdit(index)"
+                        @click="handleEdit(dataArrProject, index)"
                         class="
                           menu-icon
                           cursor-pointer
@@ -105,7 +210,7 @@
                         "
                       ></i>
                       <i
-                        @click="handleDelete(index)"
+                        @click="handleDelete(dataArrProject, index)"
                         class="
                           menu-icon
                           cursor-pointer
@@ -149,9 +254,11 @@ export default {
   components: {  },
   data() {
     return {
+      search:'',
       currentPage: 1,
       rows: 100,
       dataArrProject: [],
+      dataArrAllProject:[],
       selectedKindFile: null, // Array reference
       kindfile: [ 
          { id: "1", text: "Hồ sơ nghiệm thu công việc" },
@@ -172,6 +279,11 @@ export default {
       ],
     };
   },
+   created() {
+   this['storeqlda/getAllProjectMana']().then((res)=>{
+      this.dataArrAllProject = res.data
+   });
+   },
   mounted() {
     this.$store.dispatch(SET_BREADCRUMB, [{ title: "Danh sách dự án" }]);
     this.dataArr(this.currentPage);
@@ -180,14 +292,46 @@ export default {
     ...mapActions([
       "storeqlda/getListProjectHasPaging",
       "storeqlda/getListDataUser",
+      "storeqlda/getAllProjectMana",
       "storeqlda/destroyProjectWithId",
       
     ]),
-     handleGetPersion(index){
+      handleReset(){
+    this.search = '';
+    },
+      handleSearch(){
+       if(this.search){
+         let newArr = this.dataArrAllProject.filter(item => {
+            let rs = false;
+            if(item.tenDuAn && rs == false){
+                rs = item.tenDuAn.toLowerCase().includes(this.search.toLowerCase());
+            }
+            if(item.nhanSuChinh && rs == false) {
+                rs = item.nhanSuChinh.toLowerCase().includes(this.search.toLowerCase());
+            }
+            if(item.ngayBatDau && rs == false) {
+                rs = item.ngayBatDau.toLowerCase().includes(this.search.toLowerCase());
+            }
+            if(item.ngayKetThuc && rs == false) {
+                rs = item.ngayKetThuc.toLowerCase().includes(this.search.toLowerCase());
+            }
+               if(item.tenCdt && rs == false) {
+                rs = item.tenCdt.toLowerCase().includes(this.search.toLowerCase());
+            }
+            if(item.moTaDuAn && rs == false) {
+                rs = item.moTaDuAn.toLowerCase().includes(this.search.toLowerCase());
+            }
+            return rs;
+        });
+        return newArr;
+       }
+     
+     },
+     handleGetPersion(arr,index){
        let arrTemp =[];
       let persionDo = "";
-       if (this.dataArrProject[index].nhanSuLienQuan) {
-          arrTemp = JSON.parse(this.dataArrProject[index].nhanSuLienQuan);
+       if (arr[index].nhanSuLienQuan) {
+          arrTemp = JSON.parse(arr[index].nhanSuLienQuan);
          for (var j in arrTemp) {
             if(persionDo=='') {
               persionDo = arrTemp[j].text
@@ -203,17 +347,17 @@ export default {
        }
       return arrTemp;
     },
-    handleGetDate(index) {
+    handleGetDate(arr,index) {
       let dateStart = "";
       let dateFinish = "";
       let arrTemp = [];
-      if (this.dataArrProject[index].ngayBatDau) {
-        let arrTimeStart = this.dataArrProject[index].ngayBatDau.split("-");
+      if (arr[index].ngayBatDau) {
+        let arrTimeStart = arr[index].ngayBatDau.split("-");
         dateStart =
           arrTimeStart[2] + "/" + arrTimeStart[1] + "/" + arrTimeStart[0];
       }
-      if (this.dataArrProject[index].ngayKetThuc) {
-        let arrTimeFinish = this.dataArrProject[index].ngayKetThuc.split("-");
+      if (arr[index].ngayKetThuc) {
+        let arrTimeFinish = arr[index].ngayKetThuc.split("-");
         dateFinish =
           arrTimeFinish[2] + "/" + arrTimeFinish[1] + "/" + arrTimeFinish[0];
       }
@@ -226,22 +370,30 @@ export default {
        }
       return arrTemp;
     },
-    handleEdit(index) {
-      let id = this.dataArrProject[index].id
+    handleEdit(arr,index) {
+      let id = arr[index].id
       this.$router.push(`/themduan/${id}`);
     },
-      handleDelete(index) {
+      handleDelete(arr,index) {
          if (
         confirm(
           "Bạn có chắc chắn muốn xóa dữ liệu này không?"
         )
       ){
 
-        this["storeqlda/destroyProjectWithId"](this.dataArrProject[index].id).
+        this["storeqlda/destroyProjectWithId"](arr[index].id).
         then((res)=>
         {
-          this.dataArr(this.currentPage);
-          alert(res.data.msg)
+          if (this.search) {
+           this['storeqlda/getAllProjectMana']().then((res)=>{
+                this.dataArrAllProject = res.data
+            });
+            alert(res.data.msg)
+          }else{
+
+            this.dataArr(this.currentPage);
+            alert(res.data.msg)
+          }
         })
       }
   },

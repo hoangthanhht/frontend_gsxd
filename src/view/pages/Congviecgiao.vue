@@ -145,12 +145,12 @@
                   </td>
                   <td>
                     <span class="ten_vat_tu text-muted font-weight-bold">{{
-                     handleGetDate(index)[0]!== null ? handleGetDate(index)[0]: ""
+                     handleGetDate(handleSearch(), index)[0]!== null ? handleGetDate(handleSearch(), index)[0]: ""
                     }}</span>
                   </td>
                   <td>
                     <span class="don_vi text-muted font-weight-bold">{{
-                     handleGetDate(index)[1]!== null ? handleGetDate(index)[1]: ""
+                     handleGetDate(handleSearch(), index)[1]!== null ? handleGetDate(handleSearch(), index)[1]: ""
                     }}</span>
                   </td>
                   <td>
@@ -197,7 +197,7 @@
                    <td>
                    <span class="nguon text-muted font-weight-bold">
                       <i
-                        @click="handleEdit(index)"
+                        @click="handleEdit(handleSearch(), index)"
                         class="
                           menu-icon
                           cursor-pointer
@@ -210,7 +210,7 @@
                         "
                       ></i>
                       <i
-                        @click="handleDelete(index)"
+                        @click="handleDelete(handleSearch(), index)"
                         class="
                           menu-icon
                           cursor-pointer
@@ -284,12 +284,12 @@
                   </td>
                   <td>
                     <span class="ten_vat_tu text-muted font-weight-bold">{{
-                     handleGetDate(index)[0]!== null ? handleGetDate(index)[0]: ""
+                     handleGetDate(dataArrAssignedWork,index)[0]!== null ? handleGetDate(dataArrAssignedWork,index)[0]: ""
                     }}</span>
                   </td>
                   <td>
                     <span class="don_vi text-muted font-weight-bold">{{
-                     handleGetDate(index)[1]!== null ? handleGetDate(index)[1]: ""
+                     handleGetDate(dataArrAssignedWork,index)[1]!== null ? handleGetDate(dataArrAssignedWork,index)[1]: ""
                     }}</span>
                   </td>
                   <td>
@@ -336,7 +336,7 @@
                    <td>
                    <span class="nguon text-muted font-weight-bold">
                       <i
-                        @click="handleEdit(index)"
+                        @click="handleEdit(dataArrAssignedWork, index)"
                         class="
                           menu-icon
                           cursor-pointer
@@ -349,7 +349,7 @@
                         "
                       ></i>
                       <i
-                        @click="handleDelete(index)"
+                        @click="handleDelete(dataArrAssignedWork, index)"
                         class="
                           menu-icon
                           cursor-pointer
@@ -604,23 +604,31 @@ export default {
       return arrTemp;
 
     },
-      handleDelete(index) {
+      handleDelete(arr,index) {
          if (
         confirm(
           "Bạn có chắc chắn muốn xóa dữ liệu này không?"
         )
       ){
 
-        this["storeqlda/destroyTaskWithId"](this.dataArrAssignedWork[index].id).
+        this["storeqlda/destroyTaskWithId"](arr[index].id).
         then((res)=>
         {
-          this.dataArr(this.currentPage);
-          alert(res.data.msg)
+         if (this.search) {
+            this['storeqlda/getAllTask']().then((res)=>{
+                  this.dataArrAllTask = res.data
+              });
+            alert(res.data.msg)
+          }else{
+
+            this.dataArr(this.currentPage);
+            alert(res.data.msg)
+          }
         })
       }
   },
-    handleEdit(index) {
-      let id = this.dataArrAssignedWork[index].id
+    handleEdit(arr,index) {
+      let id = arr[index].id
       this.$router.push(`/themcongviec/${id}`);
     },
     custom_label_persion({ text }) {
