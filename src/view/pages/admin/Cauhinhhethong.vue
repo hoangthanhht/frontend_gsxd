@@ -50,7 +50,7 @@
 
       <div class="form_item">
 
-        <b-row class="my-1">
+        <b-row class="my-1 pl-5">
           <b-col sm="2">
             <label>Tiêu đề</label>
           </b-col>

@@ -1006,7 +1006,7 @@ export default {
     }
     try {
 
-        var result = await axiosInstance.post(`update/${idTask}`, data);
+        var result = await axiosInstance.post(`updateTask/${idTask}`, data);
 
         if (result.status === 200) {
             //commit('SET_USER_INFO', result.data.user);
@@ -1309,7 +1309,7 @@ export default {
         }
         try {
 
-            var result = await axiosInstance.post(`update/${idFile}`, data);
+            var result = await axiosInstance.post(`updateFile/${idFile}`, data);
 
             if (result.status === 200) {
                 //commit('SET_USER_INFO', result.data.user);
@@ -1466,7 +1466,7 @@ export default {
         }
         try {
 
-            var result = await axiosInstance.post(`update/${idContract}`, data);
+            var result = await axiosInstance.post(`updateContract/${idContract}`, data);
 
             if (result.status === 200) {
                 //commit('SET_USER_INFO', result.data.user);
@@ -1628,7 +1628,7 @@ export default {
         }
         try {
 
-            var result = await axiosInstance.post(`update/${idProj}`, data);
+            var result = await axiosInstance.post(`updateProject/${idProj}`, data);
 
             if (result.status === 200) {
                 //commit('SET_USER_INFO', result.data.user);
@@ -1912,7 +1912,7 @@ export default {
         }
         try {
 
-            var result = await axiosInstance.post(`update/${idEmploy}`, data);
+            var result = await axiosInstance.post(`updateInfomationEmploy/${idEmploy}`, data);
 
             if (result.status === 200) {
                 //commit('SET_USER_INFO', result.data.user);

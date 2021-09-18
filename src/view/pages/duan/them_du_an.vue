@@ -364,7 +364,7 @@ export default {
   },
   mounted() {
     this.$store.dispatch(SET_BREADCRUMB, [{ title: "Thêm dự án" }]);
-    this.dataArr(this.currentPage);
+    //this.dataArr(this.currentPage);
   },
   watch: {
 
