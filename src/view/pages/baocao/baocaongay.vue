@@ -440,6 +440,10 @@ export default {
         this.jsonResponse = rs;
         this.jsonArrResponse = rs.data.data;
         let res = this.jsonArrResponse;
+        // chú ý ở đây phải đưa dữ liệu vào trong các mảng để dùng được trong vòng for lồng nhau khi render
+        // không dùng được dạng hàm có tham số truyền vào khi render trong vòng for lồng nhau. ví dụ ở đây không thẻ dùng chuDauTu dưới dạng là 
+        // 1 funtion có tham số được đc chuDauTu(para) khi render sẽ lỗi mà phải đưa nó dưới dạng là 1 computed hoặc là 1 thành phần của data kiểu như 1 mảng
+        // miễn là số phần tử phải được tính toán xong hết rồi trước khi render
         for (var i in res) {
           if (res.length > 0) {
             if (res[i].contentJson) {

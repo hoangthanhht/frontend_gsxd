@@ -17,12 +17,13 @@
   </div> -->
     <div class="block-select">
       <div class="btn-add-cv">
-       <router-link 
-       to="/themcongviec"
-       tag="b-button"
-       class="mb-2 add-cv icon-tvgs pt-3 pb-3">
+        <router-link
+          to="/themcongviec"
+          tag="b-button"
+          class="mb-2 add-cv icon-tvgs pt-3 pb-3"
+        >
           <b-icon icon="plus" aria-hidden="true"></b-icon> Thêm
-       </router-link>
+        </router-link>
       </div>
 
       <div class="select-cbb">
@@ -74,7 +75,11 @@
 
       <div class="search-congv">
         <b-input-group size="sm" class="mb-2 add-cv icon-tvgs cursor-pointer">
-          <b-form-input v-model="search" type="search" placeholder="Search terms"></b-form-input>
+          <b-form-input
+            v-model="search"
+            type="search"
+            placeholder="Search terms"
+          ></b-form-input>
           <b-input-group-prepend is-text>
             <b-icon @click="handleSearch" icon="search"></b-icon>
           </b-input-group-prepend>
@@ -86,10 +91,16 @@
       </div>
     </div>
 
-
-
-     <div v-if="search||selectedPriorityLevel ||selectedPersion || selectedWorkResults||selectedJobStatus"
-      class="card-body pt-0 pb-3">
+    <div
+      v-if="
+        search ||
+        selectedPriorityLevel ||
+        selectedPersion ||
+        selectedWorkResults ||
+        selectedJobStatus
+      "
+      class="card-body pt-0 pb-3"
+    >
       <div class="tab-content">
         <!--begin::Table-->
         <div class="table-responsive table-striped">
@@ -100,7 +111,6 @@
               table-vertical-center
               table-head-bg
               table-borderless
-              
             "
           >
             <thead>
@@ -122,7 +132,7 @@
                 <th></th>
               </tr>
             </thead>
-            <tbody >
+            <tbody>
               <!-- khi hàm trả về 1 arr như hàm handlesearch thì vue sẽ tự động chạy hàm này khi render
               như trong trường hợp này thì điêu kiện selectedPriorityLevel này tồn tại thi nó thao mãn 
               v-if nên nó tự động render và chạy hàm handlesearch
@@ -139,29 +149,51 @@
                     }}</span>
                   </td>
                   <td>
-                    <span class="ma_vat_tu text-muted font-weight-bold">{{
-                      item.Ten !== null ? item.Ten : "null"
-                    }}</span>
+                    <span class="ma_vat_tu text-muted font-weight-bold"
+                      >{{ item.Ten !== null ? item.Ten : "null" }}
+                    </span>
+
+					          <span v-if="handleLinkWithId(item.id,arrLinkSearch).length>0">
+                      <b-dropdown text="file đính kèm" class="fileAttach">
+                        <template
+                          v-for="(it, idx) in handleLinkWithId(item.id,arrLinkSearch)"
+                        >
+                          <b-dropdown-item
+                            style="padding-left: 0px"
+                            v-bind:key="idx"
+                            v-bind:href="it"
+                            >File {{ idx + 1 }}</b-dropdown-item>
+                        </template>
+                      </b-dropdown>
+                    </span>
                   </td>
                   <td>
                     <span class="ten_vat_tu text-muted font-weight-bold">{{
-                     handleGetDate(handleSearch(), index)[0]!== null ? handleGetDate(handleSearch(), index)[0]: ""
+                      handleGetDate(handleSearch(), index)[0] !== null
+                        ? handleGetDate(handleSearch(), index)[0]
+                        : ""
                     }}</span>
                   </td>
                   <td>
                     <span class="don_vi text-muted font-weight-bold">{{
-                     handleGetDate(handleSearch(), index)[1]!== null ? handleGetDate(handleSearch(), index)[1]: ""
+                      handleGetDate(handleSearch(), index)[1] !== null
+                        ? handleGetDate(handleSearch(), index)[1]
+                        : ""
                     }}</span>
                   </td>
                   <td>
                     <span class="gia_vat_tu text-muted font-weight-bold">{{
-                      handleGetPersion(handleSearch(),index)[0] !== null ? handleGetPersion(handleSearch(),index)[0] : ""
+                      handleGetPersion(handleSearch(), index)[0] !== null
+                        ? handleGetPersion(handleSearch(), index)[0]
+                        : ""
                     }}</span>
                   </td>
 
                   <td>
                     <span class="khu_vuc text-muted font-weight-bold">{{
-                      handleGetPersion(handleSearch(),index)[1] !== null ? handleGetPersion(handleSearch(),index)[1] : ""
+                      handleGetPersion(handleSearch(), index)[1] !== null
+                        ? handleGetPersion(handleSearch(), index)[1]
+                        : ""
                     }}</span>
                   </td>
 
@@ -194,8 +226,8 @@
                     }}</span>
                   </td>
 
-                   <td>
-                   <span class="nguon text-muted font-weight-bold">
+                  <td>
+                    <span class="nguon text-muted font-weight-bold">
                       <i
                         @click="handleEdit(handleSearch(), index)"
                         class="
@@ -243,7 +275,6 @@
               table-vertical-center
               table-head-bg
               table-borderless
-              
             "
           >
             <thead>
@@ -281,26 +312,48 @@
                     <span class="ma_vat_tu text-muted font-weight-bold">{{
                       item.Ten !== null ? item.Ten : "null"
                     }}</span>
+<!-- v-if="handleLinkWithId(item.id,arrLink).length>0" -->
+                    <span v-if="handleLinkWithId(item.id,arrLink).length>0">
+                      <b-dropdown text="file đính kèm" class="fileAttach">
+                        <template 
+                          v-for="(it, idx) in handleLinkWithId(item.id,arrLink)"
+                        >
+                          <b-dropdown-item
+                            style="padding-left: 0px"
+                            v-bind:key="idx"
+                            v-bind:href="it"
+                            >File {{ idx + 1 }}</b-dropdown-item>
+                        </template>
+                      </b-dropdown>
+                    </span>
                   </td>
                   <td>
                     <span class="ten_vat_tu text-muted font-weight-bold">{{
-                     handleGetDate(dataArrAssignedWork,index)[0]!== null ? handleGetDate(dataArrAssignedWork,index)[0]: ""
+                      handleGetDate(dataArrAssignedWork, index)[0] !== null
+                        ? handleGetDate(dataArrAssignedWork, index)[0]
+                        : ""
                     }}</span>
                   </td>
                   <td>
                     <span class="don_vi text-muted font-weight-bold">{{
-                     handleGetDate(dataArrAssignedWork,index)[1]!== null ? handleGetDate(dataArrAssignedWork,index)[1]: ""
+                      handleGetDate(dataArrAssignedWork, index)[1] !== null
+                        ? handleGetDate(dataArrAssignedWork, index)[1]
+                        : ""
                     }}</span>
                   </td>
                   <td>
                     <span class="gia_vat_tu text-muted font-weight-bold">{{
-                      handleGetPersion(dataArrAssignedWork,index)[0] !== null ? handleGetPersion(dataArrAssignedWork,index)[0] : ""
+                      handleGetPersion(dataArrAssignedWork, index)[0] !== null
+                        ? handleGetPersion(dataArrAssignedWork, index)[0]
+                        : ""
                     }}</span>
                   </td>
 
                   <td>
                     <span class="khu_vuc text-muted font-weight-bold">{{
-                      handleGetPersion(dataArrAssignedWork,index)[1] !== null ? handleGetPersion(dataArrAssignedWork,index)[1] : ""
+                      handleGetPersion(dataArrAssignedWork, index)[1] !== null
+                        ? handleGetPersion(dataArrAssignedWork, index)[1]
+                        : ""
                     }}</span>
                   </td>
 
@@ -333,8 +386,8 @@
                     }}</span>
                   </td>
 
-                   <td>
-                   <span class="nguon text-muted font-weight-bold">
+                  <td>
+                    <span class="nguon text-muted font-weight-bold">
                       <i
                         @click="handleEdit(dataArrAssignedWork, index)"
                         class="
@@ -372,6 +425,7 @@
     </div>
 
     <b-pagination
+      class="pt-5"
       v-model="currentPage"
       align="right"
       pills
@@ -386,26 +440,37 @@
 
 <script>
 import Multiselect from "vue-multiselect";
-import { mapActions, mapGetters } from "vuex";
+import { mapActions, mapGetters, mapState } from "vuex";
 import { SET_BREADCRUMB } from "@/core/services/store/store_metronic/breadcrumbs.module";
 export default {
   components: { Multiselect },
   data() {
     return {
-      search:'',
+      search: "",
       text: "",
       currentPage: 1,
       rows: 100,
       dataArrAssignedWork: [],
       dataArrAllTask: [],
       selectedPersion: null, // Array reference
+      arrLink: [],
+      arrLinkSearch: [],
       persion: [],
       selectedPriorityLevel: null, // Array reference
       priority_level: [
         { value: "Quan trọng và khẩn cấp", text: "Quan trọng và khẩn cấp" },
-        { value: "Quan trọng nhưng không khẩn cấp", text: "Quan trọng nhưng không khẩn cấp" },
-        { value: "Khẩn cấp nhưng không quan trọng", text: "Khẩn cấp nhưng không quan trọng" },
-        { value: "Không quan trọng và không khẩn cấp", text: "Không quan trọng và không khẩn cấp" },
+        {
+          value: "Quan trọng nhưng không khẩn cấp",
+          text: "Quan trọng nhưng không khẩn cấp",
+        },
+        {
+          value: "Khẩn cấp nhưng không quan trọng",
+          text: "Khẩn cấp nhưng không quan trọng",
+        },
+        {
+          value: "Không quan trọng và không khẩn cấp",
+          text: "Không quan trọng và không khẩn cấp",
+        },
       ],
       selectedJobStatus: null, // Array reference
       job_status: [
@@ -423,13 +488,15 @@ export default {
   },
   computed: {
     ...mapGetters(["storeqlda/getListDataUserGTer"]),
-
+    ...mapState({
+      addressServe: (state) => state.storeqlda.addressServe, // rieng doi voi map state thi phai dùng như này để  lấy state
+    }),
   },
   created() {
-   this['storeqlda/getAllTask']().then((res)=>{
-      this.dataArrAllTask = res.data
-   });
-
+    this["storeqlda/getAllTask"]().then((res) => {
+      this.dataArrAllTask = res.data.pagi;
+      this.arrLinkSearch = res.data.link;
+    });
     this["storeqlda/getListDataUser"]().then(() => {
       let arrTemp = this["storeqlda/getListDataUserGTer"];
       for (var i in arrTemp) {
@@ -438,11 +505,12 @@ export default {
           text: arrTemp[i].name,
         };
         this.persion.push(data);
-        }
+      }
     });
+     
   },
   mounted() {
-     this.$store.dispatch(SET_BREADCRUMB, [{ title: "Công việc giao" }]);
+    this.$store.dispatch(SET_BREADCRUMB, [{ title: "Công việc giao" }]);
     this.dataArr(this.currentPage);
   },
   methods: {
@@ -451,113 +519,120 @@ export default {
       "storeqlda/getAllTask",
       "storeqlda/getListDataUser",
       "storeqlda/destroyTaskWithId",
-      
     ]),
-    handleReset(){
-    this.search = '';
-    this.selectedPersion = null;
-    this.selectedPriorityLevel = null;
-    this.selectedJobStatus = null;
-    this.selectedWorkResults = null;
+    handleReset() {
+      this.search = "";
+      this.selectedPersion = null;
+      this.selectedPriorityLevel = null;
+      this.selectedJobStatus = null;
+      this.selectedWorkResults = null;
     },
-     handleSearch(){
-       if(this.search){
-         let newArr = this.dataArrAllTask.filter(item => {
-            let rs = false;
-            if(item.Ten && rs == false){
-                rs = item.Ten.toLowerCase().includes(this.search.toLowerCase());
-            }
-            if(item.moTaTask && rs == false) {
-                rs = item.moTaTask.toLowerCase().includes(this.search.toLowerCase());
-            }
-            if(item.luuY && rs == false) {
-                rs = item.luuY.toLowerCase().includes(this.search.toLowerCase());
-            }
-            if(item.nguoiDeXuat && rs == false) {
-                rs = item.nguoiDeXuat.toLowerCase().includes(this.search.toLowerCase());
-            }
-               if(item.nguoiPhoiHop && rs == false) {
-                rs = item.nguoiPhoiHop.toLowerCase().includes(this.search.toLowerCase());
-            }
-            if(item.mucDo && rs == false) {
-                rs = item.mucDo.toLowerCase().includes(this.search.toLowerCase());
-            }
-            return rs;
+    handleSearch() {
+      if (this.search) {
+        let newArr = this.dataArrAllTask.filter((item) => {
+          let rs = false;
+          if (item.Ten && rs == false) {
+            rs = item.Ten.toLowerCase().includes(this.search.toLowerCase());
+          }
+          if (item.moTaTask && rs == false) {
+            rs = item.moTaTask
+              .toLowerCase()
+              .includes(this.search.toLowerCase());
+          }
+          if (item.luuY && rs == false) {
+            rs = item.luuY.toLowerCase().includes(this.search.toLowerCase());
+          }
+          if (item.nguoiDeXuat && rs == false) {
+            rs = item.nguoiDeXuat
+              .toLowerCase()
+              .includes(this.search.toLowerCase());
+          }
+          if (item.nguoiPhoiHop && rs == false) {
+            rs = item.nguoiPhoiHop
+              .toLowerCase()
+              .includes(this.search.toLowerCase());
+          }
+          if (item.mucDo && rs == false) {
+            rs = item.mucDo.toLowerCase().includes(this.search.toLowerCase());
+          }
+          return rs;
         });
         return newArr;
-       }
-       else{
-         if(this.selectedPriorityLevel||this.selectedPersion||this.selectedWorkResults
-         ||this.selectedJobStatus){
-           let newArr = this.dataArrAllTask.filter(item => {
-            if(this.selectedPriorityLevel) {
-              if(this.selectedPriorityLevel == item.mucDo){
-                return item
+      } else {
+        if (
+          this.selectedPriorityLevel ||
+          this.selectedPersion ||
+          this.selectedWorkResults ||
+          this.selectedJobStatus
+        ) {
+          let newArr = this.dataArrAllTask.filter((item) => {
+            if (this.selectedPriorityLevel) {
+              if (this.selectedPriorityLevel == item.mucDo) {
+                return item;
               }
             }
-             if(this.selectedJobStatus) {
-              if(this.selectedJobStatus == item.tinhTrang){
-                return item
+            if (this.selectedJobStatus) {
+              if (this.selectedJobStatus == item.tinhTrang) {
+                return item;
               }
             }
-             if(this.selectedWorkResults) {
-              if(this.selectedWorkResults == item.ketQua){
-                return item
+            if (this.selectedWorkResults) {
+              if (this.selectedWorkResults == item.ketQua) {
+                return item;
               }
             }
-             if(this.selectedPersion) {
-
-               let rs = item.nguoiPhoiHop.toLowerCase().includes((JSON.stringify(this.selectedPersion)).toLowerCase());
-                if(rs){
-                  console.log('item',item);
-                  return item
-                }
-
+            if (this.selectedPersion) {
+              let rs = item.nguoiPhoiHop
+                .toLowerCase()
+                .includes(JSON.stringify(this.selectedPersion).toLowerCase());
+              if (rs) {
+                return item;
+              }
             }
-           })
-        return newArr
-         }
-       }
-     },
-    handleGetPersion(arr,index){
-       let arrTemp =[];
-        let persionAssign = "";
+          });
+          return newArr;
+        }
+      }
+    },
+    handleGetPersion(arr, index) {
+      let arrTemp = [];
+      let persionAssign = "";
       let persionDo = "";
-       if (arr[index].nguoiDeXuat) {
-          arrTemp = JSON.parse(arr[index].nguoiDeXuat);
-         for (var i in arrTemp) {
-            if(persionAssign=='') {
-              persionAssign = arrTemp[i].text
-            }else{
-              persionAssign = persionAssign + ',' + arrTemp[i].text
-            }
-         }
-       }
-       if (arr[index].nguoiPhoiHop) {
-          arrTemp = JSON.parse(arr[index].nguoiPhoiHop);
-         for (var j in arrTemp) {
-            if(persionDo=='') {
-              persionDo = arrTemp[j].text
-            }else{
-              persionDo = persionDo + ',' + arrTemp[j].text
-            }
-         }
-       }
-        arrTemp =[];
-      if(persionAssign){
+      if (arr[index].nguoiDeXuat) {
+        arrTemp = JSON.parse(arr[index].nguoiDeXuat);
+        for (var i in arrTemp) {
+          if (persionAssign == "") {
+            persionAssign = arrTemp[i].text;
+          } else {
+            persionAssign = persionAssign + "," + arrTemp[i].text;
+          }
+        }
+      }
+      if (arr[index].nguoiPhoiHop) {
+        arrTemp = JSON.parse(arr[index].nguoiPhoiHop);
+        for (var j in arrTemp) {
+          if (persionDo == "") {
+            persionDo = arrTemp[j].text;
+          } else {
+            persionDo = persionDo + "," + arrTemp[j].text;
+          }
+        }
+      }
+      arrTemp = [];
+      if (persionAssign) {
         arrTemp.push(persionAssign);
       }
-       if(persionDo){
-         arrTemp.push(persionDo);
-       }
+      if (persionDo) {
+        arrTemp.push(persionDo);
+      }
       return arrTemp;
     },
-    handleGetDate(arr,index){
-       let datePlan = "";
+    handleGetDate(arr, index) {
+      let datePlan = "";
       let dateReal = "";
-      let arrTemp =[];
+      let arrTemp = [];
       if (arr[index].keHoach) {
-       arrTemp = JSON.parse(arr[index].keHoach);
+        arrTemp = JSON.parse(arr[index].keHoach);
         let arrTimeStartKh = arrTemp[0].split("-");
         let arrTimeFinishKh = arrTemp[1].split("-");
         datePlan =
@@ -575,10 +650,10 @@ export default {
           "/" +
           arrTimeFinishKh[0];
       }
-      if (arr[index].thucHien) { 
-         arrTemp = JSON.parse(arr[index].thucHien);
+      if (arr[index].thucHien) {
+        arrTemp = JSON.parse(arr[index].thucHien);
         let arrTimeStartReal = arrTemp[0].split("-");
-        let arrTimeFinishReal =arrTemp[1].split("-");
+        let arrTimeFinishReal = arrTemp[1].split("-");
         dateReal =
           "Bắt đầu : " +
           arrTimeStartReal[2] +
@@ -594,61 +669,77 @@ export default {
           "/" +
           arrTimeFinishReal[0];
       }
-      arrTemp =[];
-      if(datePlan){
+      arrTemp = [];
+      if (datePlan) {
         arrTemp.push(datePlan);
       }
-       if(datePlan){
-         arrTemp.push(dateReal);
-       }
-      return arrTemp;
-
-    },
-      handleDelete(arr,index) {
-         if (
-        confirm(
-          "Bạn có chắc chắn muốn xóa dữ liệu này không?"
-        )
-      ){
-
-        this["storeqlda/destroyTaskWithId"](arr[index].id).
-        then((res)=>
-        {
-         if (this.search) {
-            this['storeqlda/getAllTask']().then((res)=>{
-                  this.dataArrAllTask = res.data
-              });
-            alert(res.data.msg)
-          }else{
-
-            this.dataArr(this.currentPage);
-            alert(res.data.msg)
-          }
-        })
+      if (datePlan) {
+        arrTemp.push(dateReal);
       }
-  },
-    handleEdit(arr,index) {
-      let id = arr[index].id
+      return arrTemp;
+    },
+    handleDelete(arr, index) {
+      if (confirm("Bạn có chắc chắn muốn xóa dữ liệu này không?")) {
+        this["storeqlda/destroyTaskWithId"](arr[index].id).then((res) => {
+          if (this.search) {
+            this["storeqlda/getAllTask"]().then((res) => {
+              this.dataArrAllTask = res.data;
+            });
+            alert(res.data.msg);
+          } else {
+            this.dataArr(this.currentPage);
+            alert(res.data.msg);
+          }
+        });
+      }
+    },
+    handleEdit(arr, index) {
+      let id = arr[index].id;
       this.$router.push(`/themcongviec/${id}`);
     },
     custom_label_persion({ text }) {
       return `${text}`;
     },
+    handleLinkWithId(id,arr) {
+      let arrTemp = [];
+      for (var i in arr) {
+        var keyObj = Object.keys(arr[i]);
+        if (id == keyObj) {
+          arrTemp = arr[i][keyObj];
+          break;
+        }
+      }
+      return arrTemp;
+    },
     dataArr(page) {
       var data = {
         page: page,
       };
+     
       this["storeqlda/getListTaskHasPaging"](data).then((response) => {
-        this.dataArrAssignedWork = response.data.data;
-        this.pagination = response.data;
-        this.rows = response.data.total;
+        this.dataArrAssignedWork = response.data.pagi.data;
+        this.pagination = response.data.pagi;
+        this.rows = response.data.pagi.total;
+        this.arrLink = response.data.link;
       });
     },
   },
 };
 </script>
-<style src="vue-multiselect/dist/vue-multiselect.min.css"></style>
+ <style src="vue-multiselect/dist/vue-multiselect.min.css"></style> 
 <style scoped>
+.fileAttach :first-child {
+  height: 20px;
+  padding: 0;
+  margin-left: 0px;
+  background-color: aqua;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+.fileAttach {
+  margin-left: 0px;
+}
 .search-congv input[type="search"] {
   height: 43px;
 }
@@ -686,13 +777,15 @@ export default {
   background-color: #fff;
 }
 .card-body {
- background-color: #fff;
+  background-color: #fff;
 }
-.multiselect, .multiselect__input, .multiselect__single {
-    font-size: 1rem;
+.multiselect,
+.multiselect__input,
+.multiselect__single {
+  font-size: 1rem;
 }
 .multiselect__placeholder {
-    font-size: 1rem;
+  font-size: 1rem;
 }
 /* .btn-secondary:hover {
   color: #fff;

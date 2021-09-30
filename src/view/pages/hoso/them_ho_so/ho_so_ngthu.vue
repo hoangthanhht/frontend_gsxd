@@ -130,7 +130,40 @@
 
         <div class="hs-gr5">
           <p class="pt-2">File và tài liệu liên quan</p>
-          <b-form-file class="z-0" id="file-small" size="sm"></b-form-file>
+          <div class="flex justify-between">
+           <input 
+        multiple
+        @change="onFileChange($event)"
+        class="cursor-pointer" 
+        type="file" name="" id="">
+        <div class="flex">
+        <input 
+        type="text">
+
+        </div>
+          </div>
+        <div  v-if="arrItem.length>0">
+            <div 
+            v-for="(it, idx) in arrItem"
+            v-bind:key="idx"
+            class="nguon text-muted font-weight-bold flex justify-between pt-2">
+          <div class="flex">
+           <a style="line-height:24px"
+           v-bind:href="addressServe + arrItem[idx].path"> File  {{idx + 1}} : </a>
+            <input class="rootNameFile ml-24"
+            v-bind:value="arrItem[idx].rootName"
+            type="text">
+          </div>
+          <div>
+          
+          <i
+            @click="handleDelete(idx)"
+            class="menu-icon cursor-pointer flaticon2-rubbish-bin text-white pl-2 pr-2 bg-red-600"
+          ></i>
+          </div>
+       </div>
+
+   </div>
         </div>
       </div>
     </div>
@@ -142,13 +175,17 @@
         </b-button>
       </div>
         <div v-if="idCurrentFile" class="add-gr51 add-gr52">
-      <b-button @click="handleUpdate" size="sm" class="mb-2 tao-cv">
+      <b-button 
+      ref="kt_save_changes"
+      @click="handleUpdate" size="sm" class="mb-2 tao-cv">
         <b-icon icon="check2" aria-hidden="true"></b-icon> Cập nhật
       </b-button>
       </div>
 
       <div v-else class="add-gr51 add-gr52">
-        <b-button @click="handleSave" size="sm" class="mb-2 tao-cv">
+        <b-button
+        ref="kt_save_changes"
+         @click="handleSave" size="sm" class="mb-2 tao-cv">
           <b-icon icon="check2" aria-hidden="true"></b-icon> Tạo hồ sơ
         </b-button>
       </div>
@@ -158,7 +195,7 @@
 
 <script>
 import Multiselect from "vue-multiselect";
-import { mapActions, mapGetters } from "vuex";
+import { mapActions, mapGetters,mapState } from "vuex";
 import CompThemHs from "./comp_them_hs/muc_them_ho_so";
 import { SET_BREADCRUMB } from "@/core/services/store/store_metronic/breadcrumbs.module";
 export default {
@@ -185,6 +222,8 @@ export default {
       selectedProject: null, // Array reference
       project: [],
       isActive: false,
+      fileData: [],
+      arrItem:[],
     };
   },
   components: {
@@ -197,6 +236,9 @@ export default {
       "currentUserPersonalInfo",
       "storeqlda/currentUser",
     ]),
+     ...mapState({
+      addressServe: (state) => state.storeqlda.addressServe, // rieng doi voi map state thi phai dùng như này để  lấy state
+    }),
   },
       mounted(){
     this.$store.dispatch(SET_BREADCRUMB, [{ title: "Hồ sơ nghiệm thu" }]);
@@ -205,15 +247,16 @@ export default {
          this.idCurrentFile = this.$route.params.id;
      if(this.idCurrentFile!== undefined){
         this["storeqlda/getFileWithId"](this.idCurrentFile).then((res)=>{
-         this.fileName = res.data.tenHoSo ;
-         this.quantity = res.data.soLuong ;
-         this.timeReceive = res.data.ngayNhan ;
-        this.timeReturn= res.data.ngayTra ;
-        this.timeTest=res.data.lanKiemTra ;
-        this.reason=res.data.lyDoKhongDat ;
-        this.selectedResult=res.data.ketQua ;
-        this.selectedKindFile =JSON.parse(res.data.loaiHoSo);
-        this.selectedProject = JSON.parse(res.data.duAn);
+         this.fileName = res.data.pagi.tenHoSo ;
+         this.quantity = res.data.pagi.soLuong ;
+         this.timeReceive = res.data.pagi.ngayNhan ;
+        this.timeReturn= res.data.pagi.ngayTra ;
+        this.timeTest=res.data.pagi.lanKiemTra ;
+        this.reason=res.data.pagi.lyDoKhongDat ;
+        this.selectedResult=res.data.pagi.ketQua ;
+        this.selectedKindFile =JSON.parse(res.data.pagi.loaiHoSo);
+        this.selectedProject = JSON.parse(res.data.pagi.duAn);
+         this.arrItem = res.data.item;
         })
 
      }
@@ -237,12 +280,43 @@ export default {
              "storeqlda/getListProjectName",
              "storeqlda/getFileWithId",
              "storeqlda/ActionUpdateFile",
+             'storeqlda/destroyFileAttachTask'
              
              ]),
+       onFileChange(e) {
+          const files = e.target.files;
+          this.fileData = [];
+          if (typeof FileReader === "function") {
+          for (let file of files) {
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = () => {
+              this.fileData.push(file);
+            };       
+      }
+      } else {
+        alert("Sorry, FileReader API not supported");
+      }
+    },
     custom_label({ text }) {
       return `${text}`;
     },
+      handleDelete(idx) {
+      if (confirm("Bạn có chắc chắn muốn xóa dữ liệu này không?")) {
+        this["storeqlda/destroyFileAttachTask"](this.arrItem[idx].id).then((res) => {
+            this.arrItem = this.arrItem.filter(item => item.id !== this.arrItem[idx].id);
+            // loại bỏ phần tử đã xóa ra khỏi mảng và gán lại vào mảng đó để vue tự dộng render lại
+            alert(res.data.msg);
+           
+        });
+      }
+    },
     handleUpdate(){
+       let listEl = document.querySelectorAll('.rootNameFile')
+      let nameRootFile={}
+      for (let i = 0; i < listEl.length; i++) {
+        nameRootFile[this.arrItem[i].id]=listEl[i].value
+      }
       var data = {
         duAn: JSON.stringify(this.selectedProject),
         loaiHoSo: JSON.stringify(this.selectedKindFile),
@@ -259,10 +333,21 @@ export default {
         nguoiPheDuyet:null,
         yKienTVGS:null,
         idFile:this.idCurrentFile,
+         objFile : this.fileData,
+        arrNameFile:JSON.stringify(nameRootFile)
       };
+        const submitButton = this.$refs["kt_save_changes"];
+      submitButton.classList.add("spinner", "spinner-light", "spinner-right");
+    setTimeout(() => {
       this["storeqlda/ActionUpdateFile"](data).then((res) => {
         alert(res.data);
       });
+       submitButton.classList.remove(
+          "spinner",
+          "spinner-light",
+          "spinner-right"
+        );
+      }, 2000);
     },
      handleSave() {
       var data = {
@@ -280,10 +365,20 @@ export default {
         nguyenNhanThayDoiTk: null,
         nguoiPheDuyet: null,
         yKienTVGS: null,
+        objFile : this.fileData
       };
+       const submitButton = this.$refs["kt_save_changes"];
+      submitButton.classList.add("spinner", "spinner-light", "spinner-right");
+    setTimeout(() => {
       this["storeqlda/ActionCreateFile"](data).then((res) => {
         alert(res.data);
       });
+              submitButton.classList.remove(
+          "spinner",
+          "spinner-light",
+          "spinner-right"
+        );
+      }, 2000);
     },
     handleClick() {
       this.isActive = !this.isActive;

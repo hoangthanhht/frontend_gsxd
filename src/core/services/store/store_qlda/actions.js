@@ -945,25 +945,43 @@ export default {
 
     /* ACTION CHO TAO TASK */
     async ActionCreateTask(context, { Ten = '', keHoach = '', thucHien = '', nguoiDeXuat = '',duanLienQuan='',
-        nguoiPhoiHop = '', moTaTask = '', mucDo = '', ketQua = '', tinhTrang = '', luuY = '' }) {
+        nguoiPhoiHop = '', moTaTask = '', mucDo = '', ketQua = '', tinhTrang = '', luuY = '', objFile = null }) {
 
-        let data = {
-            Ten: Ten,
-            keHoach: keHoach ? keHoach : null,
-            thucHien: thucHien ? thucHien : null,
-            nguoiDeXuat: nguoiDeXuat,
-            nguoiPhoiHop: nguoiPhoiHop,
-            moTaTask: moTaTask,
-            mucDo: mucDo,
-            ketQua: ketQua,
-            tinhTrang: tinhTrang,
-            luuY: luuY,
-            duanLienQuan:duanLienQuan
+        // let data = {
+        //     Ten: Ten,
+        //     keHoach: keHoach ? keHoach : null,
+        //     thucHien: thucHien ? thucHien : null,
+        //     nguoiDeXuat: nguoiDeXuat,
+        //     nguoiPhoiHop: nguoiPhoiHop,
+        //     moTaTask: moTaTask,
+        //     mucDo: mucDo,
+        //     ketQua: ketQua,
+        //     tinhTrang: tinhTrang,
+        //     luuY: luuY,
+        //     duanLienQuan:duanLienQuan
 
-        }
+        // }
         try {
-
-            var result = await axiosInstance.post(`createTask`, data);
+            let bodyFormData = new FormData();
+            bodyFormData.append('Ten', Ten);
+            bodyFormData.append('keHoach', keHoach);
+            bodyFormData.append('thucHien', thucHien);
+            bodyFormData.append('nguoiDeXuat', nguoiDeXuat);
+            bodyFormData.append('nguoiPhoiHop', nguoiPhoiHop);
+            bodyFormData.append('moTaTask', moTaTask);
+            bodyFormData.append('mucDo', mucDo);
+            bodyFormData.append('ketQua', ketQua);
+            bodyFormData.append('tinhTrang', tinhTrang);
+            bodyFormData.append('luuY', luuY);
+            bodyFormData.append('duanLienQuan', duanLienQuan);
+           
+            if (objFile) {
+                for( var i = 0; i < objFile.length; i++ ){
+                    let file = objFile[i];
+                    bodyFormData.append('file[]', file);//cú pháp truyền cả mảng file trong form
+                }
+            }
+            var result = await axiosInstance.post(`createTask`, bodyFormData);
 
             if (result.status === 200) {
                 //commit('SET_USER_INFO', result.data.user);
@@ -988,25 +1006,45 @@ export default {
     },
 
     async ActionUpdateTask(context, { Ten = '', keHoach = '', thucHien = '', nguoiDeXuat = '',duanLienQuan='',
-    nguoiPhoiHop = '', moTaTask = '', mucDo = '', ketQua = '', tinhTrang = '', luuY = '',idTask='' }) {
+    nguoiPhoiHop = '', moTaTask = '', mucDo = '', ketQua = '', tinhTrang = '', luuY = '',idTask=''
+    ,arrNameFile='',objFile = null }) {
 
-    let data = {
-        Ten: Ten,
-        keHoach: keHoach ? keHoach : null,
-        thucHien: thucHien ? thucHien : null,
-        nguoiDeXuat: nguoiDeXuat,
-        nguoiPhoiHop: nguoiPhoiHop,
-        moTaTask: moTaTask,
-        mucDo: mucDo,
-        ketQua: ketQua,
-        tinhTrang: tinhTrang,
-        luuY: luuY,
-        duanLienQuan:duanLienQuan
+    // let data = {
+    //     Ten: Ten,
+    //     keHoach: keHoach ? keHoach : null,
+    //     thucHien: thucHien ? thucHien : null,
+    //     nguoiDeXuat: nguoiDeXuat,
+    //     nguoiPhoiHop: nguoiPhoiHop,
+    //     moTaTask: moTaTask,
+    //     mucDo: mucDo,
+    //     ketQua: ketQua,
+    //     tinhTrang: tinhTrang,
+    //     luuY: luuY,
+    //     duanLienQuan:duanLienQuan
 
-    }
+    // }
     try {
-
-        var result = await axiosInstance.post(`updateTask/${idTask}`, data);
+        let bodyFormData = new FormData();
+        bodyFormData.append('Ten', Ten);
+        bodyFormData.append('keHoach', keHoach);
+        bodyFormData.append('thucHien', thucHien);
+        bodyFormData.append('nguoiDeXuat', nguoiDeXuat);
+        bodyFormData.append('nguoiPhoiHop', nguoiPhoiHop);
+        bodyFormData.append('moTaTask', moTaTask);
+        bodyFormData.append('mucDo', mucDo);
+        bodyFormData.append('ketQua', ketQua);
+        bodyFormData.append('tinhTrang', tinhTrang);
+        bodyFormData.append('luuY', luuY);
+        bodyFormData.append('duanLienQuan', duanLienQuan);
+        bodyFormData.append('arrNameFile', arrNameFile);
+       
+        if (objFile) {
+            for( var i = 0; i < objFile.length; i++ ){
+                let file = objFile[i];
+                bodyFormData.append('file[]', file);//cú pháp truyền cả mảng file trong form
+            }
+        }
+        var result = await axiosInstance.post(`updateTask/${idTask}`, bodyFormData);
 
         if (result.status === 200) {
             //commit('SET_USER_INFO', result.data.user);
@@ -1081,6 +1119,17 @@ export default {
     async destroyTaskWithId(context, Task_id) {
         try {
             var result = await axiosInstance.post(`/destroyTask/${Task_id}`);
+            // context.commit('SET_LIST_POST', result.data.data);
+            return result
+            //console.log("error",result.data.data);
+        } catch (error) {
+            console.log("error", error);
+        }
+    },
+
+    async destroyFileAttachTask(context, FileAttach_id) {
+        try {
+            var result = await axiosInstance.post(`/destroyFileAttach/${FileAttach_id}`);
             // context.commit('SET_LIST_POST', result.data.data);
             return result
             //console.log("error",result.data.data);
@@ -1227,28 +1276,51 @@ export default {
         nguyenNhanThayDoiTk ='',
         nguoiPheDuyet ='',
         yKienTVGS ='',
+        objFile = null
     }) {
 
-        let data = {
-            duAn:duAn,                           
-            loaiHoSo:loaiHoSo,                           
-            tenHoSo:tenHoSo,                         
-            soLuong:soLuong,                           
-            ngayNhan:ngayNhan,                           
-            ngayTra:ngayTra,                           
-            lanKiemTra:lanKiemTra,                           
-            ketQua:ketQua,                            
-            lyDoKhongDat:lyDoKhongDat,                           
-            noiDungThayDoiTk:noiDungThayDoiTk,                         
-            nguyenNhanThayDoiTk:nguyenNhanThayDoiTk,                            
-            nguoiPheDuyet:nguoiPheDuyet,                           
-            yKienTVGS:yKienTVGS,                       
-            kyHieuHoSo:kyHieuHoSo,                       
+        // let data = {
+        //     duAn:duAn,                           
+        //     loaiHoSo:loaiHoSo,                           
+        //     tenHoSo:tenHoSo,                         
+        //     soLuong:soLuong,                           
+        //     ngayNhan:ngayNhan,                           
+        //     ngayTra:ngayTra,                           
+        //     lanKiemTra:lanKiemTra,                           
+        //     ketQua:ketQua,                            
+        //     lyDoKhongDat:lyDoKhongDat,                           
+        //     noiDungThayDoiTk:noiDungThayDoiTk,                         
+        //     nguyenNhanThayDoiTk:nguyenNhanThayDoiTk,                            
+        //     nguoiPheDuyet:nguoiPheDuyet,                           
+        //     yKienTVGS:yKienTVGS,                       
+        //     kyHieuHoSo:kyHieuHoSo,                       
             
-        }
+        // }
         try {
-
-            var result = await axiosInstance.post(`createFile`, data);
+            let bodyFormData = new FormData();
+            bodyFormData.append('duAn',duAn);                           
+            bodyFormData.append('loaiHoSo',loaiHoSo);                           
+            bodyFormData.append('tenHoSo',tenHoSo);                         
+            bodyFormData.append('soLuong',soLuong);                           
+            bodyFormData.append('ngayNhan',ngayNhan);                           
+            bodyFormData.append('ngayTra',ngayTra);                           
+            bodyFormData.append('lanKiemTra',lanKiemTra);                           
+            bodyFormData.append('ketQua',ketQua);                            
+            bodyFormData.append('lyDoKhongDat',lyDoKhongDat);                           
+            bodyFormData.append('noiDungThayDoiTk',noiDungThayDoiTk);                         
+            bodyFormData.append('nguyenNhanThayDoiTk',nguyenNhanThayDoiTk);                            
+            bodyFormData.append('nguoiPheDuyet',nguoiPheDuyet);                           
+            bodyFormData.append('yKienTVGS',yKienTVGS);                       
+            bodyFormData.append('kyHieuHoSo',kyHieuHoSo);   
+       
+            if (objFile) {
+                for( var i = 0; i < objFile.length; i++ ){
+                    let file = objFile[i];
+                    bodyFormData.append('file[]', file);//cú pháp truyền cả mảng file trong form
+                }
+            }
+            
+            var result = await axiosInstance.post(`createFile`, bodyFormData);
 
             if (result.status === 200) {
                 //commit('SET_USER_INFO', result.data.user);
@@ -1287,29 +1359,54 @@ export default {
         nguyenNhanThayDoiTk ='',
         nguoiPheDuyet ='',
         yKienTVGS ='',
-        idFile = ''
+        idFile = '',
+        objFile=null,
+        arrNameFile = ''
     }) {
 
-        let data = {
-            duAn:duAn,                           
-            loaiHoSo:loaiHoSo,                           
-            tenHoSo:tenHoSo,                         
-            soLuong:soLuong,                           
-            ngayNhan:ngayNhan,                           
-            ngayTra:ngayTra,                           
-            lanKiemTra:lanKiemTra,                           
-            ketQua:ketQua,                            
-            lyDoKhongDat:lyDoKhongDat,                           
-            noiDungThayDoiTk:noiDungThayDoiTk,                         
-            nguyenNhanThayDoiTk:nguyenNhanThayDoiTk,                            
-            nguoiPheDuyet:nguoiPheDuyet,                           
-            yKienTVGS:yKienTVGS,                       
-            kyHieuHoSo:kyHieuHoSo,                       
-            idFile:idFile
-        }
+        // let data = {
+        //     duAn:duAn,                           
+        //     loaiHoSo:loaiHoSo,                           
+        //     tenHoSo:tenHoSo,                         
+        //     soLuong:soLuong,                           
+        //     ngayNhan:ngayNhan,                           
+        //     ngayTra:ngayTra,                           
+        //     lanKiemTra:lanKiemTra,                           
+        //     ketQua:ketQua,                            
+        //     lyDoKhongDat:lyDoKhongDat,                           
+        //     noiDungThayDoiTk:noiDungThayDoiTk,                         
+        //     nguyenNhanThayDoiTk:nguyenNhanThayDoiTk,                            
+        //     nguoiPheDuyet:nguoiPheDuyet,                           
+        //     yKienTVGS:yKienTVGS,                       
+        //     kyHieuHoSo:kyHieuHoSo,                       
+        //     idFile:idFile
+        // }
         try {
-
-            var result = await axiosInstance.post(`updateFile/${idFile}`, data);
+            let bodyFormData = new FormData();
+            bodyFormData.append('duAn',duAn);                           
+            bodyFormData.append('loaiHoSo',loaiHoSo);                           
+            bodyFormData.append('tenHoSo',tenHoSo);                         
+            bodyFormData.append('soLuong',soLuong);                           
+            bodyFormData.append('ngayNhan',ngayNhan);                           
+            bodyFormData.append('ngayTra',ngayTra);                           
+            bodyFormData.append('lanKiemTra',lanKiemTra);                           
+            bodyFormData.append('ketQua',ketQua);                            
+            bodyFormData.append('lyDoKhongDat',lyDoKhongDat);                           
+            bodyFormData.append('noiDungThayDoiTk',noiDungThayDoiTk);                         
+            bodyFormData.append('nguyenNhanThayDoiTk',nguyenNhanThayDoiTk);                            
+            bodyFormData.append('nguoiPheDuyet',nguoiPheDuyet);                           
+            bodyFormData.append('yKienTVGS',yKienTVGS);                       
+            bodyFormData.append('kyHieuHoSo',kyHieuHoSo);   
+            bodyFormData.append('idFile',idFile);   
+            bodyFormData.append('arrNameFile', arrNameFile);
+       
+            if (objFile) {
+                for( var i = 0; i < objFile.length; i++ ){
+                    let file = objFile[i];
+                    bodyFormData.append('file[]', file);//cú pháp truyền cả mảng file trong form
+                }
+            }
+            var result = await axiosInstance.post(`updateFile/${idFile}`, bodyFormData);
 
             if (result.status === 200) {
                 //commit('SET_USER_INFO', result.data.user);
@@ -1401,24 +1498,39 @@ export default {
         ketThuc ='',
         donVi ='',
         khoiLuong ='',
-       
+        objFile = null
     }) {
 
-        let data = {
-            tenHopDong:tenHopDong,                           
-            duAn:duAn,                           
-            giaTriHD:giaTriHD,                         
-            nhanSuLienQuan:nhanSuLienQuan,                           
-            batDau:batDau,                           
-            ketThuc:ketThuc,                           
-            donVi:donVi,                           
-            khoiLuong:khoiLuong,                            
-                                
-
-        }
+        // let data = {
+        //     tenHopDong:tenHopDong,                           
+        //     duAn:duAn,                           
+        //     giaTriHD:giaTriHD,                         
+        //     nhanSuLienQuan:nhanSuLienQuan,                           
+        //     batDau:batDau,                           
+        //     ketThuc:ketThuc,                           
+        //     donVi:donVi,                           
+        //     khoiLuong:khoiLuong,                                                  
+        // }
         try {
-
-            var result = await axiosInstance.post(`createContract`, data);
+            let bodyFormData = new FormData();
+           
+             bodyFormData.append('tenHopDong',tenHopDong);                           
+             bodyFormData.append('duAn',duAn);                           
+             bodyFormData.append('giaTriHD',giaTriHD);                         
+             bodyFormData.append('nhanSuLienQuan',nhanSuLienQuan);                           
+             bodyFormData.append('batDau',batDau);                           
+             bodyFormData.append('ketThuc',ketThuc);                           
+             bodyFormData.append('donVi',donVi);                           
+             bodyFormData.append('khoiLuong',khoiLuong);   
+             
+             if (objFile) {
+                for( var i = 0; i < objFile.length; i++ ){
+                    let file = objFile[i];
+                    bodyFormData.append('file[]', file);//cú pháp truyền cả mảng file trong form
+                }
+            }
+             
+            var result = await axiosInstance.post(`createContract`, bodyFormData);
 
             if (result.status === 200) {
                 //commit('SET_USER_INFO', result.data.user);
@@ -1451,22 +1563,40 @@ export default {
         ketThuc ='',
         donVi ='',
         khoiLuong ='',
-        idContract =''
+        idContract ='',
+        objFile=null,
+        arrNameFile = ''
     }) {
 
-        let data = {
-            tenHopDong:tenHopDong,                           
-            duAn:duAn,                           
-            giaTriHD:giaTriHD,                         
-            nhanSuLienQuan:nhanSuLienQuan,                           
-            batDau:batDau,                           
-            ketThuc:ketThuc,                           
-            donVi:donVi,                           
-            khoiLuong:khoiLuong,                            
-        }
+        // let data = {
+        //     tenHopDong:tenHopDong,                           
+        //     duAn:duAn,                           
+        //     giaTriHD:giaTriHD,                         
+        //     nhanSuLienQuan:nhanSuLienQuan,                           
+        //     batDau:batDau,                           
+        //     ketThuc:ketThuc,                           
+        //     donVi:donVi,                           
+        //     khoiLuong:khoiLuong,                            
+        // }
         try {
-
-            var result = await axiosInstance.post(`updateContract/${idContract}`, data);
+            let bodyFormData = new FormData();
+            bodyFormData.append('tenHopDong',tenHopDong);                           
+            bodyFormData.append('duAn',duAn);                           
+            bodyFormData.append('giaTriHD',giaTriHD);                         
+            bodyFormData.append('nhanSuLienQuan',nhanSuLienQuan);                           
+            bodyFormData.append('batDau',batDau);                           
+            bodyFormData.append('ketThuc',ketThuc);                           
+            bodyFormData.append('donVi',donVi);                           
+            bodyFormData.append('khoiLuong',khoiLuong);   
+            bodyFormData.append('arrNameFile',arrNameFile);   
+            
+            if (objFile) {
+               for( var i = 0; i < objFile.length; i++ ){
+                   let file = objFile[i];
+                   bodyFormData.append('file[]', file);//cú pháp truyền cả mảng file trong form
+               }
+           }
+            var result = await axiosInstance.post(`updateContract/${idContract}`, bodyFormData);
 
             if (result.status === 200) {
                 //commit('SET_USER_INFO', result.data.user);
@@ -1559,24 +1689,41 @@ export default {
         trangThai ='',
         nhanSuChinh ='',
         nhanSuLienQuan ='',
-       
+        objFile = null
     }) {
 
-        let data = {
-            tenDuAn:tenDuAn,                           
-            maDuAn:maDuAn,                           
-            tenCdt:tenCdt,                         
-            moTaDuAn:moTaDuAn,                           
-            ngayBatDau:ngayBatDau,                           
-            ngayKetThuc:ngayKetThuc,                           
-            ngayKetThucThucTe:ngayKetThucThucTe,                           
-            trangThai:trangThai,                            
-            nhanSuChinh:nhanSuChinh,                            
-            nhanSuLienQuan:nhanSuLienQuan,                            
-        }
+        // let data = {
+        //     tenDuAn:tenDuAn,                           
+        //     maDuAn:maDuAn,                           
+        //     tenCdt:tenCdt,                         
+        //     moTaDuAn:moTaDuAn,                           
+        //     ngayBatDau:ngayBatDau,                           
+        //     ngayKetThuc:ngayKetThuc,                           
+        //     ngayKetThucThucTe:ngayKetThucThucTe,                           
+        //     trangThai:trangThai,                            
+        //     nhanSuChinh:nhanSuChinh,                            
+        //     nhanSuLienQuan:nhanSuLienQuan,                            
+        // }
         try {
-
-            var result = await axiosInstance.post(`createProject`, data);
+            let bodyFormData = new FormData();
+                bodyFormData.append('tenDuAn',tenDuAn);                           
+                bodyFormData.append('maDuAn',maDuAn);                           
+                bodyFormData.append('tenCdt',tenCdt);                         
+                bodyFormData.append('moTaDuAn',moTaDuAn);                           
+                bodyFormData.append('ngayBatDau',ngayBatDau);                           
+                bodyFormData.append('ngayKetThuc',ngayKetThuc);                           
+                bodyFormData.append('ngayKetThucThucTe',ngayKetThucThucTe);                           
+                bodyFormData.append('trangThai',trangThai);                            
+                bodyFormData.append('nhanSuChinh',nhanSuChinh);                            
+                bodyFormData.append('nhanSuLienQuan',nhanSuLienQuan); 
+            
+                if (objFile) {
+                   for( var i = 0; i < objFile.length; i++ ){
+                       let file = objFile[i];
+                       bodyFormData.append('file[]', file);//cú pháp truyền cả mảng file trong form
+                   }
+               }
+            var result = await axiosInstance.post(`createProject`, bodyFormData);
 
             if (result.status === 200) {
                 //commit('SET_USER_INFO', result.data.user);
@@ -1611,24 +1758,44 @@ export default {
         trangThai ='',
         nhanSuChinh ='',
         nhanSuLienQuan ='',
-        idProj =''
+        idProj ='',
+        arrNameFile='',
+        objFile =null
     }) {
 
-        let data = {
-            tenDuAn:tenDuAn,                           
-            maDuAn:maDuAn,                           
-            tenCdt:tenCdt,                         
-            moTaDuAn:moTaDuAn,                           
-            ngayBatDau:ngayBatDau,                           
-            ngayKetThuc:ngayKetThuc,                           
-            ngayKetThucThucTe:ngayKetThucThucTe,                           
-            trangThai:trangThai,                            
-            nhanSuChinh:nhanSuChinh,                            
-            nhanSuLienQuan:nhanSuLienQuan,                            
-        }
+        // let data = {
+        //     tenDuAn:tenDuAn,                           
+        //     maDuAn:maDuAn,                           
+        //     tenCdt:tenCdt,                         
+        //     moTaDuAn:moTaDuAn,                           
+        //     ngayBatDau:ngayBatDau,                           
+        //     ngayKetThuc:ngayKetThuc,                           
+        //     ngayKetThucThucTe:ngayKetThucThucTe,                           
+        //     trangThai:trangThai,                            
+        //     nhanSuChinh:nhanSuChinh,                            
+        //     nhanSuLienQuan:nhanSuLienQuan,                            
+        // }
         try {
-
-            var result = await axiosInstance.post(`updateProject/${idProj}`, data);
+            let bodyFormData = new FormData();
+                bodyFormData.append('tenDuAn',tenDuAn);                           
+                bodyFormData.append('maDuAn',maDuAn);                           
+                bodyFormData.append('tenCdt',tenCdt);                         
+                bodyFormData.append('moTaDuAn',moTaDuAn);                           
+                bodyFormData.append('ngayBatDau',ngayBatDau);                           
+                bodyFormData.append('ngayKetThuc',ngayKetThuc);                           
+                bodyFormData.append('ngayKetThucThucTe',ngayKetThucThucTe);                           
+                bodyFormData.append('trangThai',trangThai);                            
+                bodyFormData.append('nhanSuChinh',nhanSuChinh);                            
+                bodyFormData.append('nhanSuLienQuan',nhanSuLienQuan); 
+                bodyFormData.append('arrNameFile',arrNameFile);   
+            
+                if (objFile) {
+                   for( var i = 0; i < objFile.length; i++ ){
+                       let file = objFile[i];
+                       bodyFormData.append('file[]', file);//cú pháp truyền cả mảng file trong form
+                   }
+               }
+            var result = await axiosInstance.post(`updateProject/${idProj}`, bodyFormData);
 
             if (result.status === 200) {
                 //commit('SET_USER_INFO', result.data.user);

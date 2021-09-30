@@ -184,10 +184,43 @@
     </div>
 
     <!-- group 3 -->
-    <div class="add-gr3">
+     <div class="add-gr3">
       <h5>File và tài liệu liên quan</h5>
+      <div class="flex justify-between">
+        <input 
+        multiple
+        @change="onFileChange($event)"
+        class="cursor-pointer" 
+        type="file" name="" id="">
+        <div class="flex">
+        <input 
+        type="text">
 
-      <b-form-file class="z-0 cursor-pointer" id="file-small" size="sm"></b-form-file>
+        </div>
+      </div>
+      <!-- <b-form-file class="z-0" style="cursor: pointer" id="file-small" size="sm"></b-form-file> -->
+        <div  v-if="arrItem.length>0">
+            <div 
+            v-for="(it, idx) in arrItem"
+            v-bind:key="idx"
+            class="nguon text-muted font-weight-bold flex justify-between pt-2">
+          <div class="flex">
+           <a style="line-height:24px"
+           v-bind:href="addressServe + arrItem[idx].path"> File  {{idx + 1}} : </a>
+            <input class="rootNameFile ml-24"
+            v-bind:value="arrItem[idx].rootName"
+            type="text">
+          </div>
+          <div>
+          
+          <i
+            @click="handleDelete(idx)"
+            class="menu-icon cursor-pointer flaticon2-rubbish-bin text-white pl-2 pr-2 bg-red-600"
+          ></i>
+          </div>
+       </div>
+
+   </div>
     </div>
 
     <div class="add-gr4">
@@ -225,13 +258,17 @@
         </b-button>
       </div>
         <div v-if="idCurrentProj" class="add-gr51 add-gr52">
-      <b-button @click="handleUpdate" size="sm" class="mb-2 tao-cv">
+      <b-button 
+      ref="kt_save_changes"
+      @click="handleUpdate" size="sm" class="mb-2 tao-cv">
         <b-icon icon="check2" aria-hidden="true"></b-icon> Cập nhật
       </b-button>
       </div>
 
       <div v-else class="add-gr51 add-gr52">
-        <b-button @click="handleSave" size="sm" class="mb-2 tao-cv">
+        <b-button 
+        ref="kt_save_changes"
+        @click="handleSave" size="sm" class="mb-2 tao-cv">
           <b-icon icon="check2" aria-hidden="true"></b-icon> Tạo dự án
         </b-button>
       </div>
@@ -241,7 +278,7 @@
 
 <script>
 import Multiselect from "vue-multiselect";
-import { mapActions, mapGetters } from "vuex";
+import { mapActions, mapGetters,mapState } from "vuex";
 import { SET_BREADCRUMB } from "@/core/services/store/store_metronic/breadcrumbs.module";
 export default {
   name: "add_task",
@@ -274,22 +311,25 @@ export default {
       project_involve: [
 
       ],
+       fileData: [],
+       arrItem:[],
     };
   },
   created() {
           this.idCurrentProj = this.$route.params.id;
      if(this.idCurrentProj!== undefined){
         this["storeqlda/getProjectWithId"](this.idCurrentProj).then((res)=>{
-         this.nameProject = res.data.tenDuAn ;
-         this.codeProject = res.data.maDuAn ;
-         this.nameInvestor = res.data.tenCdt ;
-        this.descriptionProject= res.data.moTaDuAn ;
-        this.timeStart=res.data.ngayBatDau;
-        this.timeExpect=res.data.ngayKetThuc ;
-        this.timeReal=res.data.ngayKetThucThucTe ;
-        this.selectedStatusProject= res.data.trangThai;
-        this.selectedPersionMain = JSON.parse(res.data.nhanSuChinh);
-        this.selectedInvolve = JSON.parse(res.data.nhanSuLienQuan);
+         this.nameProject = res.data.pagi.tenDuAn ;
+         this.codeProject = res.data.pagi.maDuAn ;
+         this.nameInvestor = res.data.pagi.tenCdt ;
+        this.descriptionProject= res.data.pagi.moTaDuAn ;
+        this.timeStart=res.data.pagi.ngayBatDau;
+        this.timeExpect=res.data.pagi.ngayKetThuc ;
+        this.timeReal=res.data.pagi.ngayKetThucThucTe ;
+        this.selectedStatusProject= res.data.pagi.trangThai;
+        this.selectedPersionMain = JSON.parse(res.data.pagi.nhanSuChinh);
+        this.selectedInvolve = JSON.parse(res.data.pagi.nhanSuLienQuan);
+        this.arrItem = res.data.item;
 
         })
 
@@ -314,18 +354,51 @@ export default {
       "currentUserPersonalInfo",
       "storeqlda/currentUser",
     ]),
+       ...mapState({
+      addressServe: (state) => state.storeqlda.addressServe, // rieng doi voi map state thi phai dùng như này để  lấy state
+    }),
   },
   methods: {
     ...mapActions(["storeqlda/ActionCreateProject",
                   "storeqlda/getListDataUser",
                   "storeqlda/getProjectWithId",
                   "storeqlda/ActionUpdateProject",
-                  
+                  "storeqlda/destroyFileAttachTask",
      ]),
     custom_label({ text }) {
       return `${text}`;
     },
-      handleUpdate(){
+    handleDelete(idx) {
+      if (confirm("Bạn có chắc chắn muốn xóa dữ liệu này không?")) {
+        this["storeqlda/destroyFileAttachTask"](this.arrItem[idx].id).then((res) => {
+            this.arrItem = this.arrItem.filter(item => item.id !== this.arrItem[idx].id);
+            // loại bỏ phần tử đã xóa ra khỏi mảng và gán lại vào mảng đó để vue tự dộng render lại
+            alert(res.data.msg);
+           
+        });
+      }
+    },
+        onFileChange(e) {
+          const files = e.target.files;
+          this.fileData = [];
+          if (typeof FileReader === "function") {
+          for (let file of files) {
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = () => {
+              this.fileData.push(file);
+            };       
+      }
+      } else {
+        alert("Sorry, FileReader API not supported");
+      }
+    },
+      handleUpdate() {
+         let listEl = document.querySelectorAll('.rootNameFile')
+      let nameRootFile={}
+      for (let i = 0; i < listEl.length; i++) {
+        nameRootFile[this.arrItem[i].id]=listEl[i].value
+      }
       var data = {
         tenDuAn: this.nameProject,
         maDuAn: this.codeProject,
@@ -337,11 +410,22 @@ export default {
         trangThai:this.selectedStatusProject,
         nhanSuChinh: JSON.stringify(this.selectedPersionMain),
         nhanSuLienQuan: JSON.stringify(this.selectedInvolve),
-        idProj:this.idCurrentProj
+        idProj:this.idCurrentProj,
+         objFile : this.fileData,
+        arrNameFile:JSON.stringify(nameRootFile)
       };
+       const submitButton = this.$refs["kt_save_changes"];
+      submitButton.classList.add("spinner", "spinner-light", "spinner-right");
+    setTimeout(() => {
       this["storeqlda/ActionUpdateProject"](data).then((res) => {
         alert(res.data);
       });
+       submitButton.classList.remove(
+          "spinner",
+          "spinner-light",
+          "spinner-right"
+        );
+      }, 2000);
     },
     handleSave() {
      
@@ -356,10 +440,20 @@ export default {
         trangThai:this.selectedStatusProject,
         nhanSuChinh: JSON.stringify(this.selectedPersionMain),
         nhanSuLienQuan: JSON.stringify(this.selectedInvolve),
+         objFile : this.fileData
       };
+       const submitButton = this.$refs["kt_save_changes"];
+      submitButton.classList.add("spinner", "spinner-light", "spinner-right");
+    setTimeout(() => {
       this["storeqlda/ActionCreateProject"](data).then((res) => {
         alert(res.data);
       });
+       submitButton.classList.remove(
+          "spinner",
+          "spinner-light",
+          "spinner-right"
+        );
+      }, 2000);
     },
   },
   mounted() {

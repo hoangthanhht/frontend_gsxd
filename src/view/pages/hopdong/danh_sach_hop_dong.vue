@@ -110,6 +110,19 @@
                     <span class="ma_vat_tu text-muted font-weight-bold">{{
                       item.tenHopDong !== null ? item.tenHopDong : "null"
                     }}</span>
+                     <span v-if="handleLinkWithId(item.id,arrLinkSearch).length>0">
+                      <b-dropdown text="file đính kèm" class="fileAttach">
+                        <template
+                          v-for="(it, idx) in handleLinkWithId(item.id,arrLinkSearch)"
+                        >
+                          <b-dropdown-item
+                            style="padding-left: 0px"
+                            v-bind:key="idx"
+                            v-bind:href="it"
+                            >File {{ idx + 1 }}</b-dropdown-item>
+                        </template>
+                      </b-dropdown>
+                    </span>
                   </td>
 
                   <td>
@@ -247,6 +260,19 @@
                     <span class="ma_vat_tu text-muted font-weight-bold">{{
                       item.tenHopDong !== null ? item.tenHopDong : "null"
                     }}</span>
+                     <span v-if="handleLinkWithId(item.id,arrLink).length>0">
+                      <b-dropdown text="file đính kèm" class="fileAttach">
+                        <template 
+                          v-for="(it, idx) in handleLinkWithId(item.id,arrLink)"
+                        >
+                          <b-dropdown-item
+                            style="padding-left: 0px"
+                            v-bind:key="idx"
+                            v-bind:href="it"
+                            >File {{ idx + 1 }}</b-dropdown-item>
+                        </template>
+                      </b-dropdown>
+                    </span>
                   </td>
 
                   <td>
@@ -338,6 +364,7 @@
     </div>
 
     <b-pagination
+    class="pt-5"
       v-model="currentPage"
       align="right"
       pills
@@ -363,6 +390,8 @@ export default {
       rows: 100,
       dataArrContract: [],
       dataArrAllContract:[],
+      arrLink: [],
+      arrLinkSearch: [],
       selectedKindContract: null, // Array reference
       kindcontract: [
         { id: "1", text: "Hợp đồng trọn gói" },
@@ -385,7 +414,8 @@ export default {
   },
    created() {
    this['storeqlda/getAllContract']().then((res)=>{
-      this.dataArrAllContract = res.data
+      this.dataArrAllContract = res.data.pagi;
+      this.arrLinkSearch = res.data.link;
    });
    },
   mounted() {
@@ -470,7 +500,7 @@ export default {
        let arrTemp =[];
         let persionProj = "";
       let persionDo = "";
-       if (arr[index].duAn) {
+       if (arr[index].duAn && arr[index].duAn != 'null') {
           arrTemp = JSON.parse(arr[index].duAn);
           persionProj= arrTemp.text
        }
@@ -546,14 +576,26 @@ export default {
     custom_label_persion({ text }) {
       return `${text}`;
     },
+     handleLinkWithId(id,arr) {
+      let arrTemp = [];
+      for (var i in arr) {
+        var keyObj = Object.keys(arr[i]);
+        if (id == keyObj) {
+          arrTemp = arr[i][keyObj];
+          break;
+        }
+      }
+      return arrTemp;
+    },
     dataArr(page) {
       var data = {
         page: page,
       };
       this["storeqlda/getListContractHasPaging"](data).then((response) => {
-        this.dataArrContract = response.data.data;
-        this.pagination = response.data;
-        this.rows = response.data.total;
+        this.dataArrContract = response.data.pagi.data;
+        this.pagination = response.data.pagi;
+        this.rows = response.data.pagi.total;
+        this.arrLink = response.data.link;
       });
     },
   },
@@ -561,6 +603,18 @@ export default {
 </script>
 <style src="vue-multiselect/dist/vue-multiselect.min.css"></style>
 <style scoped>
+.fileAttach :first-child {
+  height: 20px;
+  padding: 0;
+  margin-left: 0px;
+  background-color: aqua;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+.fileAttach {
+  margin-left: 0px;
+}
 .danh-sach-ho-so {
   margin-left: 10px;
   margin-right: 10px;

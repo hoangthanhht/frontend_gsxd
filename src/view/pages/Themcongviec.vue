@@ -229,8 +229,41 @@
     <!-- group 3 -->
     <div class="add-gr3">
       <h5>File và tài liệu liên quan</h5>
-        <input class="cursor-pointer" type="file" name="" id="">
+      <div class="flex justify-between">
+        <input 
+        multiple
+        @change="onFileChange($event)"
+        class="cursor-pointer" 
+        type="file" name="" id="">
+        <div class="flex">
+        <input 
+        type="text">
+
+        </div>
+      </div>
       <!-- <b-form-file class="z-0" style="cursor: pointer" id="file-small" size="sm"></b-form-file> -->
+        <div  v-if="arrItem.length>0">
+            <div 
+            v-for="(it, idx) in arrItem"
+            v-bind:key="idx"
+            class="nguon text-muted font-weight-bold flex justify-between pt-2">
+          <div class="flex">
+           <a style="line-height:24px"
+           v-bind:href="addressServe + arrItem[idx].path"> File  {{idx + 1}} : </a>
+            <input class="rootNameFile ml-24"
+            v-bind:value="arrItem[idx].rootName"
+            type="text">
+          </div>
+          <div>
+          
+          <i
+            @click="handleDelete(idx)"
+            class="menu-icon cursor-pointer flaticon2-rubbish-bin text-white pl-2 pr-2 bg-red-600"
+          ></i>
+          </div>
+       </div>
+
+   </div>
     </div>
 
     <div class="add-gr4">
@@ -269,13 +302,19 @@
       </div>
 
         <div v-if="idCurrentTask" class="add-gr51 add-gr52">
-      <b-button @click="handleUpdate" size="sm" class="mb-2 tao-cv">
+      <b-button 
+       ref="kt_save_changes"
+      @click="handleUpdate" 
+      size="sm" class="mb-2 tao-cv">
         <b-icon icon="check2" aria-hidden="true"></b-icon> Cập nhật
       </b-button>
       </div>
 
       <div v-else class="add-gr51 add-gr52">
-        <b-button @click="handleSave" size="sm" class="mb-2 tao-cv">
+        <b-button 
+        ref="kt_save_changes"
+        @click="handleSave" size="sm" 
+        class="mb-2 tao-cv">
           <b-icon icon="check2" aria-hidden="true"></b-icon> Tạo công việc
         </b-button>
       </div>
@@ -286,7 +325,7 @@
 
 <script>
 import Multiselect from "vue-multiselect";
-import { mapActions, mapGetters } from "vuex";
+import { mapActions, mapGetters,mapState } from "vuex";
 import { SET_BREADCRUMB } from "@/core/services/store/store_metronic/breadcrumbs.module";
 export default {
   name: "add_task",
@@ -294,6 +333,7 @@ export default {
   data() {
     return {
       idCurrentTask:null,
+      arrItem:[],
       text: "", // cần khai báo data này không sẽ gặp wraning text is not define trong hàm custom_label
       currentTab: 0,
       nameTask: "",
@@ -322,25 +362,29 @@ export default {
         { value: "Chưa hoàn thành", text: "Chưa hoàn thành" },
         { value: "Đã hoàn thành", text: "Đã hoàn thành" },
       ],
+
+      fileData: []
     };
   },
   created() {
       this.idCurrentTask = this.$route.params.id;
      if(this.idCurrentTask!== undefined){
         this["storeqlda/getTaskWithId"](this.idCurrentTask).then((res)=>{
-         this.nameTask = res.data.Ten ;
-         this.descriptionTask = res.data.moTaTask ;
-         this.note = res.data.luuY ;
-        this.timeStart=JSON.parse(res.data.keHoach)[0] ;
-        this.timeExpect=JSON.parse(res.data.keHoach)[1] ;
-        this.statusTask=res.data.tinhTrang ;
-        this.timeStartReal=JSON.parse(res.data.thucHien)[0] ;
-        this.timeFinishReal=JSON.parse(res.data.thucHien)[1];
-        this.selectedPersionDo = JSON.parse(res.data.nguoiPhoiHop);
-        this.selectedPersionAssign = JSON.parse(res.data.nguoiDeXuat);
-        this.selectedProject = JSON.parse(res.data.duanLienQuan);
-        this.selectedPriorityLevel =res.data.mucDo;
-        this.selectedResult = res.data.ketQua;
+         this.nameTask = res.data.pagi.Ten ;
+         this.descriptionTask = res.data.pagi.moTaTask ;
+         this.note = res.data.pagi.luuY ;
+        this.timeStart=JSON.parse(res.data.pagi.keHoach)[0] ;
+        this.timeExpect=JSON.parse(res.data.pagi.keHoach)[1] ;
+        this.statusTask=res.data.pagi.tinhTrang ;
+        this.timeStartReal=JSON.parse(res.data.pagi.thucHien)[0] ;
+        this.timeFinishReal=JSON.parse(res.data.pagi.thucHien)[1];
+        this.selectedPersionDo = JSON.parse(res.data.pagi.nguoiPhoiHop);
+        this.selectedPersionAssign = JSON.parse(res.data.pagi.nguoiDeXuat);
+        this.selectedProject = JSON.parse(res.data.pagi.duanLienQuan);
+        this.selectedPriorityLevel = res.data.pagi.mucDo;
+        this.selectedResult = res.data.pagi.ketQua;
+        this.arrItem = res.data.item;
+
         })
 
      }
@@ -377,6 +421,9 @@ export default {
       "currentUserPersonalInfo",
       "storeqlda/currentUser",
     ]),
+     ...mapState({
+      addressServe: (state) => state.storeqlda.addressServe, // rieng doi voi map state thi phai dùng như này để  lấy state
+    }),
   },
   methods: {
     ...mapActions([
@@ -385,13 +432,44 @@ export default {
       "storeqlda/getListProjectName",
       "storeqlda/getTaskWithId",
       "storeqlda/ActionUpdateTask",
+      "storeqlda/destroyFileAttachTask",
       
      ]),
-     
+    handleDelete(idx) {
+      if (confirm("Bạn có chắc chắn muốn xóa dữ liệu này không?")) {
+        this["storeqlda/destroyFileAttachTask"](this.arrItem[idx].id).then((res) => {
+            this.arrItem = this.arrItem.filter(item => item.id !== this.arrItem[idx].id);
+            // loại bỏ phần tử đã xóa ra khỏi mảng và gán lại vào mảng đó để vue tự dộng render lại
+            alert(res.data.msg);
+           
+        });
+      }
+    },
+        onFileChange(e) {
+          const files = e.target.files;
+          this.fileData = [];
+          if (typeof FileReader === "function") {
+          for (let file of files) {
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = () => {
+              this.fileData.push(file);
+            };       
+      }
+      } else {
+        alert("Sorry, FileReader API not supported");
+      }
+    },
+
     custom_label({ text }) {
       return `${text}`;
     },
     handleUpdate(){
+       let listEl = document.querySelectorAll('.rootNameFile')
+      let nameRootFile={}
+      for (let i = 0; i < listEl.length; i++) {
+        nameRootFile[this.arrItem[i].id]=listEl[i].value
+      }
        let arrTimekh = []
       let arrTimereal = []
       arrTimekh.push(this.timeStart)
@@ -410,14 +488,24 @@ export default {
         ketQua: this.selectedResult,
         tinhTrang: this.statusTask,
         luuY: this.note,
-        idTask:this.idCurrentTask
+        idTask:this.idCurrentTask,
+        objFile : this.fileData,
+        arrNameFile:JSON.stringify(nameRootFile)
       };
+       const submitButton = this.$refs["kt_save_changes"];
+      submitButton.classList.add("spinner", "spinner-light", "spinner-right");
+    setTimeout(() => {
       this["storeqlda/ActionUpdateTask"](data).then((res) => {
         alert(res.data);
       });
+        submitButton.classList.remove(
+          "spinner",
+          "spinner-light",
+          "spinner-right"
+        );
+      }, 2000);
     },
-    handleSave() {
-     
+    handleSave() {    
       let arrTimekh = []
       let arrTimereal = []
       arrTimekh.push(this.timeStart)
@@ -436,10 +524,23 @@ export default {
         ketQua: this.selectedResult,
         tinhTrang: this.statusTask,
         luuY: this.note,
+        objFile : this.fileData
       };
-      this["storeqlda/ActionCreateTask"](data).then((res) => {
-        alert(res.data);
-      });
+      const submitButton = this.$refs["kt_save_changes"];
+      submitButton.classList.add("spinner", "spinner-light", "spinner-right");
+    setTimeout(() => {
+
+               this["storeqlda/ActionCreateTask"](data).then((res) => {
+                alert(res.data);
+              });
+        submitButton.classList.remove(
+          "spinner",
+          "spinner-light",
+          "spinner-right"
+        );
+      }, 2000);
+
+
     },
   },
   watch: {

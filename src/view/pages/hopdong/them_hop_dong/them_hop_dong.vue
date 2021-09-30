@@ -117,10 +117,44 @@
             ></b-form-input>
         </div>
 
-        <div class="hs-gr5">
-          <h5>File và tài liệu liên quan</h5>
-          <b-form-file class="z-0" id="file-small" size="sm"></b-form-file>
+     <div class="add-gr5">
+      <h5>File và tài liệu liên quan</h5>
+      <div class="flex justify-between">
+        <input 
+        multiple
+        @change="onFileChange($event)"
+        class="cursor-pointer" 
+        type="file" name="" id="">
+        <div class="flex">
+        <input 
+        type="text">
+
         </div>
+      </div>
+      <!-- <b-form-file class="z-0" style="cursor: pointer" id="file-small" size="sm"></b-form-file> -->
+        <div  v-if="arrItem.length>0">
+            <div 
+            v-for="(it, idx) in arrItem"
+            v-bind:key="idx"
+            class="nguon text-muted font-weight-bold flex justify-between pt-2">
+          <div class="flex">
+           <a style="line-height:24px"
+           v-bind:href="addressServe + arrItem[idx].path"> File  {{idx + 1}} : </a>
+            <input class="rootNameFile ml-24"
+            v-bind:value="arrItem[idx].rootName"
+            type="text">
+          </div>
+          <div>
+          
+          <i
+            @click="handleDelete(idx)"
+            class="menu-icon cursor-pointer flaticon2-rubbish-bin text-white pl-2 pr-2 bg-red-600"
+          ></i>
+          </div>
+       </div>
+
+   </div>
+    </div>
       </div>
 
       <div class="hstk_note">
@@ -146,13 +180,17 @@
         </b-button>
       </div>
          <div v-if="idCurrentContract" class="add-gr51 add-gr52">
-      <b-button @click="handleUpdate" size="sm" class="mb-2 tao-cv">
+      <b-button 
+      ref="kt_save_changes"
+      @click="handleUpdate" size="sm" class="mb-2 tao-cv">
         <b-icon icon="check2" aria-hidden="true"></b-icon> Cập nhật
       </b-button>
       </div>
 
       <div v-else class="add-gr51 add-gr52">
-        <b-button @click="handleSave" size="sm" class="mb-2 tao-cv">
+        <b-button 
+        ref="kt_save_changes"
+        @click="handleSave" size="sm" class="mb-2 tao-cv">
           <b-icon icon="check2" aria-hidden="true"></b-icon> Tạo hợp đồng
         </b-button>
       </div>
@@ -162,7 +200,7 @@
 
 <script>
 import Multiselect from "vue-multiselect";
-import { mapActions, mapGetters } from "vuex";
+import { mapActions, mapGetters,mapState } from "vuex";
 import { SET_BREADCRUMB } from "@/core/services/store/store_metronic/breadcrumbs.module";
 export default {
    components: { Multiselect },
@@ -170,6 +208,8 @@ export default {
     return {
        idCurrentContract:null,
       nameContract:'',
+      arrItem:[],
+       fileData: [],
       valueContract:'',
       timeStart:'',
       timeFinish:'',
@@ -195,6 +235,9 @@ export default {
       "currentUserPersonalInfo",
       "storeqlda/currentUser",
     ]),
+     ...mapState({
+      addressServe: (state) => state.storeqlda.addressServe, // rieng doi voi map state thi phai dùng như này để  lấy state
+    }),
   },
     mounted() {
     this.$store.dispatch(SET_BREADCRUMB, [{ title: "Tạo hợp đồng" }]);
@@ -203,16 +246,16 @@ export default {
        this.idCurrentContract = this.$route.params.id;
      if(this.idCurrentContract!== undefined){
         this["storeqlda/getContractWithId"](this.idCurrentContract).then((res)=>{
-         this.nameContract = res.data.tenHopDong ;
-         this.valueContract = res.data.giaTriHD ;
-         this.timeStart = res.data.batDau ;
-        this.timeFinish= res.data.ketThuc ;
-        this.mass=res.data.khoiLuong ;
-
-        this.selectedKindContract =JSON.parse(res.data.loaiHopDong);
-        this.selectedPersionDo = JSON.parse(res.data.nhanSuLienQuan);
-        this.selectedProject = JSON.parse(res.data.duAn);
-        this.selectedUnit = JSON.parse(res.data.donVi);
+         this.nameContract = res.data.pagi.tenHopDong ;
+         this.valueContract = res.data.pagi.giaTriHD ;
+         this.timeStart = res.data.pagi.batDau ;
+        this.timeFinish= res.data.pagi.ketThuc ;
+        this.mass=res.data.pagi.khoiLuong ;
+        this.selectedKindContract =JSON.parse(res.data.pagi.loaiHopDong);
+        this.selectedPersionDo = JSON.parse(res.data.pagi.nhanSuLienQuan);
+        this.selectedProject = JSON.parse(res.data.pagi.duAn);
+        this.selectedUnit = JSON.parse(res.data.pagi.donVi);
+         this.arrItem = res.data.item;
         })
 
      }
@@ -245,14 +288,44 @@ export default {
                       "storeqlda/getListProjectName",
                       "storeqlda/getContractWithId",
                       "storeqlda/ActionUpdateContract",
-                      
+                       "storeqlda/destroyFileAttachTask",
                       ]),
     custom_label({ text }) {
       return `${text}`;
     },
+     handleDelete(idx) {
+      if (confirm("Bạn có chắc chắn muốn xóa dữ liệu này không?")) {
+        this["storeqlda/destroyFileAttachTask"](this.arrItem[idx].id).then((res) => {
+            this.arrItem = this.arrItem.filter(item => item.id !== this.arrItem[idx].id);
+            // loại bỏ phần tử đã xóa ra khỏi mảng và gán lại vào mảng đó để vue tự dộng render lại
+            alert(res.data.msg);
+           
+        });
+      }
+    },
+      onFileChange(e) {
+          const files = e.target.files;
+          this.fileData = [];
+          if (typeof FileReader === "function") {
+          for (let file of files) {
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = () => {
+              this.fileData.push(file);
+            };       
+      }
+      } else {
+        alert("Sorry, FileReader API not supported");
+      }
+    },
       handleUpdate(){
+          let listEl = document.querySelectorAll('.rootNameFile')
+      let nameRootFile={}
+      for (let i = 0; i < listEl.length; i++) {
+        nameRootFile[this.arrItem[i].id]=listEl[i].value
+      }
       var data = {
-         tenHopDong: this.nameContract,
+        tenHopDong: this.nameContract,
         loaiHopDong: JSON.stringify(this.selectedKindContract),
         duAn: JSON.stringify(this.selectedProject),
         giaTriHD: this.valueContract,
@@ -261,11 +334,22 @@ export default {
         ketThuc: this.timeFinish,
         donVi: JSON.stringify(this.selectedUnit),
         khoiLuong: this.mass,
-         idContract:this.idCurrentContract
+        idContract:this.idCurrentContract,
+        objFile : this.fileData,
+        arrNameFile:JSON.stringify(nameRootFile)
       };
+      const submitButton = this.$refs["kt_save_changes"];
+      submitButton.classList.add("spinner", "spinner-light", "spinner-right");
+    setTimeout(() => {
       this["storeqlda/ActionUpdateContract"](data).then((res) => {
         alert(res.data);
       });
+        submitButton.classList.remove(
+          "spinner",
+          "spinner-light",
+          "spinner-right"
+        );
+      }, 2000);
     },
 
     handleSave() {
@@ -280,11 +364,20 @@ export default {
         ketThuc: this.timeFinish,
         donVi: JSON.stringify(this.selectedUnit),
         khoiLuong: this.mass,
-
+         objFile : this.fileData
       };
+       const submitButton = this.$refs["kt_save_changes"];
+      submitButton.classList.add("spinner", "spinner-light", "spinner-right");
+    setTimeout(() => {
       this["storeqlda/ActionCreateContract"](data).then((res) => {
         alert(res.data);
       });
+        submitButton.classList.remove(
+          "spinner",
+          "spinner-light",
+          "spinner-right"
+        );
+      }, 2000);
     },
   },
 };

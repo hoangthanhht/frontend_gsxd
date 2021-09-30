@@ -19,5 +19,6 @@ export default {
     stringSearch:'',
     isShowForm: false,
     userSelected: null,
-    roleSelected: null
+    roleSelected: null,
+    addressServe:'http://127.0.0.1:8000'
 }

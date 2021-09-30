@@ -110,6 +110,19 @@
                     <span class="ma_vat_tu text-muted font-weight-bold">{{
                       item.tenHoSo !== null ? item.tenHoSo : "null"
                     }}</span>
+                    <span v-if="handleLinkWithId(item.id,arrLinkSearch).length>0">
+                      <b-dropdown text="file đính kèm" class="fileAttach">
+                        <template
+                          v-for="(it, idx) in handleLinkWithId(item.id,arrLinkSearch)"
+                        >
+                          <b-dropdown-item
+                            style="padding-left: 0px"
+                            v-bind:key="idx"
+                            v-bind:href="it"
+                            >File {{ idx + 1 }}</b-dropdown-item>
+                        </template>
+                      </b-dropdown>
+                    </span>
                   </td>
                   <td>
                     <span class="ten_vat_tu text-muted font-weight-bold">{{
@@ -225,6 +238,20 @@
                     <span class="ma_vat_tu text-muted font-weight-bold">{{
                       item.tenHoSo !== null ? item.tenHoSo : "null"
                     }}</span>
+                     <span v-if="handleLinkWithId(item.id,arrLink).length>0">
+                      <b-dropdown text="file đính kèm" class="fileAttach">
+                        <template 
+                          v-for="(it, idx) in handleLinkWithId(item.id,arrLink)"
+                        >
+                          <b-dropdown-item
+                            style="padding-left: 0px"
+                            v-bind:key="idx"
+                            v-bind:href="it"
+                            >File {{ idx + 1 }}</b-dropdown-item>
+                        </template>
+                      </b-dropdown>
+                    </span>
+
                   </td>
                   <td>
                     <span class="ten_vat_tu text-muted font-weight-bold">{{
@@ -296,6 +323,7 @@
     </div>
 
     <b-pagination
+    class="pt-5"
       v-model="currentPage"
       align="right"
       pills
@@ -321,6 +349,8 @@ export default {
       rows: 100,
       dataArrFile: [],
       dataArrAllFile: [],
+      arrLink: [],
+      arrLinkSearch: [],
       selectedKindFile: null, // Array reference
       kindfile: [ 
          { id: "1", text: "Hồ sơ nghiệm thu công việc" },
@@ -343,7 +373,8 @@ export default {
   },
    created() {
    this['storeqlda/getAllFile']().then((res)=>{
-      this.dataArrAllFile = res.data
+      this.dataArrAllFile = res.data.pagi;
+      this.arrLinkSearch = res.data.link;
    });
    },
   mounted() {
@@ -358,7 +389,21 @@ export default {
       "storeqlda/destroyFileWithId",
       
     ]),
-
+ handleLinkWithId(id,arr) {
+      let arrTemp = [];
+      for (var i in arr) {
+        var keyObj = Object.keys(arr[i]);
+        if (id == keyObj) {
+          arrTemp = arr[i][keyObj];
+          break;
+        }
+      }
+      // for (var j in arrTemp) {
+      //   arrTemp[j] = this.addressServe + arrTemp[j];
+      // }
+      return arrTemp;
+    },
+    
  handleReset(){
     this.search = '';
     this.selectedTimeCreate = null;
@@ -477,14 +522,13 @@ export default {
             });
             alert(res.data.msg)
           }else{
-
             this.dataArr(this.currentPage);
             alert(res.data.msg)
           }
         })
       }
   },
-     handleEdit(arr,index) {
+  handleEdit(arr,index) {
       let id = arr[index].id
       let khhs = arr[index].kyHieuHoSo
       if(khhs==='hsnt'){
@@ -506,9 +550,10 @@ export default {
         page: page,
       };
       this["storeqlda/getListFileHasPaging"](data).then((response) => {
-        this.dataArrFile = response.data.data;
-        this.pagination = response.data;
-        this.rows = response.data.total;
+        this.dataArrFile = response.data.pagi.data;
+        this.pagination = response.data.pagi;
+        this.rows = response.data.pagi.total;
+        this.arrLink = response.data.link;
       });
     },
   },
@@ -517,6 +562,19 @@ export default {
 </script>
 <style src="vue-multiselect/dist/vue-multiselect.min.css"></style>
 <style scoped>
+.fileAttach :first-child {
+  height: 20px;
+  padding: 0;
+  margin-left: 0px;
+  background-color: aqua;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+.fileAttach {
+  margin-left: 0px;
+}
+
 .danh-sach-ho-so{
     margin-left: 10px;
     margin-right: 10px;

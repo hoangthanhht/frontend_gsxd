@@ -55,6 +55,7 @@
               >
                 <i class="fa fa-pen icon-sm text-muted"></i>
                 <input
+                  
                   type="file"
                   name="profile_avatar"
                   accept=".png, .jpg, .jpeg"
@@ -280,11 +281,11 @@ export default {
     },
     onFileChange(e) {
       const file = e.target.files[0];
-
+     
       if (typeof FileReader === "function") {
         const reader = new FileReader();
 
-        reader.onload = event => {
+        reader.onload = (event) => {
           this.current_photo = event.target.result;
           this.avatar.objFile = file;
         };
